@@ -1,6 +1,21 @@
 body {
     background-color: lightcyan;
 }
-#LogButton {
+.LogButton {
     font-size: 40px;
+}
+.textbox {
+    width: 308px;
+    height: 25px;
+
+}
+.field input {
+    display: block;
+    float: left;
+}
+.field label {
+    display: block;
+    float: left;
+    width: 100px;
+    height: 15px;
 }
