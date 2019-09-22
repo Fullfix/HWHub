@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link href="..styles/style.css" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Регистрация в HWhub</title>
+</head>
+<body>
+    <h1 style="font-size: 100px">Регистрация аккаунта</h1>
+    <div>
+        <form method="post" action="{% url 'register' %}">
+            {% csrf_token %}
+
+            {% load crispy_forms_tags %}
+
+            {% if form.errors %}
+            <p>Something went wrong</p>
+            {% endif %}
+
+            {{ form|crispy }}
+            <p><button type="submit" value="register">Зарегаться</button></p>
+        </form>
+    </div>
+</body>
+</html>
