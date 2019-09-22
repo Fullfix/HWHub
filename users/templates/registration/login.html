@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link href="Styles/Style.css" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Вход в HWhub</title>
+</head>
+<body>
+    <h1 style="font-size: 100px">Вход в аккаунт</h1>
+    {% if form.errors %}
+    <p>Something is wrong</p>
+    {% endif %}
+
+    <div>
+        <form method='post' action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="field">
+                <p>{{form.username}}</p>
+            </div>
+            <div class="field">
+                <p>{{form.password}}</p>
+            </div>
+            <p><button type="submit" id="Butt_LogIn">Залогиниться</button></p>
+        </form>
+    </div>
+</body>
+</html>
