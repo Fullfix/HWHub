@@ -2,24 +2,24 @@
 <html lang="ru">
 <head>
     {% load static %}
-    <link href="{% static 'styles/style.css' %}?version=2" rel="stylesheet">
+    <link href="{% static 'styles/style_reg.css' %}?version=1" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Регистрация в HWhub</title>
 </head>
 <body>
     <h1 style="font-size: 100px" align="center">Регистрация аккаунта</h1>
-    <div>
+    <div class ="registration_form">
         <form method="post" action="{% url 'register' %}">
             {% csrf_token %}
 
             {% load crispy_forms_tags %}
 
             {% if form.errors %}
-            <p>Something went wrong</p>
+            <p class="warning">Something went wrong</p>
             {% endif %}
 
             {{ form|crispy }}
-            <p><button type="submit" value="register" class = "register-button">Зарегаться</button></p>
+            <p><button type="submit" value="register" class = "register-button">Зарегистрироваться</button></p>
         </form>
     </div>
 </body>
