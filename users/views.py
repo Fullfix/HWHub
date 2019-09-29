@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from .forms import UserRegisterForm
+from .models import UserProfile
 
 def index(request):
 	return render(request, 'users/index.html')
@@ -15,6 +16,11 @@ def register(request):
 			username = form.cleaned_data['username']
 			password = form.cleaned_data['password1']
 			user = authenticate(username=username, password=password)
+			profile = UserProfile(user=user, username=username,
+				name=form.cleaned_data['name'],
+				surname=form.cleaned_data['surname'],
+				grade=form.cleaned_data['grade'])
+			profile.save()
 			login(request, user)
 			return redirect('index')
 

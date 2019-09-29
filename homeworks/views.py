@@ -7,6 +7,8 @@ import json
 
 # Create your views here.
 
+book_names = {'algebra2': 'algebra10profile2'}
+
 def check_if_number_exists(path, p, num):
 	with open(path, 'r') as f:
 		numbers = json.load(f)
@@ -15,18 +17,24 @@ def check_if_number_exists(path, p, num):
 def books(request):
 	return render(request, 'books.html')
 
-def get_hw(request, p, num):
-	path = finders.find('maths/alg1.json')
+def get_hw(request, book, p, num):
+	if not book in book_names.keys():
+		return HttpResponse('Book does not exist')
+	path = finders.find(f'maths/{book_names[book]}.json')
 	if not check_if_number_exists(path, p, num):
 		return HttpResponse('Number does not exist')
-	homeworks = Homework.objects.filter(paragraph__exact = int(p), number__exact = int(num))
+
+
+	homeworks = Homework.objects.filter(
+		book__exact = book_names[book], 
+		paragraph__exact = int(p), 
+		number__exact = int(num))
 	context = {'homeworks': list(homeworks)}
 	return render(request, 'maths/hw.html', context)
 
 def upload_hw(request):
 	if not request.user.is_authenticated:
 		return redirect('login')
-
 
 	if request.method == 'POST':
 		form = HomeworkUploadForm(request.POST, request.FILES)

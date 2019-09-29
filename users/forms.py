@@ -5,8 +5,8 @@ from django.contrib.auth.forms import UserCreationForm
 def create_grades():
 	C = []
 	for i in range(1, 12):
-		C.append((str(i), 'Класс ' + str(i)))
-	return C
+		C.append((i, str(i)))
+	return tuple(C)
 
 
 class UserRegisterForm(UserCreationForm):
@@ -19,7 +19,7 @@ class UserRegisterForm(UserCreationForm):
 
 	class Meta:
 		model = User
-		fields = ['username', 'name', 'surname', 'grade', 'password1', 'password2']
+		fields = ['username', 'password1', 'password2']
 
 	username.widget.attrs.update({'class':'register_input', 'id':'username'})
 	name.widget.attrs.update({'class':'register_input', 'id':'name'})
