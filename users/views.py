@@ -29,3 +29,8 @@ def register(request):
 
 	context = {'form': form}
 	return render(request, 'registration/register.html', context)
+
+def navbar(request):
+	profile = UserProfile.objects.filter(user=request.user)[0]
+	context = {'user':request.user, 'profile':profile}
+	return render(request, 'navbar.html', context)

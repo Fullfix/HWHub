@@ -15,7 +15,7 @@ class UserProfile(models.Model):
 	name = models.CharField(max_length=15)
 	surname = models.CharField(max_length=15)
 	grade = models.IntegerField(choices=create_grades(), default=10)
-	photo = models.ImageField(upload_to=upload_location, null=True, blank=True)
+	photo = models.ImageField(upload_to=upload_location, default='users/default.jpg')
 
 	def __str__(self):
 		return f'{self.user.username} Profile'

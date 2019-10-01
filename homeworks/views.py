@@ -27,7 +27,7 @@ def get_hw(request, book, p, num):
 
 	homeworks = Homework.objects.filter(
 		book__exact = book_names[book], 
-		paragraph__exact = int(p), 
+		paragraph__exact = int(p),
 		number__exact = int(num))
 	context = {'homeworks': list(homeworks)}
 	return render(request, 'maths/hw.html', context)
