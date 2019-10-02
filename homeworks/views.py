@@ -40,7 +40,7 @@ def upload_hw(request):
 		form = HomeworkUploadForm(request.POST, request.FILES)
 		if form.is_valid():
 			params = form.cleaned_data
-			path = finders.find('maths/alg1.json')
+			path = finders.find('maths/algebra10profile2.json')
 			if not check_if_number_exists(path, params['paragraph'], params['number']):
 				context = {'form':form, 'number_error':True}
 				return render(request, 'maths/upload.html', context)

@@ -1,7 +1,18 @@
-.profile {
-    position: absolute;
-    right: 1%;
+.profile p {
+	float: right;
 }
+
+.profile img {
+}
+
+.profile {
+	display: flex;
+	justify-content: center;
+	position: relative;
+	right: 1%;
+	height: 60px;
+}
+
 .hw-link {
     text-align: center;
 }
