@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	{% load static %}
 	<meta charset="UTF-8">
-	<title>header</title>
+	<title>{% block title %} header {% endblock %}</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link href="{% static 'styles/style_nav.css' %}?version=1" rel="stylesheet">
 </head>
 <body>
-	{{profile.photo.url}}
-	<div class="wrapper">
+	<div>
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			<a class="nav-link" href="#">Профиль</a>
-			<img src="{{profile.photo.url}}" alt="Блять не загузилось!!!">
+			<div class="profile">
+			<a class="nav-link" href="#">{{profile.name}}</a>
+			<img src="{{profile.photo.url}}" alt="Блять не загузилось!!!" width="50px">
+			</div>
 		</nav>
 	</div>
 </body>
