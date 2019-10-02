@@ -1,5 +1,23 @@
-It finally works!!!!!!
 
-{% for homework in homeworks %}
-<img src="{{homework.image.url}}" width="300">
-{% endfor %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {% load static %}
+    <link href="{% static 'styles/style_hw.css' %}?version=0" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Main Page</title>
+</head>
+<body>
+    <p align="center">It finally works!!!!!!</p>
+
+    {% for homework in homeworks %}
+    <div class = "Homework_show">
+        <p align="center"><img src="{{homework.image.url}}" width="400" style="text-align: center"></p>
+        <p align="center">Опубликованно: {{homework.publisher.username}}</p>
+        <p align="center">Учебник: {{homework.book}}</p>
+        <p align="center">Параграф: {{homework.paragraph}}</p>
+        <p align="center">Номер задачи: {{homework.number}}</p>
+    </div>
+    {% endfor %}
+</body>
+</html>
