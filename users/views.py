@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from .forms import UserRegisterForm
 from .models import UserProfile
@@ -29,6 +30,13 @@ def register(request):
 
 	context = {'form': form}
 	return render(request, 'registration/register.html', context)
+
+def profile(request, id_):
+	user = User.objects.filter(id=id_).first()
+	profile = UserProfile.objects.filter(user=request.user)[0]
+	context = {'user':request.user, 'profile':profile}
+	return render(request, 'users/profile.html', context)
+
 
 def navbar(request):
 	profile = UserProfile.objects.filter(user=request.user)[0]
