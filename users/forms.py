@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from .models import User, UserProfile
 from django.contrib.auth.forms import UserCreationForm
 
 def create_grades():
@@ -9,17 +9,13 @@ def create_grades():
 	return tuple(C)
 
 
-class UserRegisterForm(UserCreationForm):
+class UserRegisterForm(forms.Form):
 	username = forms.CharField(max_length=20, label='Ник')
-	name = forms.CharField(max_length=15, label='Имя')
-	surname = forms.CharField(max_length=15, label='Фамилия')
-	grade = forms.ChoiceField(choices=create_grades(), label='Класс')
-	password1 = forms.CharField(widget=forms.PasswordInput(), label='Пароль')
-	password2 = forms.CharField(widget=forms.PasswordInput(), label='Подтверждение пароля')
-
-	class Meta:
-		model = User
-		fields = ['username', 'password1', 'password2']
+	name = forms.CharField(max_length=15, label='Имя', required=False)
+	surname = forms.CharField(max_length=15, label='Фамилия', required=False)
+	grade = forms.ChoiceField(choices=create_grades(), label='Класс', required=False)
+	password1 = forms.CharField(widget=forms.PasswordInput, label='Пароль')
+	password2 = forms.CharField(widget=forms.PasswordInput, label='Подтверждение пароля')
 
 	username.widget.attrs.update({'class':'register_input', 'id':'username'})
 	name.widget.attrs.update({'class':'register_input', 'id':'name'})
@@ -27,3 +23,24 @@ class UserRegisterForm(UserCreationForm):
 	grade.widget.attrs.update({'class':'register_input', 'id':'grade'})
 	password1.widget.attrs.update({'class':'register_input', 'id':'password1'})
 	password2.widget.attrs.update({'class':'register_input', 'id':'password2'})
+
+
+	def clean_password2(self):
+		password1 = self.cleaned_data.get('password1')
+		password2 = self.cleaned_data.get('password2')
+		if password1 and password2 and password1 != password2:
+			raise forms.ValidationError('Пароли не совпадают')
+		return password2
+
+	def save(self, commit=True):
+		user = User.objects.create_user(
+			username=self.cleaned_data['username'], 
+			password=self.cleaned_data['password1'])
+		profile = UserProfile(user=user, 
+			name=self.cleaned_data['name'], 
+			surname=self.cleaned_data['surname'], 
+			grade=self.cleaned_data['grade'])
+		if commit:
+			user.save()
+			profile.save()
+		return user

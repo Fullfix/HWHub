@@ -1,35 +1,39 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.views import View
 from .forms import UserRegisterForm
-from .models import UserProfile
+from .models import UserProfile, User
 
 def index(request):
 	return render(request, 'users/index.html')
 
-def register(request):
-	if request.method == 'POST':
-		form = UserRegisterForm(request.POST)
+class RegisterView(View):
+	form_class = UserRegisterForm
+	template_name = 'registration/register.html'
 
+	def get(self, request):
+		form = self.form_class()
+		context = {'form': form}
+		return render(request, self.template_name, context)
+
+	def post(self, request):
+		form = self.form_class(request.POST)
 		if form.is_valid():
-			form.save()
+			username = form.cleaned_data['username']
+			password = form.cleaned_data['password1']
+			name = form.cleaned_data['name']
+			surname = form.cleaned_data['surname']
+			grade = form.cleaned_data['grade']
+			new_user = User.objects.create_user(username=username, password=password)
+			new_user.save()
 			username = form.cleaned_data['username']
 			password = form.cleaned_data['password1']
 			user = authenticate(username=username, password=password)
-			profile = UserProfile(user=user, username=username,
-				name=form.cleaned_data['name'],
-				surname=form.cleaned_data['surname'],
-				grade=form.cleaned_data['grade'])
+			profile = UserProfile(user=user, name=name, surname=surname, grade=grade)
 			profile.save()
 			login(request, user)
 			return redirect('index')
-
-	else:
-		form = UserRegisterForm()
-
-	context = {'form': form}
-	return render(request, 'registration/register.html', context)
 
 def profile(request, id_):
 	user = User.objects.filter(id=id_).first()
