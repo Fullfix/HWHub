@@ -2,13 +2,15 @@ from django.db import models
 from users.models import User
 from django.contrib.staticfiles import finders
 import json
+import datetime
 
 # Create your models here.
 
 def upload_location(instance, filename):
-	return 'uploads/%s/%s.%s.%s' % (instance.publisher.id,
-		instance.paragraph, 
+	return 'uploads/%s/%s.%s.%s.%s' % (instance.publisher.id,
+		instance.paragraph,
 		instance.number,
+		str(datetime.datetime.now()),
 		'.'.split(filename)[-1])
 
 def load_books():
