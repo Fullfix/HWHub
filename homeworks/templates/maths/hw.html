@@ -3,7 +3,7 @@
 <html lang="ru">
 <head>
     {% load static %}
-    <link href="{% static 'styles/style_hw.css' %}?version=0" rel="stylesheet">
+    <link href="{% static 'styles/style_hw.css' %}?version=5" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Main Page</title>
 </head>
@@ -11,12 +11,31 @@
     <p align="center">It finally works!!!!!!</p>
 
     {% for homework in homeworks %}
-    <div class = "Homework_show">
-        <p align="center"><img src="{{homework.image.url}}" width="400" style="text-align: center"></p>
-        <p align="center">Опубликованно: {{homework.publisher.username}}</p>
-        <p align="center">Учебник: {{homework.book}}</p>
-        <p align="center">Параграф: {{homework.paragraph}}</p>
-        <p align="center">Номер задачи: {{homework.number}}</p>
+    <div class = "Homework_show" style="width: 500px; margin-bottom: 15px">
+        <div class="Homework_profile" style="height: 50px">
+            <div class="Homework_profile_user" style="">
+                <img src="{{homework.publisher.}}" height="50px" width="50px" style="float: left;">
+                <p style="float: left; margin-left: 10px">{{homework.publisher.username}}</p>
+            </div>
+            <p style="right: 0%; float: right">Опубликовано:</p>
+        </div>
+        <div class="Homework_img">
+            <p align="center"><img src="{{homework.image.url}}" width="500px" style="text-align: center"></p>
+        </div>
+        <div class="Homework_buttons" style="height: 50px; border-top: 1px solid #e7e8ec; border-bottom: 1px solid #e7e8ec; padding: 10px">
+            <a class="Homework_like" href="#" style="float: left; display: flex; align-items: center">
+                <img src="{% static 'images/like_btn.png' %}" style="float: left;">
+                <div style="float: left; margin-left: 10px; margin-right: 10px" class="Homework_like_count">OVER100500</div>
+            </a>
+            <a class="Homework_dislike" href="#" style="float: left; display: flex; align-items: center">
+                <img src="{% static 'images/dislike_btn.png' %}" style="float: left;">
+                <div class="Homework_dislike_count" style="float: left; margin-left: 10px; margin-right: 10px" >0</div>
+            </a>
+            <a class="Homework_comment" href="#" style="float: right;display: flex; align-items: center">
+                <img src="{% static 'images/comment_btn.png' %}" style="float: left;">
+                <div class="Homework_comment_count"  style="float: left;">OVER100500</div>
+            </a>
+        </div>
     </div>
     {% endfor %}
 </body>
