@@ -31,16 +31,3 @@ class UserRegisterForm(forms.Form):
 		if password1 and password2 and password1 != password2:
 			raise forms.ValidationError('Пароли не совпадают')
 		return password2
-
-	def save(self, commit=True):
-		user = User.objects.create_user(
-			username=self.cleaned_data['username'], 
-			password=self.cleaned_data['password1'])
-		profile = UserProfile(user=user, 
-			name=self.cleaned_data['name'], 
-			surname=self.cleaned_data['surname'], 
-			grade=self.cleaned_data['grade'])
-		if commit:
-			user.save()
-			profile.save()
-		return user
