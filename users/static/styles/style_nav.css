@@ -1,5 +1,7 @@
 .profile p {
 	float: right;
+	margin-top:auto;
+	margin-bottom:auto;
 }
 
 .profile img {

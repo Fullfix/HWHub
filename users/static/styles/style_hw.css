@@ -1,7 +1,39 @@
 .Homework_show {
     margin-left: auto;
     margin-right: auto;
-
+    width: 500px;
+    margin-bottom: 15px;
+}
+.Homework_profile{
+    height: 50px;
 }
 .Homework_buttons {
+    height: 25px;
+    border-top: 1px solid #e7e8ec;
+    border-bottom: 1px solid #e7e8ec;
+    padding: 10px;
+    font-size: 7px;
+}
+.Homework_buttons div {
+    float: left;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.Homework_dislike {
+    float: left;
+    display: flex;
+    align-items: center;
+    color: darkgray;
+}
+.Homework_like {
+    float: left;
+    display: flex;
+    align-items: center;
+    color: darkgray;
+}
+.Homework_comment {
+    float: right;
+    display: flex;
+    align-items: center;
+    color: darkgray;
 }
