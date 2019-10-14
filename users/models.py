@@ -78,9 +78,9 @@ class User(AbstractBaseUser):
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
-	name = models.CharField(max_length=15)
-	surname = models.CharField(max_length=15)
-	grade = models.IntegerField(choices=create_grades(), default=10)
+	name = models.CharField(max_length=15, blank=True)
+	surname = models.CharField(max_length=15, blank=True)
+	grade = models.IntegerField(choices=create_grades(), default=1)
 	photo = models.ImageField(upload_to=upload_location, default='users/default.jpg')
 
 	def __str__(self):

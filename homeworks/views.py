@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.staticfiles import finders
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.views.generic.base import RedirectView
 from .models import Homework
 from .forms import HomeworkUploadForm
 import json
@@ -8,6 +9,7 @@ import json
 # Create your views here.
 
 book_names = {'algebra2': 'algebra10profile2'}
+book_names_reversed = {'algebra10profile2': 'algebra2'}
 
 def check_if_number_exists(path, p, num):
 	with open(path, 'r') as f:
@@ -51,3 +53,32 @@ def upload_hw(request):
 		form = HomeworkUploadForm()
 	context = {'form':form, 'number_error':False}
 	return render(request, 'maths/upload.html', context)
+
+
+def like_hw(request, id_):
+	post = get_object_or_404(Homework, id=id_)
+	if request.user in post.likes.all():
+		post.likes.remove(request.user)
+	elif request.user in post.dislikes.all():
+		post.dislikes.remove(request.user)
+		post.likes.add(request.user)
+	else:
+		post.likes.add(request.user)
+	return redirect('algebra', 
+		book=book_names_reversed[post.book], 
+		p=post.paragraph,
+		num=post.number)
+
+def dislike_hw(request, id_):
+	post = get_object_or_404(Homework, id=id_)
+	if request.user in post.dislikes.all():
+		post.dislikes.remove(request.user)
+	elif request.user in post.likes.all():
+		post.likes.remove(request.user)
+		post.dislikes.add(request.user)
+	else:
+		post.dislikes.add(request.user)
+	return redirect('algebra', 
+		book=book_names_reversed[post.book], 
+		p=post.paragraph,
+		num=post.number)
