@@ -30,6 +30,7 @@
     display: flex;
     align-items: center;
     color: darkgray;
+    width: 40px;
 }
 .Homework_comment {
     float: right;
