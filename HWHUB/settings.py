@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'users',
     'homeworks',
     'crispy_forms',
+    'django_ajax',
 ]
 
 AUTH_USER_MODEL = 'users.User'

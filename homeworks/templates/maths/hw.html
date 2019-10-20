@@ -1,13 +1,14 @@
+{% extends 'navbar.html' %}
+{% load static %}
 
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    {% load static %}
+{% block title %} Main Page {% endblock %}
+
+{% block link %}
+    <script src="{% static 'js/hw.js' %}"></script>
     <link href="{% static 'styles/style_hw.css' %}?version=13" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Main Page</title>
-</head>
-<body>
+{% endblock %}
+{% block content %}
     <p align="center">It finally works!!!!!!</p>
 
     {% for homework in homeworks %}
@@ -25,19 +26,49 @@
         </div>
         <div class="Homework_buttons">
             <div class="Homework_like">
-                <button id="like_button" type="button" style="border: 0; background: transparent; width: 27px">
+                <button id="like_button" onclick="likeHW(this)" type="button" data-hwid="{{homework.id}}" style="border: 0; background: transparent; width: 27px">
                     <img src="{% static 'images/like_btn.png' %}" height="25px" style="float: left;">
                 </button>
-                <div class="Homework_like_count">{{ homework.likes.count }}</div>
+                <div class="Homework_like_count" id="like_count{{homework.id}}">{{ homework.likes.count }}</div>
             </div>
             <div class="Homework_dislike">
-                <button id="dislike_button" type="button" style="border: 0; background: transparent; width: 27px">
+                <button id="dislike_button" onclick="dislikeHW(this)" type="button" data-hwid="{{homework.id}}" style="border: 0; background: transparent; width: 27px">
                     <img src="{% static 'images/dislike_btn.png' %}" height="25px" style="float: left;">
                 </button>
-                <div class="Homework_dislike_count">{{homework.dislikes.count }}</div>
+                <div class="Homework_dislike_count" id="dislike_count{{homework.id}}">{{homework.dislikes.count }}</div>
             </div>
         </div>
     </div>
     {% endfor %}
-</body>
-</html>
+{% endblock %}
+
+{% block script %}
+<script>
+function likeHW (btn) {
+    var hwid = $(btn).attr("data-hwid");
+    $.ajax({
+        type: "GET",
+        url: "{% url 'like_hw' %}",
+        dataType: "JSON",
+        data: {homework_id: hwid},
+        success: function(json) {
+            $('#like_count'+hwid).html(json.likes);
+            $('#dislike_count'+hwid).html(json.dislikes);
+        }
+    })
+}
+function dislikeHW (btn) {
+    var hwid = $(btn).attr("data-hwid");
+    $.ajax({
+        type: "GET",
+        url: "{% url 'dislike_hw' %}",
+        dataType: "JSON",
+        data: {homework_id: hwid},
+        success: function(json) {
+            $('#like_count'+hwid).html(json.likes);
+            $('#dislike_count'+hwid).html(json.dislikes);
+        }
+    })
+}
+</script>
+{% endblock %}

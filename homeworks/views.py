@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.staticfiles import finders
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic.base import RedirectView
 from .models import Homework
 from .forms import HomeworkUploadForm
+from users.models import UserProfile
 import json
 
 # Create your views here.
@@ -31,7 +32,8 @@ def get_hw(request, book, p, num):
 		book__exact = book_names[book], 
 		paragraph__exact = int(p),
 		number__exact = int(num))
-	context = {'homeworks': list(homeworks)}
+	profile = UserProfile.objects.filter(user=request.user)[0]
+	context = {'homeworks': list(homeworks), 'user': request.user, 'profile':profile}
 	return render(request, 'maths/hw.html', context)
 
 def upload_hw(request):
@@ -55,30 +57,26 @@ def upload_hw(request):
 	return render(request, 'maths/upload.html', context)
 
 
-def like_hw(request, id_):
-	post = get_object_or_404(Homework, id=id_)
-	if request.user in post.likes.all():
-		post.likes.remove(request.user)
-	elif request.user in post.dislikes.all():
-		post.dislikes.remove(request.user)
-		post.likes.add(request.user)
-	else:
-		post.likes.add(request.user)
-	return redirect('algebra', 
-		book=book_names_reversed[post.book], 
-		p=post.paragraph,
-		num=post.number)
+def like_hw(request):
+	if request.method == 'GET':
+		post = get_object_or_404(Homework, id=request.GET['homework_id'])
+		if request.user in post.likes.all():
+			post.likes.remove(request.user)
+		elif request.user in post.dislikes.all():
+			post.dislikes.remove(request.user)
+			post.likes.add(request.user)
+		else:
+			post.likes.add(request.user)
+		return JsonResponse({'likes':post.likes.count(), 'dislikes':post.dislikes.count()})
 
-def dislike_hw(request, id_):
-	post = get_object_or_404(Homework, id=id_)
-	if request.user in post.dislikes.all():
-		post.dislikes.remove(request.user)
-	elif request.user in post.likes.all():
-		post.likes.remove(request.user)
-		post.dislikes.add(request.user)
-	else:
-		post.dislikes.add(request.user)
-	return redirect('algebra', 
-		book=book_names_reversed[post.book], 
-		p=post.paragraph,
-		num=post.number)
+def dislike_hw(request):
+	if request.method == 'GET':
+		post = get_object_or_404(Homework, id=request.GET['homework_id'])
+		if request.user in post.dislikes.all():
+			post.dislikes.remove(request.user)
+		elif request.user in post.likes.all():
+			post.likes.remove(request.user)
+			post.dislikes.add(request.user)
+		else:
+			post.dislikes.add(request.user)
+		return JsonResponse({'likes': post.likes.count(),'dislikes':post.dislikes.count()})
