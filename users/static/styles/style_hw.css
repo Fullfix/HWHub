@@ -1,18 +1,18 @@
 .Homework_show {
     margin-left: auto;
     margin-right: auto;
-    width: 500px;
+    width: 700px;
     margin-bottom: 15px;
 }
 .Homework_profile{
     height: 50px;
 }
 .Homework_buttons {
-    height: 25px;
+    height: 50px;
     border-top: 1px solid #e7e8ec;
     border-bottom: 1px solid #e7e8ec;
-    padding: 10px;
-    font-size: 14px;
+    padding: 0px;
+    font-size: 20px;
 }
 .Homework_buttons div {
     float: left;
@@ -30,11 +30,14 @@
     display: flex;
     align-items: center;
     color: darkgray;
-    width: 40px;
+    width: 100px;
 }
 .Homework_comment {
     float: right;
     display: flex;
     align-items: center;
     color: darkgray;
+}
+button:focus {
+    outline: none !important
 }

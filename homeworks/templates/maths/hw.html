@@ -5,7 +5,7 @@
 
 {% block link %}
     <script src="{% static 'js/hw.js' %}"></script>
-    <link href="{% static 'styles/style_hw.css' %}?version=13" rel="stylesheet">
+    <link href="{% static 'styles/style_hw.css' %}?version=19" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 {% endblock %}
 {% block content %}
@@ -17,23 +17,23 @@
             <div class="Homework_profile_user">
                 <img src="{{homework.publisher_profile.photo.url}}" 
                 height="50px" width="50px" style="float: left;">
-                <p style="float: left; margin-left: 10px">{{homework.publisher.username}}</p>
+                <p style="float: left; margin-left: 10px; transform: translate(0, 50%)">{{homework.publisher.username}}</p>
             </div>
-            <p style="right: 0%; float: right">Опубликовано:{{homework.uploaded}}</p>
+            <p style="right: 0%; float: right; transform: translate(0, 50%)">Опубликовано:{{homework.uploaded}}</p>
         </div>
         <div class="Homework_img">
-            <p align="center"><img src="{{homework.image.url}}" width="500px" style="text-align: center"></p>
+            <p align="center"><img src="{{homework.image.url}}" width="700px" style="text-align: center"></p>
         </div>
         <div class="Homework_buttons">
             <div class="Homework_like">
-                <button id="like_button" onclick="likeHW(this)" type="button" data-hwid="{{homework.id}}" style="border: 0; background: transparent; width: 27px">
-                    <img src="{% static 'images/like_btn.png' %}" height="25px" style="float: left;">
+                <button id="like_button" onclick="likeHW(this)" type="button" data-hwid="{{homework.id}}" style="border: 0; background: transparent; width: 54px; padding: 0px">
+                    <img src="{% static 'images/like_btn.png' %}" height="50px" style="float: left;">
                 </button>
                 <div class="Homework_like_count" id="like_count{{homework.id}}">{{ homework.likes.count }}</div>
             </div>
             <div class="Homework_dislike">
-                <button id="dislike_button" onclick="dislikeHW(this)" type="button" data-hwid="{{homework.id}}" style="border: 0; background: transparent; width: 27px">
-                    <img src="{% static 'images/dislike_btn.png' %}" height="25px" style="float: left;">
+                <button id="dislike_button" onclick="dislikeHW(this)" type="button" data-hwid="{{homework.id}}" style="border: 0; background: transparent; width: 54px; padding: 0px">
+                    <img src="{% static 'images/dislike_btn.png' %}" height="50px" style="float: left;">
                 </button>
                 <div class="Homework_dislike_count" id="dislike_count{{homework.id}}">{{homework.dislikes.count }}</div>
             </div>
