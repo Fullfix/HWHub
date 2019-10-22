@@ -1,7 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.staticfiles import finders
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic.base import RedirectView
+from django.views.generic.list import ListView
+from django.views import View
 from .models import Homework
 from .forms import HomeworkUploadForm
 from users.models import UserProfile
@@ -36,11 +40,31 @@ def get_hw(request, book, p, num):
 	context = {'homeworks': list(homeworks), 'user': request.user, 'profile':profile}
 	return render(request, 'maths/hw.html', context)
 
-def upload_hw(request):
-	if not request.user.is_authenticated:
-		return redirect('login')
 
-	if request.method == 'POST':
+@method_decorator(login_required, name='get')
+class GetHWOpinion(View):
+	def get(self, request):
+		post = get_object_or_404(Homework, id=request.GET['homework_id'])
+		if request.user in post.likes.all():
+			liked = True
+		else:
+			liked = False
+		if request.user in post.dislikes.all():
+			disliked = True
+		else:
+			disliked = False
+		json = {"liked":liked, "disliked":disliked}
+		return JsonResponse(json)
+
+
+@method_decorator(login_required, name='get')
+class UploadHW(View):
+	def get(self, request):
+		form = HomeworkUploadForm()
+		context = {'form':form, 'number_error':False}
+		return render(request, 'maths/upload.html', context)
+
+	def post(self, request):
 		form = HomeworkUploadForm(request.POST, request.FILES)
 		if form.is_valid():
 			params = form.cleaned_data
@@ -51,32 +75,48 @@ def upload_hw(request):
 			homework = Homework.objects.create_homework(params, request.user)
 			homework.save()
 			return redirect('books')
-	else:
-		form = HomeworkUploadForm()
-	context = {'form':form, 'number_error':False}
-	return render(request, 'maths/upload.html', context)
 
 
-def like_hw(request):
-	if request.method == 'GET':
+@method_decorator(login_required, name='get')
+class LikeHW(View):
+	def get(self, request):
 		post = get_object_or_404(Homework, id=request.GET['homework_id'])
 		if request.user in post.likes.all():
 			post.likes.remove(request.user)
+			liked = False
+			undisliked = False
 		elif request.user in post.dislikes.all():
 			post.dislikes.remove(request.user)
 			post.likes.add(request.user)
+			liked = True
+			undisliked = True
 		else:
 			post.likes.add(request.user)
-		return JsonResponse({'likes':post.likes.count(), 'dislikes':post.dislikes.count()})
+			liked = True
+			undisliked = False
+		json = {'likes':post.likes.count(), 'dislikes':post.dislikes.count(),
+		'liked':liked, 'undisliked':undisliked}
+		return JsonResponse(json)
 
-def dislike_hw(request):
-	if request.method == 'GET':
+
+@method_decorator(login_required, name='get')
+class DislikeHW(View):
+	def get(self, request):
 		post = get_object_or_404(Homework, id=request.GET['homework_id'])
 		if request.user in post.dislikes.all():
 			post.dislikes.remove(request.user)
+			disliked = False
+			unliked = False
 		elif request.user in post.likes.all():
 			post.likes.remove(request.user)
 			post.dislikes.add(request.user)
+			disliked = True
+			unliked = True
 		else:
 			post.dislikes.add(request.user)
-		return JsonResponse({'likes': post.likes.count(),'dislikes':post.dislikes.count()})
+			disliked = True
+			unliked = False
+		json = {'likes':post.likes.count(), 'dislikes':post.dislikes.count(),
+		'disliked':disliked, 'unliked':unliked}
+		return JsonResponse(json)
+
