@@ -18,6 +18,7 @@ class RegisterView(View):
 		return render(request, self.template_name, context)
 
 	def post(self, request):
+		print(request.POST)
 		form = self.form_class(request.POST)
 		if form.is_valid():
 			username = form.cleaned_data['username']

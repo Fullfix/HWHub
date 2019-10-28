@@ -1,0 +1,240 @@
+{% extends 'navbar.html' %}
+{% load static %}
+{% block link %}
+    <link href="{% static 'styles/upload_style.css' %}?version=6" rel="stylesheet">
+{% endblock %}
+{% block title %} Выложить домашку {% endblock %}
+{% block content %}
+    <div class ="upload">
+        <div class="go_back">
+            <img id="go_back_img" src="{% static 'images/go_back.png' %}" alt="ГРУЗИСЬ БЛЯТЬ">
+        </div>
+        <form id="post-form" enctype="multipart/form-data" method="post" action="{% url 'upload' %}">
+            {% csrf_token %}
+            <div class="div_input" id="div_input_subject">
+                <select name="subject" id="subject_select" class="input_hw">
+                    <option hidden disabled selected value="not chosen">-- Выберите предмет --</option>
+                    <option value="algebra">Алгебра</option>
+                </select>
+            </div>
+            <div class="div_input invis" id="div_input_book">
+                <select name="book" id="book_select" class="input_hw">
+                    <option hidden disabled selected value="not chosen">-- Выберите книгу --</option>
+                </select>
+            </div>
+            <div class="div_input invis" id="div_input_paragraph">
+                <select name="paragraph" id="paragraph_select" class="input_hw">
+                    <option hidden disabled selected value="not chosen">-- Выберите параграф --</option>
+                </select>
+            </div>
+            <div class="div_input invis" id="div_input_number">
+                <select name="number" id="number_select" class="input_hw">
+                    <option hidden disabled selected value="not chosen">-- Выберите номер --</option>
+                </select>
+            </div>
+            <div class="div_input invis" id="file_input">
+                <div id="uploads"></div>
+                <div class="dropzone" id="dropzone">Перетащите файлы</div>
+            </div>
+            <div class="upload_btn invis" id="upload_btn">
+                <button type="submit" value="upload_hw" class="upload-button">Выложить</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block script %}
+<script>
+function load_books() {
+    let jsonfile = null;
+    $.ajax({
+        type: "GET",
+        dataType: "JSON",
+        url: "{% url 'get_json_books' %}",
+        async: false,
+        success: function(json) {
+            jsonfile = json;
+        }
+    })
+    return jsonfile;
+}
+function load_numbers(bookName) {
+    let jsonfile = null;
+    $.ajax({
+        type: "GET",
+        dataType: "JSON",
+        url: "{% url 'get_json_numbers' %}",
+        data: {book: bookName},
+        async: false,
+        success: function(json) {
+            jsonfile = json;
+        }
+    })
+    return jsonfile;
+}
+
+function create_hw(form, uploadedFiles) {
+    data = new FormData(form);
+    console.log(uploadedFiles);
+    uploadedFiles.forEach(function(file, i) {
+        console.log(i, file);
+        data.append("file"+i, file);
+    })
+    $.ajax({
+        url: "{% url 'upload' %}",
+        type: "POST",
+        contentType: false,
+        processData: false,
+        cache: false,
+        data: data,
+        success: function(json) {
+            if (!json.created) {
+                console.log("YEAAAAAH!!");
+            }
+            else {
+                console.log(json.error);
+            }
+        }
+    })
+
+}
+
+window.onload = function() {
+    var subject = $('#div_input_subject');
+    var subject_select = subject.find('.input_hw');
+    var book = $('#div_input_book');
+    var book_select = book.find('.input_hw');
+    var paragraph = $('#div_input_paragraph');
+    var paragraph_select = paragraph.find('.input_hw');
+    var number = $('#div_input_number');
+    var number_select = number.find('.input_hw');
+    var file = $('#file_input');
+    var btn = $('#upload_btn');
+    var dropzone = $('#dropzone');
+    var uploadedFiles = [];
+    var jsonBooks = load_books();
+    var jsonNumbers = null;
+
+
+    $('#post-form').one('submit', function(e) {
+        e.preventDefault()
+        console.log("submitted");
+        subject_select.attr("disabled", false);
+        book_select.attr("disabled", false);
+        paragraph_select.attr("disabled", false);
+        number_select.attr("disabled", false);
+        create_hw(this, uploadedFiles);
+    })
+
+
+    dropzone.on("dragover", function() {
+        $(this).addClass('dragover');
+        return false;
+    })
+
+    dropzone.on("dragleave", function() {
+        $(this).removeClass('dragover');
+    })
+
+    dropzone.on("drop", function(e) {
+        e.preventDefault();
+        $(this).removeClass('dragover');
+        e.dataTransfer = e.originalEvent.dataTransfer;
+        Array.from(e.dataTransfer.files).forEach(function(file){
+            if (file.name.split('.').pop() != "png") {
+                alert("Файл должен быть с расширением .png");
+            }
+            else {
+                if (uploadedFiles.length == 0) {
+                    btn.removeClass('invis');
+                }
+                uploadedFiles.push(file);
+                $('#uploads').append('<h5 class="names">'+file.name+'</h5>');
+                $('#uploads h5:last').on("click", function() {
+                    for (let i = 0; i < uploadedFiles.length; i++) {
+                        if (uploadedFiles[i].name == $(this).text()) {
+                            uploadedFiles.splice(i, 1);
+                            break;
+                        }
+                    }
+                    $(this).remove();
+                    if (uploadedFiles.length == 0) {
+                        btn.addClass('invis');
+                    }
+                })
+            }
+        })
+    })
+
+    $('#go_back_img').on('click', function() {
+        if (subject_select.attr("disabled") && !book_select.attr("disabled")){
+            subject_select.attr("disabled", false);
+            subject_select.attr("value", 'not chosen');
+            book.addClass("invis");
+            book_select.empty()
+            book_select.append(
+            '<option hidden disabled selected value="not chosen">-- Выберите книгу --</option>'
+            )
+        }
+        else if (book_select.attr("disabled") && !paragraph_select.attr("disabled")){
+            book_select.attr("disabled", false);
+            book_select.attr("value", 'not chosen');
+            paragraph.addClass("invis");
+            paragraph_select.empty()
+            paragraph_select.append(
+            '<option hidden disabled selected value="not chosen">-- Выберите параграф --</option>'
+            )
+        }
+        else if (paragraph_select.attr("disabled") && !number_select.attr("disabled")){
+            paragraph_select.attr("disabled", false);
+            paragraph_select.attr("value", 'not chosen');
+            number.addClass("invis");
+            number_select.empty()
+            number_select.append(
+            '<option hidden disabled selected value="not chosen">-- Выберите номер --</option>'
+            )
+        }
+        else if (number_select.attr("disabled")) {
+            number_select.attr("disabled", false);
+            number_select.attr("value", 'not chosen');
+            file.addClass("invis");
+            if (!btn.hasClass("invis")) {
+                btn.addClass("invis");
+            }
+            uploadedFiles = [];
+            $('#uploads').empty();
+        }
+    })
+
+    subject_select.on('change', function() {
+        choices = jsonBooks[this.value];
+        choices.forEach(function(choice) {
+            book_select.append('<option value="'+choice[0]+'">'+choice[1]+'</option>');
+        })
+        book.removeClass("invis");
+        subject_select.attr("disabled", true);
+    })
+
+    book_select.on('change', function() {
+        jsonNumbers = load_numbers(this.value);
+        Object.keys(jsonNumbers).forEach(function(par) {
+            paragraph_select.append('<option value="'+par+'">'+par+'</option>');
+        })
+        paragraph.removeClass("invis");
+        book_select.attr("disabled", true);
+    })
+
+    paragraph_select.on('change', function() {
+        for (let i=1; i<=jsonNumbers[this.value]; i++) {
+            number_select.append('<option value="'+i+'">'+i+'</option>');
+        }
+        number.removeClass("invis");
+        paragraph_select.attr("disabled", true);
+    })
+
+    number_select.on('change', function() {
+        file.removeClass("invis");
+        number_select.attr("disabled", true);
+    })
+}
+</script>
+{% endblock %}

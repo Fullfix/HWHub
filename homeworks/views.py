@@ -7,14 +7,12 @@ from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views import View
 from .models import Homework
-from .forms import HomeworkUploadForm
 from users.models import UserProfile
 import json
 
 # Create your views here.
 
 book_names = {'algebra2': 'algebra10profile2'}
-book_names_reversed = {'algebra10profile2': 'algebra2'}
 
 def check_if_number_exists(path, p, num):
 	with open(path, 'r') as f:
@@ -24,13 +22,48 @@ def check_if_number_exists(path, p, num):
 def books(request):
 	return render(request, 'books.html')
 
-def get_hw(request, book, p, num):
-	if not book in book_names.keys():
-		return HttpResponse('Book does not exist')
-	path = finders.find(f'maths/{book_names[book]}.json')
-	if not check_if_number_exists(path, p, num):
-		return HttpResponse('Number does not exist')
+def get_json_books(request):
+	with open (finders.find('books.json'), 'r', encoding='utf8') as f:
+		json_file = json.load(f)
+	return JsonResponse(json_file)
 
+def get_json_numbers(request):
+	book = request.GET['book']
+	with open (finders.find(f'algebra/{book}.json'), 'r', encoding='utf8') as f:
+		json_file = json.load(f)
+	return JsonResponse(json_file)
+
+def check_existance(subject, book, p, num, url=True):
+	with open (finders.find('books.json'), 'r', encoding='utf8') as f:
+		books_file = json.load(f)
+	if not subject in books_file.keys():
+		return 'subject'
+	if url and book not in book_names.keys():
+		return 'book'
+	else: book = book_names[book]
+	if not any(book == b[0] for b in books_file[subject]):
+		return 'book'
+	with open(finders.find(f'{subject}/{book}.json'), 'r', encoding='utf8') as f:
+		numbers_file = json.load(f)
+	if not str(p) in numbers_file.keys():
+		return 'paragraph'
+	if int(num) not in range(1, int(numbers_file[str(p)])+1):
+		return 'number'
+	return None
+
+def get_hw(request, subject, book, p, num):
+	error = check_existance(subject, book, p, num)
+	if error == 'subject':
+		return HttpResponse(f'Предмета "{subject}" не существует')
+	elif book not in book_names.keys() or error == 'book':
+		return HttpResponse(f'Книги "{book}" в предмете "{subject}" не существует')
+	elif error == 'paragraph':
+		return HttpResponse(
+			f'Параграфа {p} в книге "{book}" в предмете "{subject}" не существует')
+	elif error == 'number':
+		return HttpResponse(
+			f'Номера {num} в параграфе {p} ' +
+			'в книге "{book}" в предмете "{subject}" не существует')
 
 	homeworks = Homework.objects.filter(
 		book__exact = book_names[book], 
@@ -38,7 +71,7 @@ def get_hw(request, book, p, num):
 		number__exact = int(num))
 	profile = UserProfile.objects.filter(user=request.user)[0]
 	context = {'homeworks': list(homeworks), 'user': request.user, 'profile':profile}
-	return render(request, 'maths/hw.html', context)
+	return render(request, 'hw.html', context)
 
 
 @method_decorator(login_required, name='get')
@@ -59,22 +92,39 @@ class GetHWOpinion(View):
 
 @method_decorator(login_required, name='get')
 class UploadHW(View):
+	template_name = 'upload.html'
 	def get(self, request):
-		form = HomeworkUploadForm()
-		context = {'form':form, 'number_error':False}
-		return render(request, 'maths/upload.html', context)
+		profile = UserProfile.objects.filter(user=request.user)[0]
+		context = {'user':request.user, 'profile':profile, 'number_error':False}
+		return render(request, self.template_name, context)
 
 	def post(self, request):
-		form = HomeworkUploadForm(request.POST, request.FILES)
-		if form.is_valid():
-			params = form.cleaned_data
-			path = finders.find('maths/algebra10profile2.json')
-			if not check_if_number_exists(path, params['paragraph'], params['number']):
-				context = {'form':form, 'number_error':True}
-				return render(request, 'maths/upload.html', context)
-			homework = Homework.objects.create_homework(params, request.user)
-			homework.save()
-			return redirect('books')
+		context = {'error': False, 'created': False }
+		params = dict(request.POST)
+		files = dict(request.FILES)
+		for key, value in params.items():
+			params[key] = value[0]
+		for key, value in files.items():
+			files[key] = value[0]
+		# if finders.find(f'{params['subject']}') == []:
+		# 	context['error'] = f'Предмета {params['subject']} не существует'
+		# 	return JsonResponse(context)
+		# path = finders.find(f'{params['subject']/{params['book']}}')
+		# if path == []:
+		# 	context['error'] = f'Книги {params['book']} не существует'
+		# 	return JsonResponse(context)
+		# with open(context, 'r') as f:
+		# 	D = json.load(f)
+		# if not params['paragraph'] in D.keys():
+		# 	context['error'] = f'Параграфа {params['paragraph']} не существует'
+		# 	return JsonResponse(context)
+		# if not params['number'] in D[params['paragraph']]:
+		# 	context['error'] = f'Номера {params['number']} не существует'
+		# 	return JsonResponse(context)
+
+		homework = Homework.objects.create_homework(params, files, request.user)
+		context['created'] = True
+		return JsonResponse(context)
 
 
 @method_decorator(login_required, name='get')

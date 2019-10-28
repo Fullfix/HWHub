@@ -37,9 +37,10 @@ def time_to_string(date):
 	return s
 
 def upload_location(instance, filename):
-	return 'uploads/%s/%s.%s.%s.%s' % (instance.publisher.id,
-		instance.paragraph,
-		instance.number,
+	return 'uploads/%s/%s-%s-%s(%s).%s' % (instance.homework.publisher.id,
+		instance.homework.paragraph,
+		instance.homework.number,
+		instance.index,
 		str(datetime.datetime.now()),
 		'.'.split(filename)[-1])
 
@@ -50,30 +51,30 @@ def load_books():
 	return books
 
 class HomeworkManager(models.Manager):
-	def create_homework(self, params, user):
+	def create_homework(self, params, images, user):
 		publisher_profile = UserProfile.objects.get(user=user)
 		homework = self.create(publisher=user,
 			publisher_profile=publisher_profile,
+			subject=params['subject'],
 			book=params['book'],
 			paragraph=params['paragraph'],
-			number=params['number'],
-			image=params['image'])
+			number=params['number'])
+		for i, name in enumerate(images.keys()):
+			hwimage = HomeworkImage.objects.create(
+				homework=homework, 
+				image=images[name],
+				index=i)
+			hwimage.save()
+		homework.save()
 		return homework
 
 class Homework(models.Model):
 	publisher = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 	publisher_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
-	book = models.CharField(choices=load_books()['algebra'], max_length=30)
-	paragraph = models.IntegerField()
-	number = models.IntegerField()
-	image = models.ImageField(upload_to=upload_location,
-		null=True,
-		blank=True,
-		width_field='width_field',
-		height_field='height_field',
-		)
-	width_field = models.IntegerField(default=0)
-	height_field = models.IntegerField(default=0)
+	subject = models.CharField(max_length=20, default='algebra')
+	book = models.CharField(max_length=30, default='NoBook')
+	paragraph = models.IntegerField(default=0)
+	number = models.IntegerField(default=0)
 
 	publication_date = models.DateTimeField(auto_now_add=True)
 	likes = models.ManyToManyField(User, related_name='likes', blank=True)
@@ -87,3 +88,9 @@ class Homework(models.Model):
 
 	def __str__(self):
 		return f'{self.book}-{self.paragraph}-{self.number}({self.publisher.username})'
+
+
+class HomeworkImage(models.Model):
+	homework = models.ForeignKey(Homework, related_name='images', on_delete=models.CASCADE)
+	image = models.ImageField(upload_to=upload_location, null=True, blank=True)
+	index = models.IntegerField(default=0)
