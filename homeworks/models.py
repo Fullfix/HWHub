@@ -45,7 +45,7 @@ def upload_location(instance, filename):
 		'.'.split(filename)[-1])
 
 def load_books():
-	path = finders.find('maths/books.json')
+	path = finders.find('books.json')
 	with open (path, 'r') as f:
 		books = json.load(f)
 	return books
@@ -94,3 +94,9 @@ class HomeworkImage(models.Model):
 	homework = models.ForeignKey(Homework, related_name='images', on_delete=models.CASCADE)
 	image = models.ImageField(upload_to=upload_location, null=True, blank=True)
 	index = models.IntegerField(default=0)
+
+	def __str__(self):
+		s = f'{self.homework.book}-{self.homework.paragraph}-{self.homework.number}'
+		s1 = f'({self.homework.publisher.username})'
+		s2 = f' Image {self.index}'
+		return s + s1 + s2

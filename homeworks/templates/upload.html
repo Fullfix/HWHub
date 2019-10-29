@@ -87,7 +87,7 @@ function create_hw(form, uploadedFiles) {
         cache: false,
         data: data,
         success: function(json) {
-            if (!json.created) {
+            if (json.created) {
                 console.log("YEAAAAAH!!");
             }
             else {

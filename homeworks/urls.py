@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
 	path('', views.books, name='books'),
-	path('<str:subject>/<str:book>/<int:p>/<int:num>', views.get_hw, name='algebra'),
+	path('<str:subject>/<str:book>/<int:p>/<int:num>', views.GetHW.as_view(), name='algebra'),
 	path('upload/', views.UploadHW.as_view(), name='upload'),
 	path('like/', views.LikeHW.as_view(), name='like_hw'),
 	path('dislike/', views.DislikeHW.as_view(), name='dislike_hw'),
