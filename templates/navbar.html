@@ -11,14 +11,19 @@
 	{% block script %} {% endblock %}
 </head>
 <body>
-	<div style="height: 60px">
+	<div style="height: 60px;">
 		<nav style="height: 60px" class="navbar navbar-expand-lg navbar-light bg-light">
 			<p style="margin-left: auto; margin-right: auto;margin-top: auto; margin-bottom: auto;" align="center"><a class="hw-link"  href="#">Домашняя РАБота</a></p>
+
 			<div class="profile">
+				{% if user.is_authenticated %}
 				<p style="">
 					<a class="nav-link" href="{% url 'profile' id_=user.id %}">{{user.username}}</a>
 				</p>
 				<img src="{{profile.photo.url}}" alt="Блять не загузилось!!!" width="50px">
+				{% else %}
+				<p>2-582p-58p3589pwertikspogis</p>
+				{% endif %}
 			</div>
 		</nav>
 	</div>

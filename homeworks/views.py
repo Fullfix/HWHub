@@ -23,7 +23,8 @@ def get_json_books(request):
 
 def get_json_numbers(request):
 	book = request.GET['book']
-	with open (finders.find(f'algebra/{book}.json'), 'r', encoding='utf8') as f:
+	subject = request.GET['subject']
+	with open (finders.find(f'{subject}/{book}.json'), 'r', encoding='utf8') as f:
 		json_file = json.load(f)
 	return JsonResponse(json_file)
 
@@ -34,7 +35,10 @@ class GetHW(ValidDataMixin, View):
 			book__exact = book, 
 			paragraph__exact = int(p),
 			number__exact = int(num))
-		profile = UserProfile.objects.filter(user=request.user)[0]
+		if request.user.is_authenticated:
+			profile = UserProfile.objects.filter(user=request.user)[0]
+		else:
+			profile = None
 		context = {'homeworks': list(homeworks), 'user': request.user, 'profile':profile}
 		return render(request, 'hw.html', context)
 
@@ -71,6 +75,9 @@ class UploadHW(View):
 			params[key] = value[0]
 		for key, value in files.items():
 			files[key] = value[0]
+		p, num = params['number'].split('.')
+		params['paragraph'] = int(p)
+		params['number'] = int(num)
 		homework = Homework.objects.create_homework(params, files, request.user)
 		context['created'] = True
 		return JsonResponse(context)

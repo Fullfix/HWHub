@@ -22,11 +22,6 @@
                     <option hidden disabled selected value="not chosen">-- Выберите книгу --</option>
                 </select>
             </div>
-            <div class="div_input invis" id="div_input_paragraph">
-                <select name="paragraph" id="paragraph_select" class="input_hw">
-                    <option hidden disabled selected value="not chosen">-- Выберите параграф --</option>
-                </select>
-            </div>
             <div class="div_input invis" id="div_input_number">
                 <select name="number" id="number_select" class="input_hw">
                     <option hidden disabled selected value="not chosen">-- Выберите номер --</option>
@@ -57,13 +52,13 @@ function load_books() {
     })
     return jsonfile;
 }
-function load_numbers(bookName) {
+function load_numbers(subjectName, bookName) {
     let jsonfile = null;
     $.ajax({
         type: "GET",
         dataType: "JSON",
         url: "{% url 'get_json_numbers' %}",
-        data: {book: bookName},
+        data: {book: bookName, subject: subjectName},
         async: false,
         success: function(json) {
             jsonfile = json;
@@ -103,8 +98,6 @@ window.onload = function() {
     var subject_select = subject.find('.input_hw');
     var book = $('#div_input_book');
     var book_select = book.find('.input_hw');
-    var paragraph = $('#div_input_paragraph');
-    var paragraph_select = paragraph.find('.input_hw');
     var number = $('#div_input_number');
     var number_select = number.find('.input_hw');
     var file = $('#file_input');
@@ -114,13 +107,11 @@ window.onload = function() {
     var jsonBooks = load_books();
     var jsonNumbers = null;
 
-
     $('#post-form').one('submit', function(e) {
         e.preventDefault()
         console.log("submitted");
         subject_select.attr("disabled", false);
         book_select.attr("disabled", false);
-        paragraph_select.attr("disabled", false);
         number_select.attr("disabled", false);
         create_hw(this, uploadedFiles);
     })
@@ -175,22 +166,13 @@ window.onload = function() {
             '<option hidden disabled selected value="not chosen">-- Выберите книгу --</option>'
             )
         }
-        else if (book_select.attr("disabled") && !paragraph_select.attr("disabled")){
+        else if (book_select.attr("disabled") && !number_select.attr("disabled")){
             book_select.attr("disabled", false);
             book_select.attr("value", 'not chosen');
-            paragraph.addClass("invis");
-            paragraph_select.empty()
-            paragraph_select.append(
-            '<option hidden disabled selected value="not chosen">-- Выберите параграф --</option>'
-            )
-        }
-        else if (paragraph_select.attr("disabled") && !number_select.attr("disabled")){
-            paragraph_select.attr("disabled", false);
-            paragraph_select.attr("value", 'not chosen');
             number.addClass("invis");
             number_select.empty()
             number_select.append(
-            '<option hidden disabled selected value="not chosen">-- Выберите номер --</option>'
+            '<option hidden disabled selected value="not chosen">-- Выберите параграф --</option>'
             )
         }
         else if (number_select.attr("disabled")) {
@@ -215,20 +197,15 @@ window.onload = function() {
     })
 
     book_select.on('change', function() {
-        jsonNumbers = load_numbers(this.value);
+        jsonNumbers = load_numbers(subject_select.val(), this.value);
         Object.keys(jsonNumbers).forEach(function(par) {
-            paragraph_select.append('<option value="'+par+'">'+par+'</option>');
+            for (let i=1; i<=jsonNumbers[par]; i++) {
+                number_select.append(
+                    '<option value="'+par+'.'+i+'">'+par+'.'+i+'</option>');
+            }
         })
-        paragraph.removeClass("invis");
-        book_select.attr("disabled", true);
-    })
-
-    paragraph_select.on('change', function() {
-        for (let i=1; i<=jsonNumbers[this.value]; i++) {
-            number_select.append('<option value="'+i+'">'+i+'</option>');
-        }
         number.removeClass("invis");
-        paragraph_select.attr("disabled", true);
+        book_select.attr("disabled", true);
     })
 
     number_select.on('change', function() {
