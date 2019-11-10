@@ -17,19 +17,19 @@
             <div class="Homework_profile_user">
                 <img src="{{homework.publisher_profile.photo.url}}" 
                 height="50px" width="50px" style="float: left;">
-                <p style="float: left; margin-left: 10px; transform: translate(0, 50%)">{{homework.publisher.username}}</p>
+                <a href="#" style="color: darkgray;"><p style="float: left; margin-left: 10px; transform: translate(0, 50%)">{{homework.publisher.username}}</p></a>
             </div>
             <p style="right: 0%; float: right; transform: translate(0, 50%)">Опубликовано:{{homework.uploaded}}</p>
         </div>
-        <div class="Homework_img">
+        <div class="Homework_img" style="border: 1px solid black">
             {% for image in homework.images.all %}
-            <p align="center"><img src="{{image.image.url}}" width="700px" style="text-align: center"></p>
+            <p align="center"><img src="{{image.image.url}}" width="698px" style="text-align: center"></p>
             {% endfor %}
         </div>
         <div class="Homework_buttons" id="hw_buttons{{homework.id}}" data-hwid="{{homework.id}}">
             <div class="Homework_like">
                 <button id="like_button" onclick="likeHW(this)" type="button" data-hwid="{{homework.id}}" style="border: 0; background: transparent; width: 54px; padding: 0px">
-                    <img src="{% static 'images/like_btn.png' %}" class="like_img" height="50px" style="float: left;">
+                    <img src="{% static 'images/like_btn.png' %}" class="like_img" height="50px" width="50px" style="float: left;">
                 </button>
                 <div class="Homework_like_count" id="like_count{{homework.id}}">{{ homework.likes.count }}</div>
             </div>

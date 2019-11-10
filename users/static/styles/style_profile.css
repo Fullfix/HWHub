@@ -1,0 +1,44 @@
+.show_profile {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background-color: #e8e8e8;
+    margin-bottom: 3em;
+}
+.profile_image {
+    position: absolute;
+    width: 25%;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.profile_info{
+    position: absolute;
+    width: 50%;
+    height: 80%;
+    float: left;
+    left: 25%;
+    top: 10%;
+}
+.profile_info_hwcounter{
+    top: 50%;
+    height: 50%;
+    width: 50%;
+}
+.profile_show_homework {
+    height: 100%;
+}
+.profile_logout{
+
+    position: absolute;
+    top: 10%;
+    width: 25%;
+    height: 80%;
+    left: 75%;
+
+}
+.profile_image img {
+    width: 80%;
+    height: 80%;
+}

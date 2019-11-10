@@ -3,9 +3,28 @@
 {% load static %}
 {% block title %} Личный кабинет {% endblock %}
 {% block link %}
-	<link rel="stylesheet" href="{% static 'styles/style_profile.css' %}?version=1">
+	<link rel="stylesheet" href="{% static 'styles/style_profile.css' %}?version=4">
 {% endblock %}
 
 {% block content %}
-	<h1>Ахуеть, оно работает!!!</h1>
+	<div class="show_profile">
+		<div class="profile_image">
+			<img src="{{profile.photo.url}}" alt="Блять не загузилось!!!" height="420px" width="350px">
+		</div>
+		<div class="profile_info">
+			<p style="font-size: 60px">{{user.username}}</p>
+			<p style="font-size: 48px">SURNAME NAME</p>
+			<div class="profile_info_hwcounter">
+				<hr width="100%" style="bottom: 0">
+				<p style="font-size: 48px; float:top" align="center">NUM</p>
+				<p style="font-size: 30px; float:top; color:lightskyblue" align="center">Домашних работ</p>
+			</div>
+		</div>
+		<div class="profile_logout">
+			<a href="#" style="right: 10%; top: 0;font-size: 30px; position: absolute; text-decoration: none!important;">Выйти</a>
+		</div>
+	</div>
+	<div class="profile_show_homework">
+		<p align="center" style="font-size: 48px; background: rgb(1,0,255); background: linear-gradient(90deg, rgba(1,0,255,1) 0%, rgba(0,255,49,1) 100%); width: 30%; margin-right: auto; margin-left: auto;">Домашняя работа</p>
+	</div>
 {% endblock %}

@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<title>{% block title %} header {% endblock %}</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link href="{% static 'styles/style_nav.css' %}?version=2" rel="stylesheet">
+	<link href="{% static 'styles/style_nav.css' %}?version=3" rel="stylesheet">
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	{% block link %} {% endblock %}
 	{% block script %} {% endblock %}
@@ -20,7 +20,7 @@
 				<p style="">
 					<a class="nav-link" href="{% url 'profile' id_=user.id %}">{{user.username}}</a>
 				</p>
-				<img src="{{profile.photo.url}}" alt="Блять не загузилось!!!" width="50px">
+				<img src="{{profile.photo.url}}" alt="Блять не загузилось!!!" width="50px" height="50px">
 				{% else %}
 				<p>2-582p-58p3589pwertikspogis</p>
 				{% endif %}
