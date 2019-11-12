@@ -30,11 +30,7 @@ def get_json_numbers(request):
 
 class GetHW(ValidDataMixin, View):
 	def get(self, request, subject, book, p, num):
-		homeworks = Homework.objects.filter(
-			subject__exact = subject,
-			book__exact = book, 
-			paragraph__exact = int(p),
-			number__exact = int(num))
+		homeworks = Homework.objects.all().number(subject, book, p, num)
 		if request.user.is_authenticated:
 			profile = UserProfile.objects.filter(user=request.user)[0]
 		else:

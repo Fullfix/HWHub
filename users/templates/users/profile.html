@@ -12,19 +12,30 @@
 			<img src="{{profile.photo.url}}" alt="Блять не загузилось!!!" height="420px" width="350px">
 		</div>
 		<div class="profile_info">
-			<p style="font-size: 60px">{{user.username}}</p>
-			<p style="font-size: 48px">SURNAME NAME</p>
+			<p style="font-size: 60px; font-weight: bold;">{{user.username}}</p>
+			<p style="font-size: 48px; color: #444444;">
+				{% if profile.name and profile.surname %}
+				{{profile.name}} {{profile.surname}}
+				{% endif %}
+			</p>
+			<p style="font-size: 48px; color: #444444;">
+				{% if profile.grade %}
+				Класс: {{profile.grade}}
+				{% else %}
+				Класс: *не указан*
+				{% endif %}
+			</p>
 			<div class="profile_info_hwcounter">
 				<hr width="100%" style="bottom: 0">
-				<p style="font-size: 48px; float:top" align="center">NUM</p>
-				<p style="font-size: 30px; float:top; color:lightskyblue" align="center">Домашних работ</p>
+				<p style="font-size: 48px; float:top" align="center">{{homeworks.count}}</p>
+				<p style="font-size: 30px; float:top; color:#49a48e" align="center">Домашних заданий</p>
 			</div>
 		</div>
 		<div class="profile_logout">
-			<a href="#" style="right: 10%; top: 0;font-size: 30px; position: absolute; text-decoration: none!important;">Выйти</a>
+			<a href="/accounts/logout" style="right: 10%; top: 0;font-size: 30px; position: absolute; text-decoration: none!important;">Выйти</a>
 		</div>
 	</div>
 	<div class="profile_show_homework">
-		<p align="center" style="font-size: 48px; background: rgb(1,0,255); background: linear-gradient(90deg, rgba(1,0,255,1) 0%, rgba(0,255,49,1) 100%); width: 30%; margin-right: auto; margin-left: auto;">Домашняя работа</p>
+		<p align="center" style="font-size: 48px; background: rgb(1,0,255); background: linear-gradient(90deg, #92bbff 0%, #97faa7 100%); width: 30%; margin-right: auto; margin-left: auto; font-weight: bold;">Домашние задания</p>
 	</div>
 {% endblock %}

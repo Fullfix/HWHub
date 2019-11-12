@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.views import View
 from .forms import UserRegisterForm
 from .models import UserProfile, User
+from homeworks.models import Homework
 
 def index(request):
 	return render(request, 'users/index.html')
@@ -39,7 +40,8 @@ class RegisterView(View):
 def profile(request, id_):
 	user = User.objects.filter(id=id_).first()
 	profile = UserProfile.objects.filter(user=request.user)[0]
-	context = {'user':request.user, 'profile':profile}
+	homeworks = Homework.objects.all().publisher(user)
+	context = {'user':request.user, 'profile':profile, 'homeworks':homeworks}
 	return render(request, 'users/profile.html', context)
 
 
