@@ -8,6 +8,11 @@ https://docs.djangoproject.com/en/2.1/howto/deployment/wsgi/
 """
 
 import os
+import sys
+
+sys.path.append('/home/fullfix/Documents/HWHub/src')
+
+sys.path.append('/home/fullfix/Documents/HWHub/LinuxLib/lib/python3.6/site-packages')
 
 from django.core.wsgi import get_wsgi_application
 

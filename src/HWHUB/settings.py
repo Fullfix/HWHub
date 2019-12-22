@@ -25,7 +25,7 @@ SECRET_KEY = 'i%hk5i_j1c%u+z5ct1*!31-qc_@6#g+-fwc6+25m0a*mp0pr1^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'hwhub.com', '127.0.0.1']
 
 
 # Application definition
@@ -85,10 +85,21 @@ WSGI_APPLICATION = 'HWHUB.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'hwhub',
+        'USER': 'fullfix',
+        'PASSWORD': 'FiveNights1987%',
+        'HOST': 'hwhub.com',
+        'PORT': '',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
