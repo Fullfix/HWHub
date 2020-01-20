@@ -83,23 +83,23 @@ WSGI_APPLICATION = 'HWHUB.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hwhub',
-        'USER': 'fullfix',
-        'PASSWORD': 'FiveNights1987%',
-        'HOST': 'hwhub.com',
-        'PORT': '',
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': 'db.sqlite3',
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'hwhub',
+#         'USER': 'fullfix',
+#         'PASSWORD': 'FiveNights1987%',
+#         'HOST': 'hwhub.com',
+#         'PORT': '',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
+    }
+}
 
 
 # Password validation
