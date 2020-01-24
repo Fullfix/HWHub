@@ -7,13 +7,15 @@ from .utils import (
 	time_to_string,
 	upload_location,
 	load_books,
+	create_grades,
 	)
 
 
 class HomeworkQuerySet(models.query.QuerySet):
 	# Filter
-	def number(self, subject, book, p, num):
+	def number(self, grade, subject, book, p, num):
 		return self.filter(
+			grade__exact = grade,
 			subject__exact = subject,
 			book__exact = book, 
 			paragraph__exact = int(p),
@@ -42,6 +44,7 @@ class HomeworkManager(models.Manager):
 		publisher_profile = UserProfile.objects.get(user=user)
 		homework = self.create(publisher=user,
 			publisher_profile=publisher_profile,
+			grade=params['grade'],
 			subject=params['subject'],
 			book=params['book'],
 			paragraph=params['paragraph'],
@@ -58,6 +61,7 @@ class HomeworkManager(models.Manager):
 class Homework(models.Model):
 	publisher = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 	publisher_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
+	grade = models.IntegerField(choices=create_grades(), default=10)
 	subject = models.CharField(max_length=20, default='algebra')
 	book = models.CharField(max_length=30, default='NoBook')
 	paragraph = models.IntegerField(default=0)
@@ -70,6 +74,10 @@ class Homework(models.Model):
 	@property
 	def uploaded(self):
 		return time_to_string(self.publication_date)
+
+	@property
+	def num(self):
+		return f"{self.paragraph}.{self.number}"
 
 	objects = HomeworkManager()
 

@@ -2,6 +2,13 @@ import datetime
 import pytz
 import json
 from django.conf import settings
+from django.contrib.staticfiles import finders
+
+def create_grades():
+	C = []
+	for i in range(1, 12):
+		C.append((i, str(i)))
+	return tuple(C)
 
 def time_to_string(date):
 	timezone = pytz.timezone(settings.TIME_ZONE)

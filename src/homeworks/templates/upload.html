@@ -39,31 +39,21 @@
 {% endblock %}
 {% block script %}
 <script>
-function load_books() {
-    let jsonfile = null;
+function load_json() {
     $.ajax({
         type: "GET",
         dataType: "JSON",
-        url: "{% url 'get_json_books' %}",
+        url: "{% url 'json_file' %}",
         async: false,
         success: function(json) {
             jsonfile = json;
         }
     })
-    return jsonfile;
+    return jsonfile
 }
+
 function load_numbers(subjectName, bookName) {
     let jsonfile = null;
-    $.ajax({
-        type: "GET",
-        dataType: "JSON",
-        url: "{% url 'get_json_numbers' %}",
-        data: {book: bookName, subject: subjectName},
-        async: false,
-        success: function(json) {
-            jsonfile = json;
-        }
-    })
     return jsonfile;
 }
 
@@ -94,6 +84,7 @@ function create_hw(form, uploadedFiles) {
 }
 
 window.onload = function() {
+    var jsonFile = load_json()
     var subject = $('#div_input_subject');
     var subject_select = subject.find('.input_hw');
     var book = $('#div_input_book');
@@ -104,7 +95,9 @@ window.onload = function() {
     var btn = $('#upload_btn');
     var dropzone = $('#dropzone');
     var uploadedFiles = [];
-    var jsonBooks = load_books();
+    var grade = 10
+    var currentChoices = jsonFile[grade];
+    var jsonBooks = null;
     var jsonNumbers = null;
 
     $('#post-form').one('submit', function(e) {
@@ -188,8 +181,8 @@ window.onload = function() {
     })
 
     subject_select.on('change', function() {
-        choices = jsonBooks[this.value];
-        choices.forEach(function(choice) {
+        currentChoices = jsonFile[grade][this.value]
+        currentChoices.forEach(function(choice) {
             book_select.append('<option value="'+choice[0]+'">'+choice[1]+'</option>');
         })
         book.removeClass("invis");
@@ -197,9 +190,10 @@ window.onload = function() {
     })
 
     book_select.on('change', function() {
-        jsonNumbers = load_numbers(subject_select.val(), this.value);
-        Object.keys(jsonNumbers).forEach(function(par) {
-            for (let i=1; i<=jsonNumbers[par]; i++) {
+        currentChoices = jsonFile[grade][subject_select.val()].find(
+            (element) => element[0] === this.value)[2]
+        Object.keys(currentChoices).forEach(function(par) {
+            for (let i=1; i<=currentChoices[par]; i++) {
                 number_select.append(
                     '<option value="'+par+'.'+i+'">'+par+'.'+i+'</option>');
             }
