@@ -1,44 +1,65 @@
 .Homework_show {
-    margin-left: auto;
-    margin-right: auto;
-    width: 700px;
+    left: 16%;
+    right: 49%;
+    width: 500px;
     margin-bottom: 15px;
     font-family: sans-serif;
+    position: absolute;
+    border-radius: 10px;
+    border: 1px solid #000000;
+    box-sizing: border-box;
 }
 .Homework_profile{
-    height: 50px;
+    height: 60px;
+    border-bottom: 1px solid #000000;
 }
+
 .Homework_buttons {
-    height: 50px;
-    border-top: 1px solid #e7e8ec;
-    border-bottom: 1px solid #e7e8ec;
+    height: 70px;
+    border-top: 1px solid #000000;
     padding: 0px;
     font-size: 20px;
+    align-items: center;
 }
-.Homework_buttons div {
-    float: left;
-    margin-left: 10px;
-    margin-right: 10px;
+.Homework_buttons img{
+    margin: 5px 0px;
+}
+.Homework_buttons p{
+    margin: 24.5px 0px;
 }
 .Homework_dislike {
     float: left;
     display: flex;
     align-items: center;
-    color: darkgray;
+    width: 155px;
 }
 .Homework_like {
     float: left;
     display: flex;
     align-items: center;
-    color: darkgray;
-    width: 100px;
+    width: 155px;
 }
 .Homework_comment {
     float: right;
     display: flex;
     align-items: center;
-    color: darkgray;
 }
 button:focus {
     outline: none !important
+}
+.usual {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 18px;
+    line-height: 21px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.04em;
+    margin-bottom: 0px;
+    color: #000000;
+}
+.Homework_img{
+    align-items: center;
+    margin:0px;
 }
