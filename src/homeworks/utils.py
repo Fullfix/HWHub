@@ -40,15 +40,6 @@ def time_to_string(date):
 	return s
 
 def upload_location(instance, filename):
-	return 'uploads/%s/%s-%s-%s(%s).%s' % (instance.homework.publisher.id,
-		instance.homework.paragraph,
-		instance.homework.number,
-		instance.index,
-		str(datetime.datetime.now()),
+	return 'uploads/%s/%s.%s' % (instance.homework.publisher.id,
+		instance.homework.id,
 		'.'.split(filename)[-1])
-
-def load_books():
-	path = finders.find('books.json')
-	with open (path, 'r') as f:
-		books = json.load(f)
-	return books

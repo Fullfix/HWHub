@@ -6,7 +6,6 @@ from django.conf import settings
 from .utils import (
 	time_to_string,
 	upload_location,
-	load_books,
 	create_grades,
 	)
 

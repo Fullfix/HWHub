@@ -6,7 +6,7 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonRespons
 from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views import View
-from .mixins import ValidDataMixin, check_existance
+from .mixins import ValidDataMixin, check_existance, book_names
 from .models import Homework
 from users.models import UserProfile
 import json
@@ -19,12 +19,27 @@ def get_json_file(request):
 	return JsonResponse(json_file)
 
 class ClassPage(View):
-	def get(self, grade):
+	def get(self, request, grade):
 		pass
 
 class BookPage(View):
-	def get(self, grade, subject, book):
-		pass
+	def get(self, request, grade, subject, book):
+		with open(finders.find('homeworks.json'), 'r', encoding='utf8') as f:
+			json_file = json.load(f)
+		for i in json_file[str(grade)][subject]:
+			if i[0] == book_names[book]:
+				book_file = i[2]
+				break
+		BookList = []
+		for p, maxn in book_file.items():
+			for n in range(1, int(maxn)+1):
+				BookList.append(f'{p}.{n}')
+		if request.user.is_authenticated:
+			profile = UserProfile.objects.filter(user=request.user)[0]
+		else:
+			profile = None
+		context = {'book':BookList, 'user':request.user, 'profile':profile}
+		return render(request, 'bookpage.html', context)
 
 class GetHW(ValidDataMixin, View):
 	def get(self, request, grade, subject, book, p, num):
