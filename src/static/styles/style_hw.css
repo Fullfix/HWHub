@@ -63,3 +63,54 @@ button:focus {
     align-items: center;
     margin:0px;
 }
+.HW_List {
+    position: sticky;
+    width: 470px;
+    height: 600px;
+    float: right;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    border-radius: 0px 0px 0px 30px;
+    background-color: #C4C4C4;
+}
+.HW_BookProfile {
+    width: 470px;
+    height: 315px;
+    align-items: center;
+    text-align: center;
+}
+.HW_BookProfile_Preview{
+    background-color: black;
+    right: auto;
+    left: auto;
+}
+.HW_BookTasks {
+    width: 456px;
+    height: 285px;
+    display: grid;
+    grid-template-columns: repeat(8, 50px);
+    grid-template-rows: repeat(15, 1fr);
+    grid-gap: 7px;
+    margin-left: 7px;
+    margin-right: 7px;
+    overflow-y: scroll;
+}
+.HW_BookTasks_Number {
+    width: 50px;
+    height: 20px;
+    border-radius: 10px;
+    background-color: #e5e5e5;
+    color: black!important;
+    text-align: center;
+    right: auto;
+    left: auto;
+
+}
+.HW_BookTasks_Number a{
+    font-size: 13px!important;
+    line-height: 15px!important;
+    text-align: center!important;
+    margin-top: 2.5px!important;
+    margin-bottom: 2.5px!important;
+    display: block!important;
+}

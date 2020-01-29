@@ -5,7 +5,7 @@
 
 {% block link %}
     <script src="{% static 'js/hw.js' %}"></script>
-    <link href="{% static 'styles/style_hw.css' %}?version=42" rel="stylesheet">
+    <link href="{% static 'styles/style_hw.css' %}?version=65" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 {% endblock %}
 {% block content %}
@@ -35,6 +35,16 @@
                     <img src="{% static 'images/dislike_btn.png' %}" class="dislike_img" height="60px" style="float: left;">
                 </button>
                 <p class="Homework_dislike_count usual" id="dislike_count{{homework.id}}" style="margin-left: 15px">{{homework.dislikes.count }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="HW_List">
+        <div class="HW_BookProfile">
+            <img src="#" class="HW_BookProfile_Preview" height="300px" width="200px">
+        </div>
+        <div class="HW_BookTasks">
+            <div class="HW_BookTasks_Number">
+                <a href="#" class="usual">1.01</a>
             </div>
         </div>
     </div>
