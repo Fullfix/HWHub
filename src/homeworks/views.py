@@ -27,7 +27,20 @@ def redirect_hw(request, number, path):
 
 class ClassPage(View):
 	def get(self, request, grade):
-		pass
+		grade = str(grade)
+		with open(finders.find('homeworks.json'), 'r', encoding='utf8') as f:
+			json_file = json.load(f)
+		SubjectList = []
+		for subject, Books in json_file[grade].items():
+			SubjectList.append([subject, [book[0] for book in Books]])
+		print(SubjectList)
+		if request.user.is_authenticated:
+			profile = UserProfile.objects.filter(user=request.user)[0]
+		else:
+			profile = None
+		context = {'subjects': SubjectList, 'user':request.user, 'profile':profile, 'class':grade}
+		return render(request, 'classpage.html', context)
+
 
 class BookPage(ValidDataMixin, View):
 	def get(self, request, grade, subject, book, par, num):
