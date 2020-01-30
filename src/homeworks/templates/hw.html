@@ -1,15 +1,5 @@
-{% extends 'navbar.html' %} 
 {% load static %}
-
-{% block title %} Main Page {% endblock %}
-
-{% block link %}
-    <script src="{% static 'js/hw.js' %}"></script>
-    <link href="{% static 'styles/style_hw.css' %}?version=65" rel="stylesheet">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-{% endblock %}
-{% block content %}
-    {% for homework in homeworks %}
+{% for homework in homeworks %}
     <div class = "Homework_show">
         <div class="Homework_profile">
             <img src="{{homework.publisher_profile.photo.url}}" height="50px" width="50px" style="float: left;border-radius: 25px;position: absolute;left: 5px;margin: 5px 0px">
@@ -38,105 +28,96 @@
             </div>
         </div>
     </div>
-    <div class="HW_List">
-        <div class="HW_BookProfile">
-            <img src="#" class="HW_BookProfile_Preview" height="300px" width="200px">
-        </div>
-        <div class="HW_BookTasks">
-            <div class="HW_BookTasks_Number">
-                <a href="#" class="usual">1.01</a>
-            </div>
-        </div>
+{% empty %}
+    <div>
+        <h1>ИЗВИНИТЕ НЕТ ДОМАШЕК</h1>
     </div>
-    {% endfor %}
-{% endblock %}
+{% endfor %}
 
-{% block script %}
-<script>
-window.onload = function() {
-    var hwButtons = document.getElementsByClassName("Homework_buttons");
-    var imageGrids = document.getElementsByClassName('Homework_img');
+<script type="text/javascript">
+    window.onload = function() {
+        var hwButtons = document.getElementsByClassName("Homework_buttons");
+        var imageGrids = document.getElementsByClassName('Homework_img');
 
-    for (let btns of hwButtons) {
-        let hwid = $(btns).attr("data-hwid");
-        let imgLike = $(btns).find('.like_img');
-        let imgDislike = $(btns).find('.dislike_img');
+        for (let btns of hwButtons) {
+            let hwid = $(btns).attr("data-hwid");
+            let imgLike = $(btns).find('.like_img');
+            let imgDislike = $(btns).find('.dislike_img');
+            $.ajax({
+                type: "GET",
+                url: "{% url 'get_opinion' %}",
+                dataType: "JSON",
+                data: {homework_id: hwid},
+                success: function(json) {
+                    if (json.liked) {
+                        $(imgLike).attr("src", "{% static 'images/like_btn_liked.png' %}")
+                    }
+                    else {
+                        $(imgLike).attr("src", "{% static 'images/like_btn.png' %}")
+                    }
+                    if (json.disliked) {
+                        $(imgDislike).attr("src", "{% static 'images/dislike_btn_disliked.png' %}")
+                    }
+                    else {
+                        $(imgDislike).attr("src", "{% static 'images/dislike_btn.png' %}")
+                    }
+                }
+            })
+        }
+    }
+
+    function getImagesWidth (images) {
+        return images[0].width / images.length;
+    }
+
+    function likeHW (btn) {
+        var hwid = $(btn).attr("data-hwid");
+        var div = $('#hw_buttons'+hwid);
         $.ajax({
             type: "GET",
-            url: "{% url 'get_opinion' %}",
+            url: "{% url 'like_hw' %}",
             dataType: "JSON",
             data: {homework_id: hwid},
             success: function(json) {
+                div.find('.Homework_like_count').html(json.likes);
+                div.find('.Homework_dislike_count').html(json.dislikes);
+                var imgLike = div.find('.like_img');
+                var imgDislike = div.find('.dislike_img');
                 if (json.liked) {
-                    $(imgLike).attr("src", "{% static 'images/like_btn_liked.png' %}")
+                    $(imgLike).attr("src", "{% static 'images/like_btn_liked.png' %}");
+                    if (json.undisliked) {
+                        $(imgDislike).attr("src", "{% static 'images/dislike_btn.png' %}");
+                    }
                 }
                 else {
-                    $(imgLike).attr("src", "{% static 'images/like_btn.png' %}")
-                }
-                if (json.disliked) {
-                    $(imgDislike).attr("src", "{% static 'images/dislike_btn_disliked.png' %}")
-                }
-                else {
-                    $(imgDislike).attr("src", "{% static 'images/dislike_btn.png' %}")
+                    $(imgLike).attr("src", "{% static 'images/like_btn.png' %}");
                 }
             }
         })
     }
-}
-
-function getImagesWidth (images) {
-    return images[0].width / images.length;
-}
-
-function likeHW (btn) {
-    var hwid = $(btn).attr("data-hwid");
-    var div = $('#hw_buttons'+hwid);
-    $.ajax({
-        type: "GET",
-        url: "{% url 'like_hw' %}",
-        dataType: "JSON",
-        data: {homework_id: hwid},
-        success: function(json) {
-            div.find('.Homework_like_count').html(json.likes);
-            div.find('.Homework_dislike_count').html(json.dislikes);
-            var imgLike = div.find('.like_img');
-            var imgDislike = div.find('.dislike_img');
-            if (json.liked) {
-                $(imgLike).attr("src", "{% static 'images/like_btn_liked.png' %}");
-                if (json.undisliked) {
+    function dislikeHW (btn) {
+        var hwid = $(btn).attr("data-hwid");
+        var div = $('#hw_buttons'+hwid);
+        $.ajax({
+            type: "GET",
+            url: "{% url 'dislike_hw' %}",
+            dataType: "JSON",
+            data: {homework_id: hwid},
+            success: function(json) {
+                div.find('.Homework_like_count').html(json.likes);
+                div.find('.Homework_dislike_count').html(json.dislikes);
+                var imgLike = div.find('.like_img');
+                var imgDislike = div.find('.dislike_img');
+                if (json.disliked) {
+                    $(imgDislike).attr("src", "{% static 'images/dislike_btn_disliked.png' %}");
+                    if (json.unliked) {
+                        $(imgLike).attr("src", "{% static 'images/like_btn.png' %}");
+                    }
+                }
+                else {
                     $(imgDislike).attr("src", "{% static 'images/dislike_btn.png' %}");
                 }
             }
-            else {
-                $(imgLike).attr("src", "{% static 'images/like_btn.png' %}");
-            }
-        }
-    })
-}
-function dislikeHW (btn) {
-    var hwid = $(btn).attr("data-hwid");
-    var div = $('#hw_buttons'+hwid);
-    $.ajax({
-        type: "GET",
-        url: "{% url 'dislike_hw' %}",
-        dataType: "JSON",
-        data: {homework_id: hwid},
-        success: function(json) {
-            div.find('.Homework_like_count').html(json.likes);
-            div.find('.Homework_dislike_count').html(json.dislikes);
-            var imgLike = div.find('.like_img');
-            var imgDislike = div.find('.dislike_img');
-            if (json.disliked) {
-                $(imgDislike).attr("src", "{% static 'images/dislike_btn_disliked.png' %}");
-                if (json.unliked) {
-                    $(imgLike).attr("src", "{% static 'images/like_btn.png' %}");
-                }
-            }
-            else {
-                $(imgDislike).attr("src", "{% static 'images/dislike_btn.png' %}");
-            }
-        }
-    })
-}
+        })
+    }
 </script>
-{% endblock %}

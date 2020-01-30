@@ -1,7 +1,28 @@
 {% extends 'navbar.html' %}
+{% load static %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block link %}
+	<script src="{% static 'js/hw.js' %}"></script>
+    <link href="{% static 'styles/style_hw.css' %}?version=65" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{% endblock %}
 
 {% block content %}
-{% for number in book %}
-	{{number}}
-{% endfor %}
+<div class="HW_List">
+        <div class="HW_BookProfile">
+            <img src="{% static image %}" class="HW_BookProfile_Preview" height="300px" width="200px">
+        </div>
+        <div class="HW_BookTasks">
+        	{% for number in book %}
+            <div class="HW_BookTasks_Number">
+                <a href="/homework/redirect_hw/{{number}}/{{request.path}}" class="usual">{{number}}</a>
+            </div>
+            {% endfor %}
+        </div>
+</div>
+
+{% include "hw.html" %}
+
 {% endblock %}

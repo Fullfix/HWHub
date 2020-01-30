@@ -7,7 +7,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 def upload_location(instance, filename):
-	return 'users/%s/profile.%s' % (instance.user.id, '.'.split(filename)[-1])
+	print(filename)
+	return 'users/%s/profile.%s' % (instance.user.id, filename.split('.')[-1])
 
 def create_grades():
 	C = []

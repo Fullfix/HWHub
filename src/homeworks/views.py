@@ -6,6 +6,7 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonRespons
 from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views import View
+from django.core import serializers
 from .mixins import ValidDataMixin, check_existance, book_names
 from .models import Homework
 from users.models import UserProfile
@@ -18,39 +19,41 @@ def get_json_file(request):
 		json_file = json.load(f)
 	return JsonResponse(json_file)
 
+def redirect_hw(request, number, path):
+	print(path, number)
+	_1, _2, grade, subject, book, p, num = path.split('/')
+	p, num = number.split('.')
+	return redirect('bookpage', grade, subject, book, p, num) 
+
 class ClassPage(View):
 	def get(self, request, grade):
 		pass
 
-class BookPage(View):
-	def get(self, request, grade, subject, book):
+class BookPage(ValidDataMixin, View):
+	def get(self, request, grade, subject, book, par, num):
 		with open(finders.find('homeworks.json'), 'r', encoding='utf8') as f:
 			json_file = json.load(f)
 		for i in json_file[str(grade)][subject]:
 			if i[0] == book_names[book]:
 				book_file = i[2]
+				title = i[1]
 				break
 		BookList = []
 		for p, maxn in book_file.items():
 			for n in range(1, int(maxn)+1):
 				BookList.append(f'{p}.{n}')
+		homeworks = Homework.objects.all().number(grade, subject, book_names[book], par, num)
 		if request.user.is_authenticated:
 			profile = UserProfile.objects.filter(user=request.user)[0]
 		else:
 			profile = None
-		context = {'book':BookList, 'user':request.user, 'profile':profile}
+		context = {'title': title,
+			'image': f'images/{book_names[book]}.jpg',
+			'homeworks':homeworks,
+			'book':BookList, 
+			'user':request.user, 
+			'profile':profile}
 		return render(request, 'bookpage.html', context)
-
-class GetHW(ValidDataMixin, View):
-	def get(self, request, grade, subject, book, p, num):
-		homeworks = Homework.objects.all().number(grade, subject, book, p, num)
-		if request.user.is_authenticated:
-			profile = UserProfile.objects.filter(user=request.user)[0]
-		else:
-			profile = None
-		context = {'homeworks': list(homeworks), 'user': request.user, 'profile':profile}
-		return render(request, 'hw.html', context)
-
 
 @method_decorator(login_required, name='dispatch')
 class GetHWOpinion(View):
