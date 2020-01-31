@@ -65,7 +65,8 @@ class BookPage(ValidDataMixin, View):
 			'homeworks':homeworks,
 			'book':BookList, 
 			'user':request.user, 
-			'profile':profile}
+			'profile':profile,
+			'cur_num':f'{par}.{num}'}
 		return render(request, 'bookpage.html', context)
 
 @method_decorator(login_required, name='dispatch')

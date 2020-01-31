@@ -104,8 +104,13 @@ button:focus {
     text-align: center;
     right: auto;
     left: auto;
-
 }
+
+.Current {
+    background-color: #7070b5;
+}
+
+
 .HW_BookTasks_Number a{
     font-size: 13px!important;
     line-height: 15px!important;
