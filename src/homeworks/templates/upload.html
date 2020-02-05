@@ -59,6 +59,8 @@ function load_numbers(subjectName, bookName) {
 
 function create_hw(form, uploadedFiles) {
     data = new FormData(form);
+    data.append("grade", 10);
+    data.append("subject", "algebra");
     console.log(uploadedFiles);
     uploadedFiles.forEach(function(file, i) {
         console.log(i, file);

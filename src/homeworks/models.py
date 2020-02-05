@@ -20,6 +20,12 @@ class HomeworkQuerySet(models.query.QuerySet):
 			paragraph__exact = int(p),
 			number__exact = int(num))
 
+	def book(self, grade, subject, book):
+		return self.filter(
+			grade__exact = grade, 
+			subject__exact = subject,
+			book__exact = book)
+
 	def publisher(self, user):
 		return self.filter(
 			publisher__exact = user)

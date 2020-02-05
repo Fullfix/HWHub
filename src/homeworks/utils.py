@@ -42,4 +42,9 @@ def time_to_string(date):
 def upload_location(instance, filename):
 	return 'uploads/%s/%s.%s' % (instance.homework.publisher.id,
 		instance.homework.id,
-		'.'.split(filename)[-1])
+		filename.split('.')[-1])
+
+def load_json():
+	with open(finders.find('homeworks.json'), 'r', encoding='utf8') as f:
+		json_file = json.load(f)
+	return json_file

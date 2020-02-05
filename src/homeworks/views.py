@@ -9,19 +9,19 @@ from django.views import View
 from django.core import serializers
 from .mixins import ValidDataMixin, check_existance, book_names
 from .models import Homework
+from .utils import load_json
 from users.models import UserProfile
 import json
 
 # Create your views here.
 
 def get_json_file(request):
-	with open (finders.find('homeworks.json'), 'r', encoding='utf8') as f:
-		json_file = json.load(f)
+	json_file = load_json()
 	return JsonResponse(json_file)
 
 def redirect_hw(request, number, path):
 	print(path, number)
-	_1, _2, grade, subject, book, p, num = path.split('/')
+	_1, _2, grade, subject, book, *_ = path.split('/')
 	p, num = number.split('.')
 	return redirect('bookpage', grade, subject, book, p, num) 
 
@@ -41,11 +41,39 @@ class ClassPage(View):
 		context = {'subjects': SubjectList, 'user':request.user, 'profile':profile, 'class':grade}
 		return render(request, 'classpage.html', context)
 
+class GrandBookPage(View):
+	def get(self, request, grade, subject, book):
+		json_file = load_json()
+		try:
+			for i in json_file[str(grade)][subject]:
+				if i[0] == book_names[book]:
+					book_file = i[2]
+					title = i[1]
+					break
+		except BaseException as e:
+			raise Http404(e)
+
+		BookList = []
+		for p, maxn in book_file.items():
+			for n in range(1, int(maxn)+1):
+				BookList.append(f'{p}.{n}')
+		homeworks = Homework.objects.all().book(grade, subject, book_names[book])
+		if request.user.is_authenticated:
+			profile = UserProfile.objects.filter(user=request.user)[0]
+		else:
+			profile = None
+		context = {'title': title,
+			'image': f'images/{book_names[book]}.jpg',
+			'homeworks':homeworks,
+			'book':BookList, 
+			'user':request.user, 
+			'profile':profile}
+		return render(request, 'bookpage.html', context)
+
 
 class BookPage(ValidDataMixin, View):
 	def get(self, request, grade, subject, book, par, num):
-		with open(finders.find('homeworks.json'), 'r', encoding='utf8') as f:
-			json_file = json.load(f)
+		json_file = load_json()
 		for i in json_file[str(grade)][subject]:
 			if i[0] == book_names[book]:
 				book_file = i[2]

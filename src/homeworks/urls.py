@@ -5,6 +5,7 @@ urlpatterns = [
 	path('<int:grade>/', views.ClassPage.as_view(), name='classpage'),
 	path('<int:grade>/<str:subject>/<str:book>/<int:par>/<int:num>',
 	 views.BookPage.as_view(), name='bookpage'),
+	path('<int:grade>/<str:subject>/<str:book>', views.GrandBookPage.as_view(), name='grandbookpage'),
 	path('upload/', views.UploadHW.as_view(), name='upload'),
 	path('like/', views.LikeHW.as_view(), name='like_hw'),
 	path('dislike/', views.DislikeHW.as_view(), name='dislike_hw'),
