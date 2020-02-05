@@ -4,7 +4,7 @@
     width: 500px;
     margin-bottom: 15px;
     font-family: sans-serif;
-    position: absolute;
+    position: relative;
     border-radius: 10px;
     border: 1px solid #000000;
     box-sizing: border-box;
@@ -64,7 +64,6 @@ button:focus {
     margin:0px;
 }
 .HW_List {
-    position: sticky;
     width: 470px;
     height: 600px;
     float: right;
@@ -86,11 +85,11 @@ button:focus {
 }
 .HW_BookTasks {
     width: 456px;
-    height: 285px;
+    height: 270px;
     display: grid;
     grid-template-columns: repeat(8, 50px);
     grid-template-rows: repeat(15, 1fr);
-    grid-gap: 7px;
+    grid-gap: 5px;
     margin-left: 7px;
     margin-right: 7px;
     overflow-y: scroll;
@@ -118,4 +117,13 @@ button:focus {
     margin-top: 2.5px!important;
     margin-bottom: 2.5px!important;
     display: block!important;
+}
+.HW_Sorting {
+    width: calc(100% - 470px);
+    height: 50px;
+    background: #7070b5;
+    display: grid;
+    grid-template-columns: calc(50% - 1px) 2px calc(50% - 1px);
+    grid-template-rows: 50px;
+    position: absolute;
 }
