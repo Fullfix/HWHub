@@ -29,7 +29,7 @@ def check_existance(grade, subject, book, p, num, url=True):
 
 
 class ValidDataMixin(object):
-	def dispatch(self, request, grade, subject, book, par, num):
+	def dispatch(self, request, grade, subject, book, par, num, sort):
 		error = check_existance(grade, subject, book, par, num)
 		if error == 'grade':
 			raise Http404(f'Класса "{grade}" не существует')
@@ -44,4 +44,4 @@ class ValidDataMixin(object):
 			raise Http404(
 				f'Номера {num} в параграфе {par} ' +
 				'в книге "{book}" в предмете "{subject}" не существует')
-		return super(ValidDataMixin,self).dispatch(request, grade, subject, book, par, num)
+		return super(ValidDataMixin,self).dispatch(request, grade, subject, book, par, num, sort)

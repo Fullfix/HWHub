@@ -20,10 +20,24 @@ def get_json_file(request):
 	return JsonResponse(json_file)
 
 def redirect_hw(request, number, path):
-	print(path, number)
 	_1, _2, grade, subject, book, *_ = path.split('/')
 	p, num = number.split('.')
-	return redirect('bookpage', grade, subject, book, p, num) 
+	return redirect('bookpage', grade, subject, book, p, num)
+
+def redirect_sort(request, sort, path):
+	P = path.split('/')
+	if len(P) >= 7:
+		_1, _2, grade, subject, book, par, num, *_ = P
+		return redirect('bookpage', grade, subject, book, par, num, sort)
+	else:
+		_1, _2, grade, subject, book, *_ = P
+		return redirect('grandbookpage', grade, subject, book, sort)
+
+def auto_sort(request, grade, subject, book, par, num):
+	return redirect('bookpage', grade, subject, book, par, num, 'pop')
+
+def auto_sort_grand(request, grade, subject, book):
+	return redirect('grandbookpage', grade, subject, book, 'pop')
 
 class ClassPage(View):
 	def get(self, request, grade):
@@ -42,7 +56,7 @@ class ClassPage(View):
 		return render(request, 'classpage.html', context)
 
 class GrandBookPage(View):
-	def get(self, request, grade, subject, book):
+	def get(self, request, grade, subject, book, sort):
 		json_file = load_json()
 		try:
 			for i in json_file[str(grade)][subject]:
@@ -58,6 +72,12 @@ class GrandBookPage(View):
 			for n in range(1, int(maxn)+1):
 				BookList.append(f'{p}.{n}')
 		homeworks = Homework.objects.all().book(grade, subject, book_names[book])
+		if sort == 'pop':
+			homeworks = homeworks.likes()
+		elif sort == 'new':
+			homeworks = homeworks.date()
+		else:
+			raise Http404(f'фильтра {{sort}} не существует')
 		if request.user.is_authenticated:
 			profile = UserProfile.objects.filter(user=request.user)[0]
 		else:
@@ -67,12 +87,13 @@ class GrandBookPage(View):
 			'homeworks':homeworks,
 			'book':BookList, 
 			'user':request.user, 
-			'profile':profile}
+			'profile':profile,
+			'sort':sort}
 		return render(request, 'bookpage.html', context)
 
 
 class BookPage(ValidDataMixin, View):
-	def get(self, request, grade, subject, book, par, num):
+	def get(self, request, grade, subject, book, par, num, sort='popular'):
 		json_file = load_json()
 		for i in json_file[str(grade)][subject]:
 			if i[0] == book_names[book]:
@@ -84,6 +105,12 @@ class BookPage(ValidDataMixin, View):
 			for n in range(1, int(maxn)+1):
 				BookList.append(f'{p}.{n}')
 		homeworks = Homework.objects.all().number(grade, subject, book_names[book], par, num)
+		if sort == 'pop':
+			homeworks = homeworks.likes()
+		elif sort == 'new':
+			homeworks = homeworks.date()
+		else:
+			raise Http404(f'фильтра {sort} не существует')
 		if request.user.is_authenticated:
 			profile = UserProfile.objects.filter(user=request.user)[0]
 		else:
@@ -94,7 +121,8 @@ class BookPage(ValidDataMixin, View):
 			'book':BookList, 
 			'user':request.user, 
 			'profile':profile,
-			'cur_num':f'{par}.{num}'}
+			'cur_num':f'{par}.{num}',
+			'sort':sort}
 		return render(request, 'bookpage.html', context)
 
 @method_decorator(login_required, name='dispatch')

@@ -5,26 +5,34 @@
 
 {% block link %}
 	<script src="{% static 'js/hw.js' %}"></script>
-    <link href="{% static 'styles/style_hw.css' %}?version=75" rel="stylesheet">
+    <link href="{% static 'styles/style_hw.css' %}?version=77" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 {% endblock %}
 
 {% block content %}
 <div style="position: sticky; top: 60px; height: 50px; z-index: 100000;">
 	<div class="HW_Sorting usual_nav">
-		<div >
-			<a href="#" style="width: 100%; background: #7070b5;">
+		<div>
+			<a href="/homework/redirect_sort/pop/{{request.path}}" style="width: 100%; background: #7070b5;">
 				<div style="height: 50px">
+					{% if sort == 'pop' %}
+					<p class="usual" align="center" style="text-align: center; margin-top: 14.5px; display: block; color: #263936;">Самые популярные</p>
+					{% else %}
 					<p class="usual" align="center" style="text-align: center; margin-top: 14.5px; display: block; color: #EEF0ED">Самые популярные</p>
+					{% endif %}
 				</div>
 			</a>
 		</div>
 		<div style="background: black">
 		</div>
 		<div>
-			<a href="#" style="width: 100%; background: #7070b5;">
+			<a href="/homework/redirect_sort/new/{{request.path}}" style="width: 100%; background: #7070b5;">
 				<div style="height: 50px">
+					{% if sort == 'new' %}
+					<p class="usual" align="center" style="text-align: center; margin-top: 14.5px; display: block; color: #263936;">Самые новые</p>
+					{% else %}
 					<p class="usual" align="center" style="text-align: center; margin-top: 14.5px; display: block; color: #EEF0ED">Самые новые</p>
+					{% endif %}
 				</div>
 			</a>
 		</div>
