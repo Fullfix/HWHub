@@ -1,10 +1,9 @@
 .Homework_show {
-    left: 16%;
-    right: 49%;
+    position: relative;
+    left: calc((100% - 500px) / 2);
     width: 500px;
     margin-bottom: 15px;
     font-family: sans-serif;
-    position: relative;
     border-radius: 10px;
     border: 1px solid #000000;
     box-sizing: border-box;

@@ -5,7 +5,7 @@
 
 {% block link %}
 	<script src="{% static 'js/hw.js' %}"></script>
-    <link href="{% static 'styles/style_hw.css' %}?version=73" rel="stylesheet">
+    <link href="{% static 'styles/style_hw.css' %}?version=75" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 {% endblock %}
 
@@ -48,6 +48,8 @@
 			</div>
 	</div>
 </div>
+<div class="HW_Preview_List" style="width: calc(100% - 470px); position: absolute">
 {% include "hw.html" %}
+</div>
 
 {% endblock %}
