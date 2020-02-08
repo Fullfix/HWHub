@@ -22,7 +22,7 @@ def get_json_file(request):
 def redirect_hw(request, number, path):
 	_1, _2, grade, subject, book, *_ = path.split('/')
 	p, num = number.split('.')
-	return redirect('bookpage', grade, subject, book, p, num)
+	return redirect('bookpage', grade, subject, book, p, num, 'pop')
 
 def redirect_sort(request, sort, path):
 	P = path.split('/')
