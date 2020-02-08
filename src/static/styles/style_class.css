@@ -1,6 +1,4 @@
-.Content {
-    min-width: 960px;
-}
+
 .usual48px {
     font-family: Roboto;
     font-style: normal;
@@ -12,4 +10,96 @@
     letter-spacing: 0.04em;
 
     color: #000000;
+}
+.HW_Choosing_Lesson {
+    background: #9099A4;
+    width: calc(100% - 310px);
+    height: 300px;
+    margin-left: 155px;
+    border-radius: 50px;
+    min-width: 885px;
+}
+.HW_Choosing_Lesson_Grid {
+    width: calc(100% - 100px);
+    height: calc(100% - 40px);
+    margin-left: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-gap: 50px;
+    display: grid;
+    text-align: center;
+    position: relative;
+
+}
+.HW_Choosing_Book {
+    width: calc(100% - 310px);
+    margin-left: 155px;
+    display: grid;
+    grid-template-columns: repeat(2, 450px);
+    grid-template-rows: repeat(1, 500px);
+    grid-column-gap: calc(100% - (450px * 2));
+    grid-row-gap: 50px;
+    margin-right: 155px;
+}
+.HW_Choosing_Book_Item{
+    width: 450px;
+    height: 500px;
+}
+.HW_Choosing_Book_Item_Content{
+    width: 450px;
+    height: 450px;
+    background: #7070b5;
+    border-radius: 50px;
+    position: absolute;
+    margin-top: 50px;
+}
+.HW_Choosing_Book_Item_Content_Grid{
+    position: absolute;
+    margin-left: 40px;
+    margin-top: 50px;
+    width: 400px;
+    height: 350px;
+    display: grid;
+    grid-template-columns: repeat(3, 90px);
+    grid-template-rows: repeat(6, 120px);
+    grid-gap: 50px;
+    overflow-y: auto;
+}
+.HW_Choosing_Book_Item_Name{
+    width: 250px;
+    margin-left: 100px;
+    text-align: center;
+    height: 50px;
+    border-radius: 50px 50px 0px  0px;
+    background: #7070b5;
+    position: absolute;
+}
+.HW_Choosing_Book_Item_Content_Grid_Book{
+    background: black;
+    width: 90px;
+    height: 120px;
+}
+.usual {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
+    letter-spacing: 0.04em;
+
+    color: #FFFFFF!important;
+
+}
+.Content {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-areas:
+    "search"
+    "main";
+    grid-template-rows: 300px 1fr;
+    grid-gap: 50px;
 }

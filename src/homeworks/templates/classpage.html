@@ -4,13 +4,37 @@
 {% block title %}{{class}} Класс {% endblock %}
 
 {% block link %}
-	<link href="{% static 'styles/style_class.css' %}?version=6" rel="stylesheet">
+	<link href="{% static 'styles/style_class.css' %}?version=14" rel="stylesheet">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 {% endblock %}
 
 {% block content %}
+<p align="center" class="usual48px">Предметы {{class}} класса</p>
 <div class="Content">
-	<p align="center" class="usual48px">Предметы {{class}} класса</p>
-	<div class="HW_Choosing_Lesson"></div>
+	<div class="HW_Choosing_Lesson">
+		<div class="HW_Choosing_Lesson_Grid">
+			<div class="usual" style="font-size: 18px">
+				<a href="#" style="color: inherit">
+					Предмет ОДИН
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="HW_Choosing_Book">
+		<div class="HW_Choosing_Book_Item" style="align-items: center; width: 450px">
+			<div class="HW_Choosing_Book_Item_Name">
+				<p class="usual" style="margin-top: 11px; position: relative" >Английский язык</p>
+			</div>
+			<div class="HW_Choosing_Book_Item_Content">
+				<div class="HW_Choosing_Book_Item_Content_Grid">
+					<div class="HW_Choosing_Book_Item_Content_Grid_Book">
+						<a href="#">
+						<img src="#" width="90px" height="120px">
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 {% endblock %}
