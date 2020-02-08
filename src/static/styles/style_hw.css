@@ -125,3 +125,35 @@ button:focus {
     grid-template-rows: 50px;
     position: absolute;
 }
+.HW_Preview_List{
+    width: calc(100% - 470px);
+    min-width: 500px;
+}
+.Error {
+    display: none;
+}
+@media screen and (max-width: 985px){
+    .HW_List {
+        display: none;
+    }
+    .HW_Sorting {
+        width: 100%;
+    }
+    .HW_Preview_List {
+        width: 100%;
+    }
+}
+@media screen and (max-width: 502px){
+    .HW_List {
+        display: none;
+    }
+    .HW_Sorting {
+        width: 100%;
+    }
+    .HW_Preview_List {
+        display: none;
+    }
+    .Error {
+        display: block;
+    }
+}

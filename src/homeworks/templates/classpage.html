@@ -4,11 +4,13 @@
 {% block title %}{{class}} Класс {% endblock %}
 
 {% block link %}
-	<link href="{% static 'styles/style_class.css' %}?version=5" rel="stylesheet">
+	<link href="{% static 'styles/style_class.css' %}?version=6" rel="stylesheet">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 {% endblock %}
 
 {% block content %}
-<p align="center" class="usual48px">Предметы {{class}} класса</p>
-<div class="HW_Choosing_Lesson"></div>
+<div class="Content">
+	<p align="center" class="usual48px">Предметы {{class}} класса</p>
+	<div class="HW_Choosing_Lesson"></div>
+</div>
 {% endblock %}
