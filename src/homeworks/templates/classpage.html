@@ -13,28 +13,45 @@
 <div class="Content">
 	<div class="HW_Choosing_Lesson">
 		<div class="HW_Choosing_Lesson_Grid">
-			<div class="usual" style="font-size: 18px">
-				<a href="#" style="color: inherit">
-					Предмет ОДИН
-				</a>
+			{% for subject in subjects %}
+			<div class="usual" style="font-size: 18px" id="{{subject.0.0}}">
+				<button onclick="ScrollToSubject(this)" name="{{subject.0.0}}" style="color: inherit; background-color: transparent;border: none;">
+					{{subject.0.1}}
+				</button>
 			</div>
+			{% endfor %}
 		</div>
 	</div>
 	<div class="HW_Choosing_Book">
-		<div class="HW_Choosing_Book_Item" style="align-items: center; width: 450px">
+		{% for subject in subjects %}
+		<div class="HW_Choosing_Book_Item" style="align-items: center; width: 450px" id="{{subject.0.0}}Div">
 			<div class="HW_Choosing_Book_Item_Name">
-				<p class="usual" style="margin-top: 11px; position: relative" >Английский язык</p>
+				<p class="usual" style="margin-top: 11px; position: relative" >{{subject.0.1}}</p>
 			</div>
 			<div class="HW_Choosing_Book_Item_Content">
 				<div class="HW_Choosing_Book_Item_Content_Grid">
-					<div class="HW_Choosing_Book_Item_Content_Grid_Book">
-						<a href="#">
-						<img src="#" width="90px" height="120px">
+					{% for book in subject.1%}
+					<div class="HW_Choosing_Book_Item_Content_Grid_Book" id="{{book}}">
+						<a href="{{request.path|add:subject.0.0|add:'/'|add:book.1}}">
+						{% with 'images/'|add:book.0|add:'.jpg' as image %}
+						<img src="{% static image %}" width="90px" height="120px">
+						{% endwith %}
 						</a>
 					</div>
+					{% endfor %}
 				</div>
 			</div>
 		</div>
+		{% endfor %}
 	</div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+	function ScrollToSubject(btn) {
+		let subjectDiv = document.getElementById(btn.name+'Div');
+		subjectDiv.scrollIntoView();
+	}
+</script>
 {% endblock %}

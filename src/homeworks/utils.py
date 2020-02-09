@@ -4,6 +4,16 @@ import json
 from django.conf import settings
 from django.contrib.staticfiles import finders
 
+SubjectRus = {
+	'algebra': 'Алгебра',
+	'geomety': 'Геометрия',
+	'physics': 'Физика',
+}
+
+BookToUrl = {
+	'algebra10profile2': 'algebra2'
+}
+
 def create_grades():
 	C = []
 	for i in range(1, 12):

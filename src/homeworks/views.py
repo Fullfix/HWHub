@@ -9,7 +9,7 @@ from django.views import View
 from django.core import serializers
 from .mixins import ValidDataMixin, check_existance, book_names
 from .models import Homework
-from .utils import load_json
+from .utils import load_json, SubjectRus, BookToUrl
 from users.models import UserProfile
 import json
 
@@ -46,7 +46,8 @@ class ClassPage(View):
 			json_file = json.load(f)
 		SubjectList = []
 		for subject, Books in json_file[grade].items():
-			SubjectList.append([subject, [book[0] for book in Books]])
+			SubjectList.append([[subject, SubjectRus[subject]],
+			 [[book[0], BookToUrl[book[0]]] for book in Books]])
 		print(SubjectList)
 		if request.user.is_authenticated:
 			profile = UserProfile.objects.filter(user=request.user)[0]
