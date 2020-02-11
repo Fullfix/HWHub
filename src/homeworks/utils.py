@@ -54,6 +54,9 @@ def upload_location(instance, filename):
 		instance.homework.id,
 		filename.split('.')[-1])
 
+def upload_book(instance, filename):
+	return f'books/{instance.name}.{filename.split(".")[-1]}'
+
 def load_json():
 	with open(finders.find('homeworks.json'), 'r', encoding='utf8') as f:
 		json_file = json.load(f)

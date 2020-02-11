@@ -9,33 +9,31 @@
 {% endblock %}
 
 {% block content %}
-<p align="center" class="usual48px">Предметы {{class}} класса</p>
+<p align="center" class="usual48px">Предметы {{grade}} класса</p>
 <div class="Content">
 	<div class="HW_Choosing_Lesson">
 		<div class="HW_Choosing_Lesson_Grid">
-			{% for subject in subjects %}
-			<div class="usual" style="font-size: 18px" id="{{subject.0.0}}">
-				<button onclick="ScrollToSubject(this)" name="{{subject.0.0}}" style="color: inherit; background-color: transparent;border: none;">
-					{{subject.0.1}}
+			{% for subject in grade.subjects.all %}
+			<div class="usual" style="font-size: 18px" id="{{subject.name}}">
+				<button onclick="ScrollToSubject(this)" name="{{subject.name}}" style="color: inherit; background-color: transparent;border: none;">
+					{{subject.full_name}}
 				</button>
 			</div>
 			{% endfor %}
 		</div>
 	</div>
 	<div class="HW_Choosing_Book">
-		{% for subject in subjects %}
-		<div class="HW_Choosing_Book_Item" style="align-items: center; width: 450px" id="{{subject.0.0}}Div">
+		{% for subject in grade.subjects.all %}
+		<div class="HW_Choosing_Book_Item" style="align-items: center; width: 450px" id="{{subject.name}}Div">
 			<div class="HW_Choosing_Book_Item_Name">
-				<p class="usual" style="margin-top: 11px; position: relative" >{{subject.0.1}}</p>
+				<p class="usual" style="margin-top: 11px; position: relative" >{{subject.full_name}}</p>
 			</div>
 			<div class="HW_Choosing_Book_Item_Content">
 				<div class="HW_Choosing_Book_Item_Content_Grid">
-					{% for book in subject.1%}
+					{% for book in subject.books.all %}
 					<div class="HW_Choosing_Book_Item_Content_Grid_Book" id="{{book}}">
-						<a href="{{request.path|add:subject.0.0|add:'/'|add:book.1}}">
-						{% with 'images/'|add:book.0|add:'.jpg' as image %}
-						<img src="{% static image %}" width="90px" height="120px">
-						{% endwith %}
+						<a href="{{request.path|add:subject.name|add:'/'|add:book.slug}}">
+						<img src="{{book.image.url}}" width="90px" height="120px">
 						</a>
 					</div>
 					{% endfor %}

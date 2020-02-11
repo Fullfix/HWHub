@@ -1,3 +1,4 @@
+import json
 from django.db import models
 from django.db.models.functions import Length
 from users.models import User, UserProfile
@@ -6,25 +7,51 @@ from django.conf import settings
 from .utils import (
 	time_to_string,
 	upload_location,
+	upload_book,
 	create_grades,
 	)
 
 
+class Grade(models.Model):
+	grade = models.IntegerField(choices=create_grades(), unique=True, default=10)
+
+	def __str__(self):
+		return str(self.grade)
+
+
+class Subject(models.Model):
+	name = models.CharField(max_length=15, unique=True)
+	full_name = models.CharField(max_length=25)
+	grade = models.ForeignKey(Grade, related_name='subjects', on_delete=models.CASCADE)
+
+	def __str__(self):
+		return self.name
+
+
+class Book(models.Model):
+	name = models.CharField(max_length=20, unique=True)
+	full_name = models.CharField(max_length=35)
+	slug = models.SlugField(max_length=10)
+	subject = models.ForeignKey(Subject, related_name='books', on_delete=models.CASCADE)
+	image = models.ImageField(upload_to=upload_book, null=True, blank=True)
+	number_list = models.CharField(max_length=10000, default='')
+
+	@property
+	def numbers(self):
+		return json.loads(self.number_list)
+
+	def set_numbers(self, N):
+		self.number_list = json.dumps(N)
+
+	def __str__(self):
+		return self.name
+
+
 class HomeworkQuerySet(models.query.QuerySet):
 	# Filter
-	def number(self, grade, subject, book, p, num):
+	def number(self, num):
 		return self.filter(
-			grade__exact = grade,
-			subject__exact = subject,
-			book__exact = book, 
-			paragraph__exact = int(p),
-			number__exact = int(num))
-
-	def book(self, grade, subject, book):
-		return self.filter(
-			grade__exact = grade, 
-			subject__exact = subject,
-			book__exact = book)
+			number__exact = num)
 
 	def publisher(self, user):
 		return self.filter(
@@ -52,7 +79,6 @@ class HomeworkManager(models.Manager):
 			grade=params['grade'],
 			subject=params['subject'],
 			book=params['book'],
-			paragraph=params['paragraph'],
 			number=params['number'])
 		for i, name in enumerate(images.keys()):
 			hwimage = HomeworkImage.objects.create(
@@ -66,11 +92,10 @@ class HomeworkManager(models.Manager):
 class Homework(models.Model):
 	publisher = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 	publisher_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
-	grade = models.IntegerField(choices=create_grades(), default=10)
-	subject = models.CharField(max_length=20, default='algebra')
-	book = models.CharField(max_length=30, default='NoBook')
-	paragraph = models.IntegerField(default=0)
-	number = models.IntegerField(default=0)
+	grade = models.ForeignKey(Grade, related_name='homeworks', on_delete=models.CASCADE)
+	subject = models.ForeignKey(Subject, related_name='homeworks', on_delete=models.CASCADE)
+	book = models.ForeignKey(Book, related_name='homeworks', on_delete=models.CASCADE)
+	number = models.CharField(max_length=15)
 
 	publication_date = models.DateTimeField(auto_now_add=True)
 	likes = models.ManyToManyField(User, related_name='likes', blank=True)
@@ -87,7 +112,7 @@ class Homework(models.Model):
 	objects = HomeworkManager()
 
 	def __str__(self):
-		return f'{self.book}-{self.paragraph}-{self.number}({self.publisher.username})'
+		return f'{self.book}-{self.number}({self.publisher.username})'
 
 
 class HomeworkImage(models.Model):
@@ -96,7 +121,7 @@ class HomeworkImage(models.Model):
 	index = models.IntegerField(default=0)
 
 	def __str__(self):
-		s = f'{self.homework.book}-{self.homework.paragraph}-{self.homework.number}'
+		s = f'{self.homework.book}-{self.homework.number}'
 		s1 = f'({self.homework.publisher.username})'
 		s2 = f' Image {self.index}'
 		return s + s1 + s2

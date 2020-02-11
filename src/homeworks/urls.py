@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
 	path('<int:grade>/', views.ClassPage.as_view(), name='classpage'),
-	path('<int:grade>/<str:subject>/<str:book>/<int:par>/<int:num>/<str:sort>',
+	path('<int:grade>/<str:subject>/<str:book>/<str:num>/<str:sort>',
 	 views.BookPage.as_view(), name='bookpage'),
 	path('<int:grade>/<str:subject>/<str:book>/<str:sort>',
 	 views.GrandBookPage.as_view(), name='grandbookpage'),

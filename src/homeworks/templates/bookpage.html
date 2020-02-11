@@ -39,10 +39,10 @@
 	</div>
 	<div class="HW_List usual_nav">
 			<div class="HW_BookProfile">
-				<img src="{% static image %}" class="HW_BookProfile_Preview" height="300px" width="200px">
+				<img src="{{book.image.url}}" class="HW_BookProfile_Preview" height="300px" width="200px">
 			</div>
 			<div class="HW_BookTasks">
-				{% for number in book %}
+				{% for number in book.numbers %}
 				{% if cur_num and number == cur_num %}
 					<div class="Current HW_BookTasks_Number">
 						<a href="/homework/redirect_hw/{{number}}/{{request.path}}" class="usual">{{number}}</a>
