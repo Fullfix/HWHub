@@ -11,7 +11,13 @@
         </div>
         <form id="post-form" enctype="multipart/form-data" method="post" action="{% url 'upload' %}">
             {% csrf_token %}
-            <div class="div_input" id="div_input_subject">
+            <div class="div_input" id="div_input_grade">
+                <select name="grade" id="grade_select" class="input_hw">
+                    <option hidden disabled selected value="not chosen">-- Выберите предмет --</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+            <div class="div_input invis" id="div_input_subject">
                 <select name="subject" id="subject_select" class="input_hw">
                     <option hidden disabled selected value="not chosen">-- Выберите предмет --</option>
                     <option value="algebra">Алгебра</option>
@@ -39,23 +45,14 @@
 {% endblock %}
 {% block script %}
 <script>
-function load_json() {
+function get_objects() {
     $.ajax({
+        url: '/homework/get_objects',
         type: "GET",
-        dataType: "JSON",
-        url: "{% url 'json_file' %}",
-        async: false,
-        success: function(json) {
-            jsonfile = json;
-        }
+        success: (json) => {grades = json; console.log('grades got!')}
     })
-    return jsonfile
 }
 
-function load_numbers(subjectName, bookName) {
-    let jsonfile = null;
-    return jsonfile;
-}
 
 function create_hw(form, uploadedFiles) {
     data = new FormData(form);
@@ -84,7 +81,7 @@ function create_hw(form, uploadedFiles) {
     })
 
 }
-
+get_objects()
 window.onload = function() {
     var jsonFile = load_json()
     var subject = $('#div_input_subject');

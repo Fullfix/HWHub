@@ -7,6 +7,7 @@ from django.views.generic.base import RedirectView
 from django.views.generic.list import ListView
 from django.views import View
 from django.core import serializers
+from django.core.serializers.json import DjangoJSONEncoder
 from .mixins import ValidDataMixin, check_existance, book_names
 from .models import Homework, Grade, Subject, Book
 from .utils import load_json, SubjectRus, BookToUrl
@@ -14,10 +15,6 @@ from users.models import UserProfile
 import json
 
 # Create your views here.
-
-def get_json_file(request):
-	json_file = load_json()
-	return JsonResponse(json_file)
 
 def redirect_hw(request, number, path):
 	_1, _2, grade, subject, book, *_ = path.split('/')
@@ -37,6 +34,7 @@ def auto_sort(request, grade, subject, book, num):
 
 def auto_sort_grand(request, grade, subject, book):
 	return redirect('grandbookpage', grade, subject, book, 'pop')
+	
 
 class ClassPage(View):
 	def get(self, request, grade):
@@ -116,15 +114,15 @@ class GetHWOpinion(View):
 		json = {"liked":liked, "disliked":disliked}
 		return JsonResponse(json)
 
-
 @method_decorator(login_required, name='dispatch')
 class UploadHW(View):
 	template_name = 'upload.html'
 	def get(self, request):
 		profile = UserProfile.objects.filter(user=request.user)[0]
+		grades = Grade.objects.all()
 		context = {'user':request.user, 
 			'profile':profile,
-			'number_error':False,
+			'grades':grades,
 		}
 		return render(request, self.template_name, context)
 
@@ -136,9 +134,6 @@ class UploadHW(View):
 			params[key] = value[0]
 		for key, value in files.items():
 			files[key] = value[0]
-		p, num = params['number'].split('.')
-		params['paragraph'] = int(p)
-		params['number'] = int(num)
 		homework = Homework.objects.create_homework(params, files, request.user)
 		context['created'] = True
 		return JsonResponse(context)

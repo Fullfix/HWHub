@@ -20,7 +20,7 @@ class Grade(models.Model):
 
 
 class Subject(models.Model):
-	name = models.CharField(max_length=15, unique=True)
+	name = models.CharField(max_length=15)
 	full_name = models.CharField(max_length=25)
 	grade = models.ForeignKey(Grade, related_name='subjects', on_delete=models.CASCADE)
 
@@ -29,7 +29,7 @@ class Subject(models.Model):
 
 
 class Book(models.Model):
-	name = models.CharField(max_length=20, unique=True)
+	name = models.CharField(max_length=20)
 	full_name = models.CharField(max_length=35)
 	slug = models.SlugField(max_length=10)
 	subject = models.ForeignKey(Subject, related_name='books', on_delete=models.CASCADE)
@@ -74,11 +74,14 @@ class HomeworkManager(models.Manager):
 
 	def create_homework(self, params, images, user):
 		publisher_profile = UserProfile.objects.get(user=user)
+		grade = Grade.objects.all().get(grade=params['grade'])
+		subject = grade.subjects.get(name=params['subject'])
+		book = subject.books.get(name=params['book'])
 		homework = self.create(publisher=user,
 			publisher_profile=publisher_profile,
-			grade=params['grade'],
-			subject=params['subject'],
-			book=params['book'],
+			grade=grade,
+			subject=subject,
+			book=book,
 			number=params['number'])
 		for i, name in enumerate(images.keys()):
 			hwimage = HomeworkImage.objects.create(
