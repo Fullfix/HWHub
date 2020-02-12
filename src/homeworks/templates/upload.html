@@ -13,14 +13,13 @@
             {% csrf_token %}
             <div class="div_input" id="div_input_grade">
                 <select name="grade" id="grade_select" class="input_hw">
-                    <option hidden disabled selected value="not chosen">-- Выберите предмет --</option>
-                    <option value="10">10</option>
+                    <option hidden disabled selected value="not chosen">-- Выберите класс --</option>
+                    <option value="http://127.0.0.1:8000/api/grades/2/">10</option>
                 </select>
             </div>
             <div class="div_input invis" id="div_input_subject">
                 <select name="subject" id="subject_select" class="input_hw">
                     <option hidden disabled selected value="not chosen">-- Выберите предмет --</option>
-                    <option value="algebra">Алгебра</option>
                 </select>
             </div>
             <div class="div_input invis" id="div_input_book">
@@ -45,24 +44,41 @@
 {% endblock %}
 {% block script %}
 <script>
-function get_objects() {
+function get_object(url) {
+    var instance = [];
     $.ajax({
-        url: '/homework/get_objects',
-        type: "GET",
-        success: (json) => {grades = json; console.log('grades got!')}
+        url: url,
+        async: false,
+        success: (json) => {instance = json}
+    })
+    return instance
+}
+
+function get_choices(list) {
+    return list.map(url => {
+        let obj = get_object(url);
+        return {"value":obj.url, "fullname":obj.full_name}
     })
 }
 
-
 function create_hw(form, uploadedFiles) {
+    formdata = new FormData(form);
     data = new FormData(form);
-    data.append("grade", 10);
-    data.append("subject", "algebra");
-    console.log(uploadedFiles);
+    formdata.forEach((value, key) => {
+        if (key == "grade") {
+            data.delete(key);
+            data.append(key, get_object(value).grade);
+        }
+        else if (key == "subject" || key == "book") {
+            data.delete(key);
+            data.append(key, get_object(value).name);
+        }
+    })
     uploadedFiles.forEach(function(file, i) {
         console.log(i, file);
         data.append("file"+i, file);
     })
+    // data.forEach((value, key) => console.log(value, key))
     $.ajax({
         url: "{% url 'upload' %}",
         type: "POST",
@@ -81,9 +97,10 @@ function create_hw(form, uploadedFiles) {
     })
 
 }
-get_objects()
 window.onload = function() {
-    var jsonFile = load_json()
+    var grades = get_object('/api/grades/')
+    var grade = $('#div_input_grade');
+    var grade_select = grade.find('.input_hw');
     var subject = $('#div_input_subject');
     var subject_select = subject.find('.input_hw');
     var book = $('#div_input_book');
@@ -95,13 +112,14 @@ window.onload = function() {
     var dropzone = $('#dropzone');
     var uploadedFiles = [];
     var grade = 10
-    var currentChoices = jsonFile[grade];
+    var currentChoices = ["10"]
     var jsonBooks = null;
     var jsonNumbers = null;
 
-    $('#post-form').one('submit', function(e) {
+    $('#post-form').on('submit', function(e) {
         e.preventDefault()
         console.log("submitted");
+        grade_select.attr("disabled", false)
         subject_select.attr("disabled", false);
         book_select.attr("disabled", false);
         number_select.attr("disabled", false);
@@ -149,6 +167,15 @@ window.onload = function() {
     })
 
     $('#go_back_img').on('click', function() {
+        if (grade_select.attr("disabled") && !subject_select.attr("disabled")) {
+            grade_select.attr("disabled", false);
+            grade_select.attr("value", 'not chosen');
+            subject.addClass("invis");
+            subject_select.empty()
+            subject_select.append(
+            '<option hidden disabled selected value="not chosen">-- Выберите предмет --</option>'
+            )
+        }
         if (subject_select.attr("disabled") && !book_select.attr("disabled")){
             subject_select.attr("disabled", false);
             subject_select.attr("value", 'not chosen');
@@ -179,23 +206,28 @@ window.onload = function() {
         }
     })
 
+    grade_select.on('change', function() {
+        currentChoices = get_choices(get_object(this.value).subjects);
+        currentChoices.forEach((subject => {
+            subject_select.append('<option value="'+subject.value+'">'+subject.fullname+'</option')
+        }));
+        subject.removeClass("invis");
+        grade_select.attr("disabled", true);
+    })
+
     subject_select.on('change', function() {
-        currentChoices = jsonFile[grade][this.value]
-        currentChoices.forEach(function(choice) {
-            book_select.append('<option value="'+choice[0]+'">'+choice[1]+'</option>');
+        currentChoices = get_choices(get_object(this.value).books);
+        currentChoices.forEach(function(book) {
+            book_select.append('<option value="'+book.value+'">'+book.fullname+'</option>');
         })
         book.removeClass("invis");
         subject_select.attr("disabled", true);
     })
 
     book_select.on('change', function() {
-        currentChoices = jsonFile[grade][subject_select.val()].find(
-            (element) => element[0] === this.value)[2]
-        Object.keys(currentChoices).forEach(function(par) {
-            for (let i=1; i<=currentChoices[par]; i++) {
-                number_select.append(
-                    '<option value="'+par+'.'+i+'">'+par+'.'+i+'</option>');
-            }
+        currentChoices = JSON.parse(get_object(this.value).number_list)
+        currentChoices.forEach(number => {
+            number_select.append('<option value="'+number+'">'+number+'</option');
         })
         number.removeClass("invis");
         book_select.attr("disabled", true);

@@ -41,10 +41,12 @@ INSTALLED_APPS = [
     # APPS
     'users',
     'homeworks',
+    'api',
     
     # MODULES
     'crispy_forms',
     'django_ajax',
+    'rest_framework',
 ]
 
 AUTH_USER_MODEL = 'users.User'

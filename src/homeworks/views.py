@@ -34,7 +34,7 @@ def auto_sort(request, grade, subject, book, num):
 
 def auto_sort_grand(request, grade, subject, book):
 	return redirect('grandbookpage', grade, subject, book, 'pop')
-	
+
 
 class ClassPage(View):
 	def get(self, request, grade):
@@ -131,7 +131,10 @@ class UploadHW(View):
 		params = dict(request.POST)
 		files = dict(request.FILES)
 		for key, value in params.items():
-			params[key] = value[0]
+			if key == 'grade':
+				params[key] = int(value[0])
+			else:
+				params[key] = value[0]
 		for key, value in files.items():
 			files[key] = value[0]
 		homework = Homework.objects.create_homework(params, files, request.user)

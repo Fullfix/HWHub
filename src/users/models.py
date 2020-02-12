@@ -78,7 +78,7 @@ class User(AbstractBaseUser):
 
 
 class UserProfile(models.Model):
-	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
 	name = models.CharField(max_length=15, blank=True)
 	surname = models.CharField(max_length=15, blank=True)
 	grade = models.IntegerField(choices=create_grades(), default=1)
