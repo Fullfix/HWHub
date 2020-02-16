@@ -15,4 +15,5 @@ urlpatterns = [
 	path('redirect_sort/<str:sort>/<path:path>', views.redirect_sort, name='redirect_sort'),
 	path('<int:grade>/<str:subject>/<str:book>/<int:par>/<int:num>', views.auto_sort),
 	path('<int:grade>/<str:subject>/<str:book>', views.auto_sort_grand),
+	path('main', views.MainPage.as_view(), name='main'),
 ]

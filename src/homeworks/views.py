@@ -47,6 +47,16 @@ class ClassPage(View):
 		'profile':profile, 'grade':grade_class}
 		return render(request, 'classpage.html', context)
 
+
+class MainPage(View):
+	def get(self, request):
+		if request.user.is_authenticated:
+			profile = UserProfile.objects.filter(user=request.user)[0]
+		else:
+			profile = None
+		context = {'user':request.user, 'profile':profile}
+		return render(request, 'main.html', context)
+
 class GrandBookPage(View):
 	def get(self, request, grade, subject, book, sort):
 		try:
