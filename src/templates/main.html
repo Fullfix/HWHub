@@ -11,7 +11,7 @@
 {% block content %}
 <div class="content">
 	<div class="header">
-		<div class="header_button_area" style="background: linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0.01%, rgba(255, 255, 255, 0.54) 0.02%, rgba(255, 255, 255, 0) 19.79%), url(notebook-731212_1920.jpg);">
+		<div class="header_button_area" style="background: linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0.01%, rgba(255, 255, 255, 0.54) 0.02%, rgba(255, 255, 255, 0) 19.79%), url({% static 'images/header.jpg' %});">
 			<div class="header_button_area_button">
 				<div class="header_button_area_button_HW">
 					<a href="#">
@@ -22,7 +22,7 @@
 				</div>
 				<div class="Stick"></div>
 				<div class="header_button_area_button_LK">
-					<a href="#">
+					<a href="id{{request.user.id}}">
 						<div class="header_button_area_button_LK_Link">
 							<p class="usual" style="margin-top: 36px">Личный кабинет</p>
 						</div>
@@ -39,23 +39,31 @@
 			</div>
 		</div>
 		<div class="HW_LastUsers" style="background: #C4C4C4">
+			{% for user in last_users %}
 			<div class="HW_LastUsers_Item">
-			<img src="#" width="150px" height="150px" style="background: black">
+			<a href="{% url 'profile' user.id %}">
+			<img src="{{ user.profile.photo.url }}" width="150px" height="150px" style="background: black">
+			</a>
 			</div>
+			{% endfor %}
 		</div>
 	</div>
 	<div class="main_content">
 		<p class="usual" style="margin-top: 50px; font-size: 64px; line-height: 75px; color: black!important" align="center">Последние новости</p>
 		<div class="news_block">
+			{% for new in last_news %}
 			<div class="news_block_grid">
 				<div class="news_block_avatar">
-					<img src="#" width="75px" height="75px">
+					<img src="{{new.publisher.profile.photo.url}}" width="75px" height="75px">
 				</div>
 				<div class="news_block_name">
-
+					{{new.summary}}
 				</div>
-				<div class="news_block_content"></div>
+				<div class="news_block_content">
+					{{new.description}}
+				</div>
 			</div>
+			{% endfor %}
 		</div>
 		<div class="donate"></div>
 	</div>

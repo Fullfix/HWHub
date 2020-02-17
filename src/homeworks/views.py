@@ -9,9 +9,9 @@ from django.views import View
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 from .mixins import ValidDataMixin, check_existance, book_names
-from .models import Homework, Grade, Subject, Book
+from .models import Homework, Grade, Subject, Book, New
 from .utils import load_json, SubjectRus, BookToUrl
-from users.models import UserProfile
+from users.models import UserProfile, User
 import json
 
 # Create your views here.
@@ -46,16 +46,6 @@ class ClassPage(View):
 		context = {'user':request.user,
 		'profile':profile, 'grade':grade_class}
 		return render(request, 'classpage.html', context)
-
-
-class MainPage(View):
-	def get(self, request):
-		if request.user.is_authenticated:
-			profile = UserProfile.objects.filter(user=request.user)[0]
-		else:
-			profile = None
-		context = {'user':request.user, 'profile':profile}
-		return render(request, 'main.html', context)
 
 class GrandBookPage(View):
 	def get(self, request, grade, subject, book, sort):

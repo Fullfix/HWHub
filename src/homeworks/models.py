@@ -93,7 +93,7 @@ class HomeworkManager(models.Manager):
 		return homework
 
 class Homework(models.Model):
-	publisher = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+	publisher = models.ForeignKey(User, related_name='homeworks', on_delete=models.CASCADE, null=True)
 	publisher_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
 	grade = models.ForeignKey(Grade, related_name='homeworks', on_delete=models.CASCADE)
 	subject = models.ForeignKey(Subject, related_name='homeworks', on_delete=models.CASCADE)
@@ -128,3 +128,13 @@ class HomeworkImage(models.Model):
 		s1 = f'({self.homework.publisher.username})'
 		s2 = f' Image {self.index}'
 		return s + s1 + s2
+
+
+class New(models.Model):
+	publisher = models.ForeignKey(User, related_name='news', on_delete=models.CASCADE)
+	summary = models.CharField(max_length=40)
+	description = models.CharField(max_length=400)
+	publication_date = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return str(self.summary)

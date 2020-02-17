@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Max
 from django.contrib.auth.models import (
 	AbstractBaseUser, BaseUserManager
 	)
@@ -16,7 +17,16 @@ def create_grades():
 		C.append((i, str(i)))
 	return tuple(C)
 
+
+class UserQuerySet(models.query.QuerySet):
+	def last(self):
+		return self.order_by('-homeworks__publication_date')
+
+
 class UserManager(BaseUserManager):
+	def get_queryset(self):
+		return UserQuerySet(self.model, using=self._db)
+		
 	def create_user(self, username, password=None, is_admin=False, is_staff=False):
 		if not username:
 			raise ValueError('Отсутствует имя пользователя')
@@ -67,6 +77,10 @@ class User(AbstractBaseUser):
 
 	def has_module_perms(self, app_label):
 		return True
+
+	@property
+	def last_publictation_date(self):
+		return self.homeworks.all().date()[0].publication_date
 
 	@property	
 	def is_admin(self):

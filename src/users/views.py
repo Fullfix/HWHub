@@ -1,13 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.views import View
 from .forms import UserRegisterForm
 from .models import UserProfile, User
 from homeworks.models import Homework
 
-def index(request):
-	return render(request, 'users/index.html')
 
 class RegisterView(View):
 	form_class = UserRegisterForm
@@ -37,11 +36,13 @@ class RegisterView(View):
 			login(request, user)
 			return redirect('index')
 
+@login_required
 def profile(request, id_):
-	user = User.objects.filter(id=id_).first()
-	profile = UserProfile.objects.filter(user=request.user)[0]
+	user = User.objects.all().get(id__exact=id_)
+	print(user.username)
+	profile = user.profile
 	homeworks = Homework.objects.all().publisher(user)
-	context = {'user':request.user, 'profile':profile, 'homeworks':homeworks}
+	context = {'user':request.user, 'page_user':user, 'profile':profile, 'homeworks':homeworks}
 	return render(request, 'users/profile.html', context)
 
 def navbar(request):
