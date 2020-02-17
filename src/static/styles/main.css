@@ -1,0 +1,139 @@
+.content {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-template-columns: 150px calc(100% - (150px * 2)) 150px;
+    grid-template-rows: 650px calc(100% - 700px) 50px;
+    grid-template-areas: "header header header"
+    "left content right"
+    "footer footer footer";
+}
+.header {
+    grid-area: header;
+    height: 650px;
+}
+.header_button_area {
+    height: 500px;
+}
+.main_content {
+    grid-area: content;
+}
+.footer {
+    grid-area: footer;
+    background: #263936;
+}
+.HW_LastUsers {
+    display: grid;
+    grid-template-rows: 150px;
+    grid-template-columns: repeat(100,150px);
+    overflow-x: hidden;
+    max-height: 150px;
+    overflow-y: hidden;
+}
+.news_block {
+    background: #9099A4;
+    width: 100%;
+    height: 550px;
+    border-radius: 50px;
+    margin-bottom: 50px;
+}
+.news_block_grid {
+    width: calc(100% - 100px);
+    height: calc(100% - 50px);
+    padding-top: 50px;
+    margin-left: 50px;
+    display: grid;
+    grid-template-areas:
+            "profile name"
+            "empty content";
+    grid-template-columns: 75px calc(100% - 75px);
+    grid-template-rows: 75px calc(100% - 75px);
+    grid-column-gap: 20px;
+}
+.news_block_avatar{
+    border-radius: 75px;
+    background: black;
+    height: 75px;
+    width: 75px;
+    grid-area: profile;
+}
+.news_block_name {
+    width: 100%;
+    height: 50px;
+    border-radius: 50px;
+    background: white;
+    grid-area: name;
+}
+.news_block_content{
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
+    background: white;
+    grid-area: content;
+}
+.header_button_area_button{
+    position: absolute;
+    margin-left: 150px;
+    margin-top: 400px;
+    display: grid;
+    border-radius: 50px;
+    width: calc(100% - 300px);
+    height: 100px;
+    grid-template-columns: calc((100% - 30px) / 3) 15px calc((100% - 30px) / 3) 15px calc((100% - 30px) / 3);
+}
+.header_button_area_button_HW{
+    background: #7070B5;
+    border-radius: 50px 0px 0px 50px;
+    align-items: center;
+    text-align: center;
+}
+.header_button_area_button_LK{
+    background: #7070B5;
+    align-items: center;
+    text-align: center;
+}
+.header_button_area_button_FS{
+    background: #7070B5;
+    border-radius: 0px 50px 50px 0px;
+    align-items: center;
+    text-align: center;
+}
+.Stick {
+    background: #545488;
+}
+.usual {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
+    letter-spacing: 0.04em;
+
+    color: #FFFFFF!important;
+
+}
+.header_button_area_button_HW_Link {
+    align-items: center;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+}
+.header_button_area_button_LK_Link {
+    align-items: center;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+}
+.header_button_area_button_FS_Link {
+    align-items: center;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+}
+.last_update {
+    right: 50px;
+    position: absolute;
+    height: 28px;
+    margin-top: 11px;
+}
