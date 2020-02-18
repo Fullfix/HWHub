@@ -50,7 +50,7 @@
     grid-template-rows: 75px calc(100% - 75px);
     grid-column-gap: 20px;
 }
-.news_block_avatar{
+.news_block_avatar img{
     border-radius: 75px;
     background: black;
     height: 75px;
@@ -117,23 +117,92 @@
     align-items: center;
     text-align: center;
     height: 100%;
-    width: 100%;
+    width: calc(100%/3);
+    position: absolute;
 }
 .header_button_area_button_LK_Link {
     align-items: center;
     text-align: center;
     height: 100%;
-    width: 100%;
+    width: calc(100%/3);
+    position: absolute;
 }
 .header_button_area_button_FS_Link {
     align-items: center;
     text-align: center;
     height: 100%;
-    width: 100%;
+    width: calc(100%/3);
+    position: absolute;
 }
 .last_update {
     right: 50px;
     position: absolute;
     height: 28px;
     margin-top: 11px;
+}
+.header_button_area_button_HW:hover .submenu{
+    visibility: visible;
+    opacity: 1;
+}
+.header_button_area_button_HW .submenu {
+    position: absolute;
+    visibility: hidden;
+    height: 300px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: calc((100% - 30px) / 3 - 50px);
+    margin-left: 50px;
+    margin-top: 100px;
+    opacity: 0;
+    background: #7070B5;
+    border-radius: 0px 0px 50px 50px;
+    z-index: 10;
+    -webkit-transition: 0.5s ease-in-out;
+    -moz-transition: 0.5s ease-in-out;
+    -o-transition: 0.5s ease-in-out;
+    transition: 0.5s ease-in-out;
+}
+.header_button_area_button_FS:hover .submenu{
+    visibility: visible;
+    opacity: 1;
+}
+.header_button_area_button_FS .submenu {
+    position: absolute;
+    visibility: hidden;
+    height: 150px;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    width: calc((100% - 30px) / 3 - 50px);
+    margin-top: 100px;
+    opacity: 0;
+    background: #7070B5;
+    border-radius: 0px 0px 50px 50px;
+    z-index: 10;
+    -webkit-transition: 0.5s ease-in-out;
+    -moz-transition: 0.5s ease-in-out;
+    -o-transition: 0.5s ease-in-out;
+    transition: 0.5s ease-in-out;
+}
+.FastSearch_button_button {
+    -webkit-appearance: none;
+    border-width: 0px;
+    border-radius: 10px;
+    background-color: #49D264;
+    height: 40px;
+    width: calc(100% / 2);
+}
+.FastSearch_Form_Form{
+    width: calc(100% - 50px);
+    color: black!important;
+
+}
+.news_block_name_content {
+    margin-top: 11px;
+    width: calc(100% - 100px);
+    margin-left: 50px;
+}
+.news_block_content_content {
+    margin-left: 50px;
+    text-align: left!important;
+    width: calc(100% - 100px);
 }

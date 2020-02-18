@@ -4,7 +4,7 @@
 {% block title %}{{class}} Главная страница {% endblock %}
 
 {% block link %}
-<link href="{% static 'styles/main.css' %}?version=14" rel="stylesheet">
+<link href="{% static 'styles/main.css' %}?version=24" rel="stylesheet">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 {% endblock %}
 
@@ -14,11 +14,22 @@
 		<div class="header_button_area" style="background: linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0.01%, rgba(255, 255, 255, 0.54) 0.02%, rgba(255, 255, 255, 0) 19.79%), url({% static 'images/header.jpg' %});">
 			<div class="header_button_area_button">
 				<div class="header_button_area_button_HW">
-					<a href="#">
 						<div class="header_button_area_button_HW_Link">
 							<p class="usual" style="margin-top: 36px">Домашнее задание</p>
 						</div>
-					</a>
+					<div class="submenu">
+						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">1 класс</a></div>
+						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">2 класс</a></div>
+						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">3 класс</a></div>
+						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">4 класс</a></div>
+						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">5 класс</a></div>
+						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">6 класс</a></div>
+						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">7 класс</a></div>
+						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">8 класс</a></div>
+						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">9 класс</a></div>
+						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">10 класс</a></div>
+						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">11 класс</a></div>
+					</div>
 				</div>
 				<div class="Stick"></div>
 				<div class="header_button_area_button_LK">
@@ -30,11 +41,17 @@
 				</div>
 				<div class="Stick"></div>
 				<div class="header_button_area_button_FS">
-					<a href="#">
-						<div class="header_button_area_button_LK_Link">
+						<div class="header_button_area_button_FS_Link">
 							<p class="usual" style="margin-top: 36px">Быстрый поиск</p>
 						</div>
-					</a>
+					<div class="submenu">
+						<div class="FastSearch_Form" style="margin-top: 20px">
+							<input class="FastSearch_Form_Form usual" type="text">
+						</div>
+						<div class="FastSearch_button">
+							<input class="FastSearch_button_button usual" type="submit" value="Поиск">
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -57,10 +74,14 @@
 					<img src="{{new.publisher.profile.photo.url}}" width="75px" height="75px">
 				</div>
 				<div class="news_block_name">
-					{{new.summary}}
+					<div class="news_block_name_content usual" style="color: black!important;">
+						{{new.summary}}
+					</div>
 				</div>
 				<div class="news_block_content">
-					{{new.description}}
+					<div class="news_block_content_content usual" style="color: black!important;">
+						{{new.description}}
+					</div>
 				</div>
 			</div>
 			{% endfor %}
