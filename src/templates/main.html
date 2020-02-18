@@ -18,17 +18,9 @@
 							<p class="usual" style="margin-top: 36px">Домашнее задание</p>
 						</div>
 					<div class="submenu">
-						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">1 класс</a></div>
-						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">2 класс</a></div>
-						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">3 класс</a></div>
-						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">4 класс</a></div>
-						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">5 класс</a></div>
-						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">6 класс</a></div>
-						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">7 класс</a></div>
-						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">8 класс</a></div>
-						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">9 класс</a></div>
-						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">10 класс</a></div>
-						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="#">11 класс</a></div>
+						{% for class in classes %}
+						<div class="header_button_area_button_HW_submenu_grade"><a class="usual" href="/homework/{{class}}">{{class}} класс</a></div>
+						{% endfor %}
 					</div>
 				</div>
 				<div class="Stick"></div>
@@ -46,10 +38,11 @@
 						</div>
 					<div class="submenu">
 						<div class="FastSearch_Form" style="margin-top: 20px">
-							<input class="FastSearch_Form_Form usual" type="text">
+							<input class="FastSearch_Form_Form usual" type="text" id="search"
+							autocomplete="off">
 						</div>
 						<div class="FastSearch_button">
-							<input class="FastSearch_button_button usual" type="submit" value="Поиск">
+							<input id="submit_btn" class="FastSearch_button_button usual disabled" type="submit" value="Поиск" disabled="True">
 						</div>
 					</div>
 				</div>
@@ -96,4 +89,14 @@
 	</div>
 
 </div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/api.js' %}"></script>
+<script type="text/javascript">
+	window.onload = function() {
+		autocomplete(document.getElementById("search"));
+	}
+</script>
 {% endblock %}

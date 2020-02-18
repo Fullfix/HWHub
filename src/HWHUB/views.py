@@ -12,5 +12,5 @@ class MainPage(View):
 		else:
 			profile = None
 		context = {'user':request.user, 'profile':profile,
-		'last_users':last_users, 'last_news':last_news}
+		'last_users':last_users, 'last_news':last_news, 'classes':list(range(1, 12))}
 		return render(request, 'main.html', context)
