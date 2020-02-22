@@ -12,7 +12,7 @@ function autocomplete(inp) {
 		currentFocus = -1;
 		a = document.createElement("DIV");
 		a.setAttribute("id", "autocomplete-list");
-		a.setAttribute("class", "autocomplete-items");
+		a.setAttribute("class", "autocomplete-items usual");
 		inp.parentNode.appendChild(a);
 		for (i=0; i<books.length; i++) {
 			if (books[i][1].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
