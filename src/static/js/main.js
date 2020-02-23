@@ -1,8 +1,8 @@
-function autocomplete(inp) {
+function autocomplete(inputId, submitId) {
 	const books = loadBooks();
 	const subjects = loadSubjects();
-	var submitBtn = document.getElementById("submit_btn");
-	var inp = document.getElementById("search");
+	var submitBtn = document.getElementById(submitId);
+	var inp = document.getElementById(inputId);
 	var currentFocus;
 	inp.addEventListener("input", (e) => {
 		var a, b, i;
@@ -12,7 +12,7 @@ function autocomplete(inp) {
 		currentFocus = -1;
 		a = document.createElement("DIV");
 		a.setAttribute("id", "autocomplete-list");
-		a.setAttribute("class", "autocomplete-items usual");
+		a.setAttribute("class", "autocomplete-items-" + inputId + " usual");
 		inp.parentNode.appendChild(a);
 		for (i=0; i<books.length; i++) {
 			if (books[i][1].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
@@ -83,7 +83,7 @@ function autocomplete(inp) {
 	}
 
 	function closeAllLists(elmnt) {
-		 var x = document.getElementsByClassName("autocomplete-items");
+		 var x = document.getElementsByClassName("autocomplete-items-" + inputId);
 		 for (var i = 0; i < x.length; i++) {
 		 	if (elmnt != x[i] && elmnt != inp) {
 		 		x[i].parentNode.removeChild(x[i]);

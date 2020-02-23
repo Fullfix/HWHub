@@ -9,6 +9,9 @@
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 	{% block link %} {% endblock %}
+	<script type="text/javascript" src="{% static 'js/upload.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/main.js' %}?version=6"></script>
+	<script type="text/javascript" src="{% static 'js/api.js' %}"></script>
 	{% block script %} {% endblock %}
 </head>
 <body>
@@ -18,7 +21,8 @@
 				<a class="navbar_grid_logo_logo usual" href="/">HW</a>
 			</div>
 			<div class="navbar_grid_HW" style="">
-				<input type="text" class="navbar_FastSearch usual">
+				<input type="submit" id="navbar_submit">
+				<input type="text" class="navbar_FastSearch usual" id="navbar_search">
 				<a href="#upload_frame" class="navbar_Upload usual" style="color: black!important; font-size: 12px; line-height: 14px;">Выложить ДЗ</a>
 
 			</div>
@@ -30,9 +34,17 @@
 	<div class="upload_frame" id="upload_frame">
 		<div class="upload">
 			<a class="usual" href="#" style="color: black!important;">Закрыть</a>
+			{% include 'upload.html' %}
 		</div>
 	</div>
 	{% block content %}
 	{% endblock %}
+	<script type="text/javascript">
+		window.onload = function() {
+			autocomplete("navbar_search", "navbar_submit");
+			{% block onload %}
+			{% endblock %}
+		}
+	</script>
 </body>
 </html>

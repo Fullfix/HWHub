@@ -207,7 +207,7 @@
     text-align: left!important;
     width: calc(100% - 100px);
 }
-.autocomplete-items {
+.autocomplete-items-search {
     background: white;
     width: calc(100% - 50px);
     height: 100px;
