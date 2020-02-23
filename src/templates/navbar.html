@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<title>{% block title %} header {% endblock %}</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link href="{% static 'styles/style_nav.css' %}?version=7" rel="stylesheet">
+	<link href="{% static 'styles/style_nav.css' %}?version=13" rel="stylesheet">
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 	{% block link %} {% endblock %}
@@ -19,11 +19,17 @@
 			</div>
 			<div class="navbar_grid_HW" style="">
 				<input type="text" class="navbar_FastSearch usual">
-				<a href="#" class="navbar_Upload usual" style="color: black!important; font-size: 12px; line-height: 14px;">Выложить ДЗ</a>
+				<a href="#upload_frame" class="navbar_Upload usual" style="color: black!important; font-size: 12px; line-height: 14px;">Выложить ДЗ</a>
+
 			</div>
 			<div class="navbar_grid_Profile">
 
 			</div>
+		</div>
+	</div>
+	<div class="upload_frame" id="upload_frame">
+		<div class="upload">
+			<a class="usual" href="#" style="color: black!important;">Закрыть</a>
 		</div>
 	</div>
 	{% block content %}
