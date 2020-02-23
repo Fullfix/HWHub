@@ -5,28 +5,26 @@
 	<meta charset="UTF-8">
 	<title>{% block title %} header {% endblock %}</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link href="{% static 'styles/style_nav.css' %}?version=3" rel="stylesheet">
+	<link href="{% static 'styles/style_nav.css' %}?version=7" rel="stylesheet">
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 	{% block link %} {% endblock %}
 	{% block script %} {% endblock %}
 </head>
 <body>
-	<div style="height: 60px; position: sticky; top: 0px; z-index: 100000">
-		<nav style="height: 60px" class="navbar navbar-expand-lg navbar-light bg-light">
-			<p style="margin-left: auto; margin-right: auto;margin-top: auto; margin-bottom: auto;" align="center"><a class="hw-link"  href="#">Домашняя РАБота</a></p>
-
-			<div class="profile">
-				{% if user.is_authenticated %}
-				<p style="">
-					<a class="nav-link" href="{% url 'profile' id_=user.id %}">{{user.username}}</a>
-				</p>
-				<img src="{{profile.photo.url}}" alt="Блять не загузилось!!!" width="50px" height="50px">
-				{% else %}
-				<p>2-582p-58p3589pwertikspogis</p>
-				{% endif %}
+	<div class="navbarr">
+		<div class="navbar_grid">
+			<div class="navbar_grid_logo">
+				<a class="navbar_grid_logo_logo usual" href="/">HW</a>
 			</div>
-		</nav>
+			<div class="navbar_grid_HW" style="">
+				<input type="text" class="navbar_FastSearch usual">
+				<a href="#" class="navbar_Upload usual" style="color: black!important; font-size: 12px; line-height: 14px;">Выложить ДЗ</a>
+			</div>
+			<div class="navbar_grid_Profile">
+
+			</div>
+		</div>
 	</div>
 	{% block content %}
 	{% endblock %}

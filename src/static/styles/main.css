@@ -110,7 +110,7 @@
     text-align: center;
     letter-spacing: 0.04em;
 
-    color: #FFFFFF!important;
+    color: #FFFFFF;
 
 }
 .header_button_area_button_HW_Link {
@@ -220,4 +220,7 @@
     grid-template-columns: 100%;
     grid-gap: 10px;
     grid-auto-rows: auto;
+}
+.autocomplete-active{
+    background: #9099A4;
 }
