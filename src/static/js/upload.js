@@ -15,43 +15,34 @@ function get_choices(list) {
     })
 }
 
-function create_hw(form, uploadedFiles) {
+function create_hw(form, uploadedFiles, userId) {
     formdata = new FormData(form);
     data = new FormData(form);
     formdata.forEach((value, key) => {
         if (key == "grade") {
             data.delete(key);
-            data.append(key, get_object(value).grade);
+            data.append(key, get_object(value).id);
         }
         else if (key == "subject" || key == "book") {
             data.delete(key);
-            data.append(key, get_object(value).name);
+            data.append(key, get_object(value).id);
         }
     })
     uploadedFiles.forEach(function(file, i) {
         console.log(i, file);
-        data.append("file"+i, file);
-    })
-    // data.forEach((value, key) => console.log(value, key))
-    $.ajax({
-        url: "{% url 'upload' %}",
-        type: "POST",
-        contentType: false,
-        processData: false,
-        cache: false,
-        data: data,
-        success: function(json) {
-            if (json.created) {
-                console.log("YEAAAAAH!!");
-            }
-            else {
-                console.log(json.error);
-            }
-        }
-    })
-
-}
-window.onload = function() {
+        data.append("file"+i, file)});
+    fetch('/homework/upload/', { // Your POST endpoint
+    method: 'POST',
+    body: data // This is your file object
+    }).then(
+        response => response.json() // if the response is a JSON object
+    ).then(
+        success => console.log(success) // Handle the success response object
+    ).catch(
+        error => console.log(error) // Handle the error response object
+    );
+};
+function uploadMain() {
     var grades = get_object('/api/grades/')
     var grade = $('#div_input_grade');
     var grade_select = grade.find('.input_hw');
@@ -77,7 +68,7 @@ window.onload = function() {
         subject_select.attr("disabled", false);
         book_select.attr("disabled", false);
         number_select.attr("disabled", false);
-        create_hw(this, uploadedFiles);
+        create_hw(this, uploadedFiles, userId);
     })
 
 

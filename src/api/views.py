@@ -1,11 +1,15 @@
 from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.renderers import JSONRenderer
 from users.models import User, UserProfile
 from .serializers import (
 	GradeSerializer,
 	SubjectSerializer,
 	BookSerializer,
 	HomeworkSerializer,
+	HomeworkCreateSerializer,
 	HomeworkImageSerializer,
 	UserSerializer,
 	UserProfileSerializer)
@@ -41,3 +45,9 @@ class UsersView(viewsets.ModelViewSet):
 class UserProfilesView(viewsets.ModelViewSet):
 	queryset = UserProfile.objects.all()
 	serializer_class = UserProfileSerializer
+
+class GetUserId(APIView):
+	renderer_classes = [JSONRenderer]
+
+	def get(self, request):
+		return Response(request.user.id)

@@ -7,6 +7,7 @@ from homeworks.models import (
 	Homework,
 	HomeworkImage)
 
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = User
@@ -43,3 +44,17 @@ class HomeworkImageSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = HomeworkImage
 		fields = '__all__'
+
+
+class HomeworkCreateSerializer(serializers.Serializer):
+	grade = serializers.IntegerField()
+	subject = serializers.IntegerField()
+	book = serializers.IntegerField()
+	user_id = serializers.IntegerField()
+	number = serializers.CharField(max_length=15)
+	files = serializers.ListField(
+		child = serializers.ImageField(max_length=None, use_url=True)
+		)
+
+	def create(self, validated_data):
+		return Homework.objects.create_homework(**validated_data)

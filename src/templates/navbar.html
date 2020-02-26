@@ -6,12 +6,13 @@
 	<title>{% block title %} header {% endblock %}</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link href="{% static 'styles/style_nav.css' %}?version=13" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{% static 'styles/style_upload.css' %}">
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 	{% block link %} {% endblock %}
-	<script type="text/javascript" src="{% static 'js/upload.js' %}"></script>
-	<script type="text/javascript" src="{% static 'js/main.js' %}?version=6"></script>
+	<script type="text/javascript" src="{% static 'js/autocomplete.js' %}?version=6"></script>
 	<script type="text/javascript" src="{% static 'js/api.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/main.js' %}?version=3"></script>
 	{% block script %} {% endblock %}
 </head>
 <body>
@@ -39,9 +40,11 @@
 	</div>
 	{% block content %}
 	{% endblock %}
+	<script type="text/javascript" src="{% static 'js/upload.js' %}?version=3"></script>
 	<script type="text/javascript">
 		window.onload = function() {
 			autocomplete("navbar_search", "navbar_submit");
+			uploadMain();
 			{% block onload %}
 			{% endblock %}
 		}

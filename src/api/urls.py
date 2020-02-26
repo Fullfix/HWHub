@@ -10,7 +10,9 @@ router.register('books', views.BooksView)
 router.register('homeworks', views.HomeworksView)
 router.register('users', views.UsersView)
 router.register('profiles', views.UserProfilesView)
+# router.register('create', views.CreateHomeworkView, basename="Homework")
 
 urlpatterns = [
-	path('', include(router.urls))
+	path('', include(router.urls)),
+	path('get_user_id', views.GetUserId.as_view()),
 ]

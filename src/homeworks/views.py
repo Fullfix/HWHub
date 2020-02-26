@@ -116,22 +116,13 @@ class GetHWOpinion(View):
 
 @method_decorator(login_required, name='dispatch')
 class UploadHW(View):
-	template_name = 'upload.html'
-	def get(self, request):
-		profile = UserProfile.objects.filter(user=request.user)[0]
-		grades = Grade.objects.all()
-		context = {'user':request.user, 
-			'profile':profile,
-			'grades':grades,
-		}
-		return render(request, self.template_name, context)
-
 	def post(self, request):
 		context = {'error': False, 'created': False }
 		params = dict(request.POST)
 		files = dict(request.FILES)
+		print(files)
 		for key, value in params.items():
-			if key == 'grade':
+			if key in ['grade', 'subject', 'book']:
 				params[key] = int(value[0])
 			else:
 				params[key] = value[0]

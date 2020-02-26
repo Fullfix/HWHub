@@ -74,9 +74,9 @@ class HomeworkManager(models.Manager):
 
 	def create_homework(self, params, images, user):
 		publisher_profile = UserProfile.objects.get(user=user)
-		grade = Grade.objects.all().get(grade=params['grade'])
-		subject = grade.subjects.get(name=params['subject'])
-		book = subject.books.get(name=params['book'])
+		grade = Grade.objects.all().get(id=params['grade'])
+		subject = grade.subjects.get(id=params['subject'])
+		book = subject.books.get(id=params['book'])
 		homework = self.create(publisher=user,
 			publisher_profile=publisher_profile,
 			grade=grade,
