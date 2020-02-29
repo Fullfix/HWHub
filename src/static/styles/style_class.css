@@ -81,18 +81,7 @@
     width: 90px;
     height: 120px;
 }
-.usual {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 900;
-    font-size: 24px;
-    line-height: 28px;
-    text-align: center;
-    letter-spacing: 0.04em;
 
-    color: #FFFFFF!important;
-
-}
 .Content {
     height: 100%;
     width: 100%;

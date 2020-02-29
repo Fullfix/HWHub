@@ -3,8 +3,8 @@
     <div class = "Homework_show">
         <div class="Homework_profile">
             <img src="{{homework.publisher_profile.photo.url}}" height="50px" width="50px" style="float: left;border-radius: 25px;position: absolute;left: 5px;margin: 5px 0px">
-            <p style="float: left; margin-left: 10px; margin: 19.5px 0px; left: 70px; position: absolute" class="usual">{{homework.publisher.username}}</p>
-            <p class="usual" style="right: 3%; float: right; margin: 19.5px 0px; position: absolute">{{homework.uploaded}}</p>
+            <p style="float: left; margin-left: 10px; margin: 19.5px 0px; left: 70px; position: absolute; font-size: 18px; line-height: 21px; color: black" class="usual" >{{homework.publisher.username}}</p>
+            <p class="usual" style="right: 3%; float: right; margin: 19.5px 0px; position: absolute; font-size: 18px; line-height: 21px; color: black">{{homework.uploaded}}</p>
         </div>
         <div class="Homework_img">
             <p align="center" style="margin: 0px!important;">
@@ -18,13 +18,13 @@
                 <button id="like_button" onclick="likeHW(this)" type="button" data-hwid="{{homework.id}}" style="border: 0; background: transparent; width: 54px; padding: 0px">
                     <img src="{% static 'images/like_btn.png' %}" class="like_img" height="60px" style="float: left; margin-left: ">
                 </button>
-                <p class="Homework_like_count usual" id="like_count{{homework.id}}" style="margin-left: 15px">{{ homework.likes.count }}</p>
+                <p class="Homework_like_count usual" id="like_count{{homework.id}}" style="margin-left: 15px; font-size: 18px; line-height: 21px; color: black">{{ homework.likes.count }}</p>
             </div>
             <div class="Homework_dislike">
                 <button id="dislike_button" onclick="dislikeHW(this)" type="button" data-hwid="{{homework.id}}" style="border: 0; background: transparent; width: 54px; padding: 0px">
                     <img src="{% static 'images/dislike_btn.png' %}" class="dislike_img" height="60px" style="float: left;">
                 </button>
-                <p class="Homework_dislike_count usual" id="dislike_count{{homework.id}}" style="margin-left: 15px">{{homework.dislikes.count }}</p>
+                <p class="Homework_dislike_count usual" id="dislike_count{{homework.id}}" style="margin-left: 15px; font-size: 18px; line-height: 21px; color: black">{{homework.dislikes.count }}</p>
             </div>
         </div>
     </div>

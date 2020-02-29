@@ -46,18 +46,7 @@
 button:focus {
     outline: none !important
 }
-.usual {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 900;
-    font-size: 18px;
-    line-height: 21px;
-    display: flex;
-    align-items: center;
-    letter-spacing: 0.04em;
-    margin-bottom: 0px;
-    color: #000000;
-}
+
 .Homework_img{
     align-items: center;
     margin:0px;

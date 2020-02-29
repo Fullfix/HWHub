@@ -5,10 +5,11 @@
 	<meta charset="UTF-8">
 	<title>{% block title %} header {% endblock %}</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link href="{% static 'styles/style_nav.css' %}?version=13" rel="stylesheet">
+	<link href="{% static 'styles/style_nav.css' %}?version=14" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{% static 'styles/style_upload.css' %}">
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/d0c5d1d01e.js" crossorigin="anonymous"></script>
 	{% block link %} {% endblock %}
 	<script type="text/javascript" src="{% static 'js/autocomplete.js' %}?version=6"></script>
 	<script type="text/javascript" src="{% static 'js/api.js' %}"></script>
@@ -22,8 +23,9 @@
 				<a class="navbar_grid_logo_logo usual" href="/">HW</a>
 			</div>
 			<div class="navbar_grid_HW" style="">
-				<input type="submit" id="navbar_submit">
-				<input type="text" class="navbar_FastSearch usual" id="navbar_search">
+
+				<button type="submit" id="navbar_submit"><i class="fas fa-search"></i></button>
+				<input type="text" class="navbar_FastSearch usual" id="navbar_search" style="padding-right: 30px; padding-left: 15px;">
 				<a href="#upload_frame" class="navbar_Upload usual" style="color: black!important; font-size: 12px; line-height: 14px;">Выложить ДЗ</a>
 
 			</div>
@@ -34,7 +36,6 @@
 	</div>
 	<div class="upload_frame" id="upload_frame">
 		<div class="upload">
-			<a class="usual" href="#" style="color: black!important;">Закрыть</a>
 			{% include 'upload.html' %}
 		</div>
 	</div>

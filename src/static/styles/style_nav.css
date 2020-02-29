@@ -68,6 +68,32 @@
 	margin: auto;
 	border: 3px solid black;
 	background: white;
+	overflow-y: auto;
+}
+#navbar_submit{
+	border: 0;
+	background: none;
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	margin: 0px;
+	padding: 0px;
+	margin-top: 14px;
+	margin-left: 345px;
+}
+.autocomplete-items-navbar_search{
+	background: white;
+	width: 320px;
+	height: 100px;
+	overflow-y: auto;
+	margin-left: 40px;
+	margin-bottom: 10px;
+	border-radius: 0px 0px 25px 25px;
+	color: black!important;
+	display: grid;
+	grid-template-columns: 100%;
+	grid-gap: 10px;
+	grid-auto-rows: auto;
 }
 #upload_frame:target {visibility: visible; position: fixed; display: block}
 

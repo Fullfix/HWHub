@@ -1,9 +1,11 @@
 {% load static %}
     <div class ="upload_upload">
-        <div class="go_back">
+        <div class="go_back" style="margin-top: 10px; margin-left: 10px">
+            <a href="#" style="width: 30px; height: 30px; position: absolute">
             <img id="go_back_img" src="{% static 'images/go_back.png' %}" alt="ГРУЗИСЬ БЛЯТЬ">
+            </a>
         </div>
-        <form id="post-form" enctype="multipart/form-data" method="post">
+        <form id="post-form" enctype="multipart/form-data" method="post" style="margin-top: 30px; position: absolute">
             {% csrf_token %}
             <div class="div_input" id="div_input_grade">
                 <select name="grade" id="grade_select" class="input_hw">
