@@ -31,9 +31,11 @@
 				<p style="font-size: 30px; float:top; color:#49a48e" align="center">Домашних заданий</p>
 			</div>
 		</div>
+		{% if user.id == page_user.id %}
 		<div class="profile_logout">
-			<a href="/accounts/logout" style="right: 10%; top: 0;font-size: 30px; position: absolute; text-decoration: none!important;">Выйти</a>
+			<a href="/logout" style="right: 10%; top: 0;font-size: 30px; position: absolute; text-decoration: none!important;">Выйти</a>
 		</div>
+		{% endif %}
 	</div>
 	<div class="profile_show_homework">
 		<p align="center" style="font-size: 48px; background: rgb(1,0,255); background: linear-gradient(90deg, #92bbff 0%, #97faa7 100%); width: 30%; margin-right: auto; margin-left: auto; font-weight: bold;">Домашние задания</p>

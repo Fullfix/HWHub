@@ -34,7 +34,7 @@ class RegisterView(View):
 			profile = UserProfile(user=user, name=name, surname=surname, grade=grade)
 			profile.save()
 			login(request, user)
-			return redirect('index')
+			return redirect('main')
 
 @login_required
 def profile(request, id_):
@@ -44,8 +44,3 @@ def profile(request, id_):
 	homeworks = Homework.objects.all().publisher(user)
 	context = {'user':request.user, 'page_user':user, 'profile':profile, 'homeworks':homeworks}
 	return render(request, 'users/profile.html', context)
-
-def navbar(request):
-	profile = UserProfile.objects.filter(user=request.user)[0]
-	context = {'user':request.user, 'profile':profile}
-	return render(request, 'navbar.html', context)

@@ -19,6 +19,7 @@ from homeworks.models import (
 	Book,
 	Homework,
 	HomeworkImage)
+from .permissions import IsAdminOrReadOnly
 
 # Create your views here.
 

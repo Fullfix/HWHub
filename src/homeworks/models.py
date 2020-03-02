@@ -62,11 +62,11 @@ class HomeworkQuerySet(models.query.QuerySet):
 		return self.order_by('-publication_date')
 
 	def likes(self):
-		return self.order_by(Length('likes').asc())
+		return sorted(self, key=lambda x: x.likes.count(), reverse=True)
 
 	def dislikes(self):
-		return self.order_by(Length('dislikes').asc())
-
+		return sorted(self, key=lambda x: x.dislikes.count(), reverse=True)
+		
 
 class HomeworkManager(models.Manager):
 	def get_queryset(self):

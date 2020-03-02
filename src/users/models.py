@@ -4,6 +4,7 @@ from django.contrib.auth.models import (
 	AbstractBaseUser, BaseUserManager
 	)
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth.validators import UnicodeUsernameValidator
 # from .forms import create_grades
 
 # Create your models here.

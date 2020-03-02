@@ -74,7 +74,7 @@ class GrandBookPage(View):
 
 
 class BookPage(View):
-	def get(self, request, grade, subject, book, num, sort='popular'):
+	def get(self, request, grade, subject, book, num, sort='pop'):
 		try:
 			book = Book.objects.all().get(slug__exact=book)
 		except BaseException as e:
@@ -82,6 +82,7 @@ class BookPage(View):
 		homeworks = book.homeworks.all().number(num)
 		if sort == 'pop':
 			homeworks = homeworks.likes()
+			print(homeworks)
 		elif sort == 'new':
 			homeworks = homeworks.date()
 		else:
