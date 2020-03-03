@@ -115,7 +115,7 @@ function autocomplete(inputId, submitId) {
     });
 
     submitBtn.addEventListener("click", function(e) {
-    	if (!this.disabled) {
+    	if (!this.disabled && inp.value != '') {
     		var url = inputToUrl(inp.value);
     		if (url) {
     			window.location.href = url;

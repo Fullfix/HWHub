@@ -9,13 +9,14 @@ function get_object(url) {
 }
 
 function get_choices(list) {
+    console.log(list)
     return list.map(url => {
         let obj = get_object(url);
         return {"value":obj.url, "fullname":obj.full_name}
     })
 }
 
-function create_hw(form, uploadedFiles, userId) {
+function create_hw(form, uploadedFiles) {
     formdata = new FormData(form);
     data = new FormData(form);
     formdata.forEach((value, key) => {
@@ -68,7 +69,7 @@ function uploadMain() {
         subject_select.attr("disabled", false);
         book_select.attr("disabled", false);
         number_select.attr("disabled", false);
-        create_hw(this, uploadedFiles, userId);
+        create_hw(this, uploadedFiles);
     })
 
 

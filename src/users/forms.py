@@ -1,5 +1,6 @@
 from django import forms
 from .models import User, UserProfile
+# from .validators import validate_username
 from django.contrib.auth.forms import UserCreationForm
 
 def create_grades():
@@ -9,7 +10,11 @@ def create_grades():
 	return tuple(C)
 
 
-class UserRegisterForm(forms.Form):
+# class UserNameField(forms.CharField):
+# 	default_validators = [validate_username]
+
+
+class UserRegisterForm(UserCreationForm):
 	username = forms.CharField(max_length=20, label='Ник')
 	name = forms.CharField(max_length=15, label='Имя', required=False)
 	surname = forms.CharField(max_length=15, label='Фамилия', required=False)
@@ -23,6 +28,10 @@ class UserRegisterForm(forms.Form):
 	grade.widget.attrs.update({'class':'register_input', 'id':'grade'})
 	password1.widget.attrs.update({'class':'register_input', 'id':'password1'})
 	password2.widget.attrs.update({'class':'register_input', 'id':'password2'})
+
+	class Meta:
+		model = User
+		fields = ('username', 'name', 'surname', 'grade')
 
 
 	def clean_password2(self):

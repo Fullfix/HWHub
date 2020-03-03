@@ -18,7 +18,6 @@ class RegisterView(View):
 		return render(request, self.template_name, context)
 
 	def post(self, request):
-		print(request.POST)
 		form = self.form_class(request.POST)
 		if form.is_valid():
 			username = form.cleaned_data['username']
@@ -35,6 +34,10 @@ class RegisterView(View):
 			profile.save()
 			login(request, user)
 			return redirect('main')
+		else:
+			context = {'form': form}
+			return render(request, self.template_name, context)
+
 
 @login_required
 def profile(request, id_):

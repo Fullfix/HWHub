@@ -121,7 +121,6 @@ class UploadHW(View):
 		context = {'error': False, 'created': False }
 		params = dict(request.POST)
 		files = dict(request.FILES)
-		print(files)
 		for key, value in params.items():
 			if key in ['grade', 'subject', 'book']:
 				params[key] = int(value[0])
