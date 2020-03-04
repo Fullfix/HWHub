@@ -5,6 +5,7 @@ from django.contrib.auth.models import (
 	)
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from .validators import validate_input
 # from .forms import create_grades
 
 # Create your models here.
@@ -60,7 +61,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-	username = models.CharField(max_length=20, unique=True)
+	username = models.CharField(max_length=20, unique=True, validators=[validate_input])
 	admin = models.BooleanField(default=False)
 	staff = models.BooleanField(default=False)
 
@@ -94,8 +95,8 @@ class User(AbstractBaseUser):
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
-	name = models.CharField(max_length=15, blank=True)
-	surname = models.CharField(max_length=15, blank=True)
+	name = models.CharField(max_length=15, blank=True, validators=[validate_input])
+	surname = models.CharField(max_length=15, blank=True, validators=[validate_input])
 	grade = models.IntegerField(choices=create_grades(), default=1)
 	photo = models.ImageField(upload_to=upload_location, default='users/default.jpg')
 
