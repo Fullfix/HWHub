@@ -1,51 +1,86 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets
+from rest_framework import generics
+from rest_framework import permissions
+from rest_framework import mixins
+from rest_framework import parsers
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from users.models import User, UserProfile
-from .serializers import (
-	GradeSerializer,
-	SubjectSerializer,
-	BookSerializer,
-	HomeworkSerializer,
-	HomeworkCreateSerializer,
-	HomeworkImageSerializer,
-	UserSerializer,
-	UserProfileSerializer)
+from . import serializers
 from homeworks.models import (
 	Grade,
 	Subject,
 	Book,
 	Homework,
 	HomeworkImage)
-from .permissions import IsAdminOrReadOnly
+from .permissions import IsAdminOrReadOnly, UserIsOwnerOrReadOnly, UserIsOwnerOrReadOnlyProfile
 
 # Create your views here.
 
 class GradesView(viewsets.ModelViewSet):
 	queryset = Grade.objects.all()
-	serializer_class = GradeSerializer
+	serializer_class = serializers.GradeSerializer
 
 class SubjectsView(viewsets.ModelViewSet):
 	queryset = Subject.objects.all()
-	serializer_class = SubjectSerializer
+	serializer_class = serializers.SubjectSerializer
 
 class BooksView(viewsets.ModelViewSet):
 	queryset = Book.objects.all()
-	serializer_class = BookSerializer
+	serializer_class = serializers.BookSerializer
 
 class HomeworksView(viewsets.ModelViewSet):
 	queryset = Homework.objects.all()
-	serializer_class = HomeworkSerializer
+	serializer_class = serializers.HomeworkSerializer
 
 class UsersView(viewsets.ModelViewSet):
 	queryset = User.objects.all()
-	serializer_class = UserSerializer
+	serializer_class = serializers.UserSerializer
 
 class UserProfilesView(viewsets.ModelViewSet):
 	queryset = UserProfile.objects.all()
-	serializer_class = UserProfileSerializer
+	serializer_class = serializers.UserProfileSerializer
+
+class ProfileUpdateAPIView(generics.RetrieveAPIView,
+                               mixins.UpdateModelMixin):
+    permission_classes = (
+        permissions.IsAuthenticated,
+        UserIsOwnerOrReadOnlyProfile,
+    )
+    serializer_class = serializers.ProfileUpdateSerializer
+    parser_classes = (parsers.MultiPartParser, parsers.FormParser,)
+
+    def get_object(self):
+        obj = get_object_or_404(User, pk=self.kwargs['pk']).profile
+        return obj
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+
+class UserNameUpdateAPIView(generics.RetrieveAPIView,
+	mixins.UpdateModelMixin):
+    permission_classes = (
+        permissions.IsAuthenticated,
+        UserIsOwnerOrReadOnly,
+    )
+    serializer_class = serializers.UserNameUpdateSerializer
+    parser_classes = (parsers.MultiPartParser, parsers.FormParser,)
+    model = User
+
+    def get_object(self):
+        obj = get_object_or_404(User, pk=self.kwargs['pk'])
+        return obj
+
+    def put(self, request, *args, **kwargs):
+    	user = User.objects.all().get(pk=kwargs['pk'])
+    	if not user.check_password(request.data.get('password')):
+    		return Response({"error":"passwords dont match"})
+    	return self.update(request, *args, **kwargs)
+
 
 class GetUserId(APIView):
 	renderer_classes = [JSONRenderer]
