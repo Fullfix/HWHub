@@ -3,13 +3,43 @@
 {% load static %}
 {% block title %} Личный кабинет {% endblock %}
 {% block link %}
-	<link rel="stylesheet" href="{% static 'styles/style_profile.css' %}?version=4">
+	<link rel="stylesheet" href="{% static 'styles/style_profile.css' %}?version=8">
+	<script>
+		function ChangeProfile() {
+        	console.log("Changed");
+            console.log(document.getElementById("info").style.display);
+        	if (document.getElementById("info").style.display == "grid") {
+                document.getElementById("info").style.display = "none";
+                document.getElementById("changing").style.display = "grid";
+            }
+            else {
+                document.getElementById("info").style.display = "grid";
+                document.getElementById("changing").style.display = "none";
+            }
+    	}
+    	function AskPassword() {
+            console.log(document.getElementById("username_form").value);
+            console.log("{{page_user.username}}");
+			if (document.getElementById("username_form").value != "{{page_user.username}}"){
+				document.getElementById("password_frame").style.visibility = "visible";
+                document.getElementById("password_frame").style.position = "fixed";
+                document.getElementById("password_frame").style.display = "block";
+			}
+        }
+        function CancelPassword() {
+            document.getElementById("password_frame").style.visibility = "hidden";
+            document.getElementById("password_frame").style.position = "absolute";
+            document.getElementById("password_frame").style.display = "none";
+        }
+	</script>
 {% endblock %}
 
 {% block content %}
-	<div class="show_profile">
+	<!--Information about user-->
+	<div class="show_profile" id="info" style="display: grid">
 		<div class="profile_image">
-			<img src="{{profile.photo.url}}" alt="Блять не загузилось!!!" height="420px" width="350px">
+			<img class="profile_image_img" src="{{profile.photo.url}}" alt="Блять не загузилось!!!" height="400px" width="400px">
+			<button class="profile_image_button usual" type="button" onclick="ChangeProfile()">Изменить</button>
 		</div>
 		<div class="profile_info">
 			<p style="font-size: 60px; font-weight: bold;">{{page_user.username}}</p>
@@ -33,11 +63,66 @@
 		</div>
 		{% if user.id == page_user.id %}
 		<div class="profile_logout">
-			<a href="/logout" style="right: 10%; top: 0;font-size: 30px; position: absolute; text-decoration: none!important;">Выйти</a>
+			<a href="/logout" class="profile_logout_logout">Выйти</a>
 		</div>
 		{% endif %}
+	</div>
+	<!--Changing information-->
+	<div class="show_changing_profile" id="changing" style="display: none">
+		<div class="profile_changing_image">
+			<div class="show_changing_image_dropzone usual">
+				<p style="margin-top: 172px">Ператащите изображение в данное поле</p>
+			</div>
+		</div>
+		<div class="profile_ch_info usual" style="color: black!important;">
+			<div></div>
+			<div class="profile_ch_info_username" style="font-size: 48px; line-height: 56px; text-align: left;">
+				<p>Nickname:</p>
+			</div>
+			<div class="profile_ch_info_realname" style="text-align: left;">
+				<p style="margin-bottom: 21px">Имя:</p>
+				<p>Фамилия:</p>
+			</div>
+			<div class="profile_ch_info_grad" style="text-align: left;">
+				<p>Класс:</p>
+			</div>
+			<div>
+				<button class="button_changing" style="border-radius: 20px 0px 0px 20px; width: calc(100% - 51px); margin-left: 50px" onclick="ChangeProfile()">Отменить</button>
+			</div>
+		</div>
+		<div class="profile_changing_info usual" style="color: black!important;">
+			<div></div>
+			<div class="profile_changing_info_username">
+				<input type="text" class="profile_changing_info_username_form" id="username_form" style="width:250px; margin-top: 15px" placeholder="Ник" value="{{page_user.username}}">
+			</div>
+			<div class="profile_changing_info_realname">
+				<input type="text" class="profile_changing_info_realname_form" placeholder="Введите имя" style="width:250px; margin-bottom: 15px" value="{{profile.name}}">
+				<input type="text" class="profile_changing_info_realname_form" placeholder="Введите фамилию" style="width:250px; margin-bottom: 15px" value="{{profile.surname}}">
+			</div>
+			<div class="profile_changing_info_grad">
+				<select name="Grade" id="grade_changing" style="width:250px;">
+					<option hidden disabled selected value="not chosen">-- Выберите класс --</option>
+					<option value="/api/grades/2/">10</option>
+				</select>
+			</div>
+			<div>
+				<button class="button_changing" style="border-radius: 0px 20px 20px 0px; width: calc(100% - 51px); margin-right: 50px" onclick="AskPassword()">Подтвердить</button>
+			</div>
+
+		</div>
+	</div>
+	<div class="password_frame" id="password_frame" >
+		<div class="password_window">
+			<input type="password" placeholder="Введите пароль" class="usual" style="width: 400px; height: 50px; margin-top: 25px; margin-bottom: 25px; text-align: center; color: black">
+			<button class="usual" onclick="CancelPassword()" style="width: 250px; height: 75px; margin-bottom: 19px; color: black">Отменить</button>
+			<button class="usual" style="width: 250px; height: 75px; margin-bottom: 19px; color: black">Продолжить</button>
+		</div>
 	</div>
 	<div class="profile_show_homework">
 		<p align="center" style="font-size: 48px; background: rgb(1,0,255); background: linear-gradient(90deg, #92bbff 0%, #97faa7 100%); width: 30%; margin-right: auto; margin-left: auto; font-weight: bold;">Домашние задания</p>
 	</div>
+
+{% endblock %}
+
+{% block onload %}
 {% endblock %}
