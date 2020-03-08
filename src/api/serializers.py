@@ -46,16 +46,16 @@ class HomeworkImageSerializer(serializers.HyperlinkedModelSerializer):
 		model = HomeworkImage
 		fields = '__all__'
 
+# class GradeRelatedField(serializers.HyperLinkedRelatedField, )
 
-class HomeworkCreateSerializer(serializers.Serializer):
-	grade = serializers.IntegerField()
-	subject = serializers.IntegerField()
-	book = serializers.IntegerField()
-	user_id = serializers.IntegerField()
-	number = serializers.CharField(max_length=15)
-	files = serializers.ListField(
-		child = serializers.ImageField(max_length=None, use_url=True)
+class HomeworkCreateSerializer(serializers.ModelSerializer):
+	images = serializers.ListField(
+		required=True,
+		child=serializers.ImageField(max_length=None, use_url=True)
 		)
+	class Meta:
+		model = Homework
+		fields = ['grade', 'subject', 'book', 'number', 'images']
 
 	def create(self, validated_data):
 		return Homework.objects.create_homework(**validated_data)
@@ -65,6 +65,7 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = UserProfile
 		fields = ('pk', 'name', 'surname', 'grade', 'photo')
+		extra_kwargs = {'grade': {'required': False}, 'photo': {'required': False}}
 
 	def update(self, instance, validated_data):
 		instance.name = validated_data.get("name", instance.name)

@@ -72,7 +72,7 @@ class HomeworkManager(models.Manager):
 	def get_queryset(self):
 		return HomeworkQuerySet(self.model, using=self._db)
 
-	def create_homework(self, params, images, user):
+	def create_homework(self, grade, subject, book, number, images, user):
 		publisher_profile = UserProfile.objects.get(user=user)
 		grade = Grade.objects.all().get(id=params['grade'])
 		subject = grade.subjects.get(id=params['subject'])
@@ -91,6 +91,7 @@ class HomeworkManager(models.Manager):
 			hwimage.save()
 		homework.save()
 		return homework
+
 
 class Homework(models.Model):
 	publisher = models.ForeignKey(User, related_name='homeworks', on_delete=models.CASCADE, null=True)

@@ -156,5 +156,10 @@ LOGOUT_REDIRECT_URL = '/login'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'api.permissions.IsAdminOrReadOnly',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
     ]
 }

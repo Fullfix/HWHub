@@ -17,4 +17,5 @@ urlpatterns = [
 	path('get_user_id/', views.GetUserId.as_view()),
 	path('update_profile/<int:pk>', views.ProfileUpdateAPIView.as_view()),
 	path('update_username/<int:pk>', views.UserNameUpdateAPIView.as_view()),
+	path('create_homework', views.CreateHomeworkAPIView.as_view()),
 ]

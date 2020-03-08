@@ -8,6 +8,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
+from rest_framework import exceptions
 from users.models import User, UserProfile
 from . import serializers
 from homeworks.models import (
@@ -51,13 +52,13 @@ class ProfileUpdateAPIView(generics.RetrieveAPIView,
         UserIsOwnerOrReadOnlyProfile,
     )
     serializer_class = serializers.ProfileUpdateSerializer
-    parser_classes = (parsers.MultiPartParser, parsers.FormParser,)
 
     def get_object(self):
         obj = get_object_or_404(User, pk=self.kwargs['pk']).profile
         return obj
 
-    def put(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
+        print(request.data)
         return self.update(request, *args, **kwargs)
 
 
@@ -68,7 +69,6 @@ class UserNameUpdateAPIView(generics.RetrieveAPIView,
         UserIsOwnerOrReadOnly,
     )
     serializer_class = serializers.UserNameUpdateSerializer
-    parser_classes = (parsers.MultiPartParser, parsers.FormParser,)
     model = User
 
     def get_object(self):
@@ -81,6 +81,15 @@ class UserNameUpdateAPIView(generics.RetrieveAPIView,
     		return Response({"error":"passwords dont match"})
     	return self.update(request, *args, **kwargs)
 
+
+class CreateHomeworkAPIView(generics.CreateAPIView):
+	serializer_class = serializers.HomeworkCreateSerializer
+	permission_classes = (
+		permissions.IsAuthenticated,
+		)
+
+	def perform_create(self):
+		serializer.save(user=self.request.user)
 
 class GetUserId(APIView):
 	renderer_classes = [JSONRenderer]

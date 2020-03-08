@@ -5,9 +5,9 @@
 {% block link %}
 	<link rel="stylesheet" href="{% static 'styles/style_profile.css' %}?version=8">
 	<script>
+		var profileImage;
 		function ChangeProfile() {
         	console.log("Changed");
-            console.log(document.getElementById("info").style.display);
         	if (document.getElementById("info").style.display == "grid") {
                 document.getElementById("info").style.display = "none";
                 document.getElementById("changing").style.display = "grid";
@@ -18,12 +18,15 @@
             }
     	}
     	function AskPassword() {
-            console.log(document.getElementById("username_form").value);
             console.log("{{page_user.username}}");
 			if (document.getElementById("username_form").value != "{{page_user.username}}"){
+				document.getElementById("profile_errors").innerHTML = "";
 				document.getElementById("password_frame").style.visibility = "visible";
                 document.getElementById("password_frame").style.position = "fixed";
                 document.getElementById("password_frame").style.display = "block";
+			}
+			else {
+				ProfileChange();
 			}
         }
         function CancelPassword() {
@@ -31,6 +34,137 @@
             document.getElementById("password_frame").style.position = "absolute";
             document.getElementById("password_frame").style.display = "none";
         }
+
+        function APIRequestProfile(data) {
+        	return fetch('api/update_profile/{{ request.user.id }}', {
+        		method: "POST",
+        		body: data,
+        	}).then(response => response.json())
+        }
+
+        function APIRequestUsername(data) {
+        	return fetch('api/update_username/{{ request.user.id }}', {
+        		method: "PUT",
+        		headers: {"Content-Type": "application/json",
+        		"X-CSRFToken": "{{csrf_token}}"},
+        		body: JSON.stringify(data),
+        		credentials: 'same-origin'
+        	}).then(response => response.json())
+        }
+
+        function ProfileChange() {
+        	let info = document.getElementsByClassName("profile_changing_info")[0];
+        	let profileData = {};
+        	Array.from(info.getElementsByTagName("input")).forEach((inputNode) => {
+        		if (inputNode.name != 'username') {
+        			profileData[inputNode.name] = inputNode.value;
+        		}
+        	})
+        	gradeNode = info.getElementsByTagName("select")[0]
+        	if (gradeNode.value != "not chosen") {
+        		profileData[gradeNode.name] = gradeNode.value;
+        	}
+        	if (profileImage) {
+        		profileData["photo"] = profileImage;
+        	}
+        	profileData["pk"] = "{{request.user.id}}";
+        	formData = new FormData(document.getElementsByTagName("form")[0])
+        	for (let key in profileData) {
+        	 	formData.append(key, profileData[key]);
+        	}
+        	APIRequestProfile(formData).then(values => document.location.reload(true));
+        }
+
+        function CompleteChange() {
+        	let info = document.getElementsByClassName("profile_changing_info")[0];
+        	let profileData = {};
+        	let usernameData = {};
+        	let p1, p2;
+        	let errorDiv = document.getElementById("profile_errors");
+        	errorDiv.innerHTML = ""
+        	Array.from(info.getElementsByTagName("input")).forEach((inputNode) => {
+        		if (inputNode.name == 'username') {
+        			usernameData[inputNode.name] = inputNode.value;
+        		}
+        		else {
+        			profileData[inputNode.name] = inputNode.value;
+        		}
+        	})
+        	gradeNode = info.getElementsByTagName("select")[0]
+        	if (gradeNode.value != "not chosen") {
+        		profileData[gradeNode.name] = gradeNode.value;
+        	}
+        	password = document.getElementById("password_frame").getElementsByTagName("input")[0].value;
+        	usernameData["password"] = password;
+        	if (profileImage) {
+        		profileData["photo"] = profileImage;
+        	}
+        	profileData["pk"] = "{{request.user.id}}";
+        	usernameData["pk"] = "{{request.user.id}}"
+        	formData = new FormData(document.getElementsByTagName("form")[0])
+        	for (let key in profileData) {
+        	 	formData.append(key, profileData[key]);
+        	}
+        	p1 = APIRequestUsername(usernameData);
+        	p2 = APIRequestProfile(formData);
+        	Promise.all([p1, p2]).then(values => {
+        		if (values[0].pk && values[1].pk) {
+        			document.location.reload(true);
+        		}
+        		else {
+        			if (!values[0].pk) {
+        				for (let key in values[0]) {
+        					node = document.createElement("div");
+        					node.innerHTML = key
+        					for (let i in values[0][key]) {
+        						node.innerHTML += "<p>" + values[0][key][i] + "</p>"
+        					}
+        				}
+        				errorDiv.appendChild(node)
+        			}
+        			if (!values[1].pk) {
+        				for (let key in values[1]) {
+        					node = document.createElement("div");
+        					node.innerHTML = key
+        					for (let i in values[0][key]) {
+        						node.innerHTML += "<p>" + values[1][key][i] + "</p>"
+        					}
+        				}
+        				errorDiv.appendChild(node)
+        			}
+        		}
+        	})
+        }
+
+        function setDropzone() {
+        	let a;
+		    let dropzone = $("#profile_dropzone");
+		    let imagename = document.getElementById("profile_imagename");
+		    dropzone.on("dragover", function() {
+		        $(this).addClass('profile_dragover');
+		        return false;
+		    })
+
+		    dropzone.on("dragleave", function() {
+		        $(this).removeClass('profile_dragover');
+		    })
+
+		    dropzone.on("drop", function(e) {
+		        e.preventDefault();
+		        $(this).removeClass('profile_dragover');
+		        e.dataTransfer = e.originalEvent.dataTransfer;
+		        Array.from(e.dataTransfer.files).forEach(function(file){
+		        	a = file.name.split('.')
+		            if (!['png', 'jpg', 'jpeg'].includes(a[a.length-1])) {
+		                alert("Файл должен быть с расширением .png/.jpg/.jpeg");
+		            }
+		            else {
+		                profileImage = file;
+		                imagename.innerHTML = file.name;
+		            }
+		        })
+		    })
+		}
 	</script>
 {% endblock %}
 
@@ -39,7 +173,9 @@
 	<div class="show_profile" id="info" style="display: grid">
 		<div class="profile_image">
 			<img class="profile_image_img" src="{{profile.photo.url}}" alt="Блять не загузилось!!!" height="400px" width="400px">
+			{% if user.id == page_user.id %}
 			<button class="profile_image_button usual" type="button" onclick="ChangeProfile()">Изменить</button>
+			{% endif %}
 		</div>
 		<div class="profile_info">
 			<p style="font-size: 60px; font-weight: bold;">{{page_user.username}}</p>
@@ -70,7 +206,9 @@
 	<!--Changing information-->
 	<div class="show_changing_profile" id="changing" style="display: none">
 		<div class="profile_changing_image">
-			<div class="show_changing_image_dropzone usual">
+			<div id="image_upload"></div>
+			<div class="show_changing_image_dropzone usual" id="profile_dropzone">
+				<div id="profile_imagename"></div>
 				<p style="margin-top: 172px">Ператащите изображение в данное поле</p>
 			</div>
 		</div>
@@ -93,16 +231,26 @@
 		<div class="profile_changing_info usual" style="color: black!important;">
 			<div></div>
 			<div class="profile_changing_info_username">
-				<input type="text" class="profile_changing_info_username_form" id="username_form" style="width:250px; margin-top: 15px" placeholder="Ник" value="{{page_user.username}}">
+				<input type="text" name="username" class="profile_changing_info_username_form" id="username_form" style="width:250px; margin-top: 15px" placeholder="Ник" value="{{page_user.username}}">
 			</div>
 			<div class="profile_changing_info_realname">
-				<input type="text" class="profile_changing_info_realname_form" placeholder="Введите имя" style="width:250px; margin-bottom: 15px; margin-left: calc((100% - 250px) / 2); margin-right: calc((100% - 250px) / 2);" value="{{profile.name}}">
-				<input type="text" class="profile_changing_info_realname_form" placeholder="Введите фамилию" style="width:250px; margin-bottom: 15px" value="{{profile.surname}}">
+				<input type="text" name="name" class="profile_changing_info_realname_form" placeholder="Введите имя" style="width:250px; margin-bottom: 15px; margin-left: calc((100% - 250px) / 2); margin-right: calc((100% - 250px) / 2);" value="{{profile.name}}">
+				<input type="text" name="surname" class="profile_changing_info_realname_form" placeholder="Введите фамилию" style="width:250px; margin-bottom: 15px" value="{{profile.surname}}">
 			</div>
 			<div class="profile_changing_info_grad">
-				<select name="Grade" id="grade_changing" style="width:250px;">
+				<select name="grade" id="grade_changing" style="width:250px;">
 					<option hidden disabled selected value="not chosen">-- Выберите класс --</option>
-					<option value="/api/grades/2/">10</option>
+					<option value="11">11</option>
+					<option value="10">10</option>
+					<option value="9">9</option>
+					<option value="8">8</option>
+					<option value="7">7</option>
+					<option value="6">6</option>
+					<option value="5">5</option>
+					<option value="4">4</option>
+					<option value="3">3</option>
+					<option value="2">2</option>
+					<option value="1">1</option>
 				</select>
 			</div>
 			<div>
@@ -115,14 +263,22 @@
 		<div class="password_window">
 			<input type="password" placeholder="Введите пароль" class="usual" style="width: 400px; height: 50px; margin-top: 25px; margin-bottom: 25px; text-align: center; color: black">
 			<button class="usual" onclick="CancelPassword()" style="width: 250px; height: 75px; margin-bottom: 19px; color: black">Отменить</button>
-			<button class="usual" style="width: 250px; height: 75px; margin-bottom: 19px; color: black">Продолжить</button>
+			<button class="usual" onclick="CompleteChange()" style="width: 250px; height: 75px; margin-bottom: 19px; color: black">Продолжить</button>
+			<div class="profile_errors" id="profile_errors"></div>
 		</div>
 	</div>
 	<div class="profile_show_homework">
 		<p align="center" style="font-size: 48px; background: rgb(1,0,255); background: linear-gradient(90deg, #92bbff 0%, #97faa7 100%); width: 30%; margin-right: auto; margin-left: auto; font-weight: bold;">Домашние задания</p>
 	</div>
+	<div class="invis">
+		<form class="invis" action="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+		</form>
+	</div>
+
 
 {% endblock %}
 
 {% block onload %}
+setDropzone()
 {% endblock %}
