@@ -1,11 +1,12 @@
 {% load static %}
     <div class ="upload_upload">
         <div class="go_back" style="margin-top: 10px; margin-left: 10px">
-            <a href="#" style="width: 30px; height: 30px; position: absolute">
             <img id="go_back_img" src="{% static 'images/go_back.png' %}" alt="ГРУЗИСЬ БЛЯТЬ">
+            <a href="#" style="color: black!important;">
+            <i class="far fa-times-circle" style="font-size: 30px; right: 10px; position: absolute"></i>
             </a>
         </div>
-        <form id="post-form" enctype="multipart/form-data" method="post" style="margin-top: 30px; position: absolute">
+        <form id="post-form" enctype="multipart/form-data" method="post" style="position: absolute; width: 100%; height: calc(100% - 40px);">
             {% csrf_token %}
             <div class="div_input" id="div_input_grade">
                 <select name="grade" id="grade_select" class="input_hw">
@@ -30,10 +31,10 @@
             </div>
             <div class="div_input invis" id="file_input">
                 <div id="uploads"></div>
-                <div class="dropzone" id="dropzone">Перетащите файлы</div>
+                <div class="dropzone" id="dropzone" style="margin-left: 5px;">Перетащите файлы</div>
             </div>
             <div class="upload_btn invis" id="upload_btn">
-                <button type="submit" value="upload_hw" class="upload-button">Выложить</button>
+                <button type="submit" value="upload_hw" class="upload-button usual">Выложить</button>
             </div>
         </form>
     </div>
