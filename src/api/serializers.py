@@ -46,19 +46,15 @@ class HomeworkImageSerializer(serializers.HyperlinkedModelSerializer):
 		model = HomeworkImage
 		fields = '__all__'
 
-# class GradeRelatedField(serializers.HyperLinkedRelatedField, )
+class ModelListField(serializers.ListField):
+	def to_representation(self, data):
+		return [self.child.to_representation(item) if item is not None else None for item in data]
 
 class HomeworkCreateSerializer(serializers.ModelSerializer):
-	images = serializers.ListField(
-		required=True,
-		child=serializers.ImageField(max_length=None, use_url=True)
-		)
+	images = ModelListField(child=serializers.FileField(max_length=100000, use_url=False))
 	class Meta:
 		model = Homework
 		fields = ['grade', 'subject', 'book', 'number', 'images']
-
-	def create(self, validated_data):
-		return Homework.objects.create_homework(**validated_data)
 
 
 class ProfileUpdateSerializer(serializers.ModelSerializer):

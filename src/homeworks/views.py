@@ -36,6 +36,7 @@ def auto_sort_grand(request, grade, subject, book):
 	return redirect('grandbookpage', grade, subject, book, 'pop')
 
 
+@method_decorator(login_required, name='dispatch')
 class ClassPage(View):
 	def get(self, request, grade):
 		grade_class = Grade.objects.all().get(grade__exact=grade)
@@ -47,6 +48,8 @@ class ClassPage(View):
 		'profile':profile, 'grade':grade_class}
 		return render(request, 'classpage.html', context)
 
+
+@method_decorator(login_required, name='dispatch')
 class GrandBookPage(View):
 	def get(self, request, grade, subject, book, sort):
 		try:
@@ -73,6 +76,7 @@ class GrandBookPage(View):
 		return render(request, 'bookpage.html', context)
 
 
+@method_decorator(login_required, name='dispatch')
 class BookPage(View):
 	def get(self, request, grade, subject, book, num, sort='pop'):
 		try:
@@ -100,6 +104,7 @@ class BookPage(View):
 			'sort':sort}
 		return render(request, 'bookpage.html', context)
 
+
 @method_decorator(login_required, name='dispatch')
 class GetHWOpinion(View):
 	def get(self, request):
@@ -114,6 +119,7 @@ class GetHWOpinion(View):
 			disliked = False
 		json = {"liked":liked, "disliked":disliked}
 		return JsonResponse(json)
+
 
 @method_decorator(login_required, name='dispatch')
 class UploadHW(View):

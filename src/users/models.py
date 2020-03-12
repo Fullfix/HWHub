@@ -22,7 +22,8 @@ def create_grades():
 
 class UserQuerySet(models.query.QuerySet):
 	def last(self):
-		return self.order_by('-homeworks__publication_date')
+		U = [user for user in self if user.has_homeworks]
+		return sorted(U, key=lambda x: x.last_publictation_date, reverse=True)
 
 
 class UserManager(BaseUserManager):
@@ -83,6 +84,10 @@ class User(AbstractBaseUser):
 	@property
 	def last_publictation_date(self):
 		return self.homeworks.all().date()[0].publication_date
+
+	@property
+	def has_homeworks(self):
+		return self.homeworks.all().count() != 0
 
 	@property	
 	def is_admin(self):

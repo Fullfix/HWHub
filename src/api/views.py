@@ -82,14 +82,29 @@ class UserNameUpdateAPIView(generics.RetrieveAPIView,
     	return self.update(request, *args, **kwargs)
 
 
-class CreateHomeworkAPIView(generics.CreateAPIView):
+class CreateHomeworkAPIView(APIView):
 	serializer_class = serializers.HomeworkCreateSerializer
 	permission_classes = (
 		permissions.IsAuthenticated,
 		)
 
-	def perform_create(self):
-		serializer.save(user=self.request.user)
+	def post(self, request, *args, **kwargs):
+		data = dict(request.data)
+		print(request.data)
+		data.pop('csrfmiddlewaretoken')
+		files = []
+		for i in range(10):
+			if f'file{i}' in data.keys():
+				files.append(data.pop(f'file{i}')[0])
+		for i in data.keys():
+			data[i] = data[i][0]
+		data['images']=files
+		serializer = self.serializer_class(data=data)
+		if serializer.is_valid(raise_exception=True):
+			pass
+		Homework.objects.create_homework(**data, user_id=request.user.id)
+		return Response({"success":"created"})
+
 
 class GetUserId(APIView):
 	renderer_classes = [JSONRenderer]

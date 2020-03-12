@@ -18,21 +18,22 @@ function get_choices(list) {
 
 function create_hw(form, uploadedFiles) {
     formdata = new FormData(form);
-    data = new FormData(form);
+    console.log(document.getElementById("upload_form"))
+    data = new FormData(document.getElementById("upload_form"));
     formdata.forEach((value, key) => {
         if (key == "grade") {
-            data.delete(key);
             data.append(key, get_object(value).id);
         }
         else if (key == "subject" || key == "book") {
-            data.delete(key);
             data.append(key, get_object(value).id);
         }
+        else {
+            data.append(key, value)
+        }
     })
-    uploadedFiles.forEach(function(file, i) {
-        console.log(i, file);
-        data.append("file"+i, file)});
-    fetch('/homework/upload/', { // Your POST endpoint
+    console.log(uploadedFiles)
+    uploadedFiles.forEach((value, key) => data.append('file'+key, value))
+    fetch('/api/create_homework', { // Your POST endpoint
     method: 'POST',
     body: data // This is your file object
     }).then(
@@ -42,7 +43,7 @@ function create_hw(form, uploadedFiles) {
     ).catch(
         error => console.log(error) // Handle the error response object
     );
-};
+}
 function uploadMain() {
     var grades = get_object('/api/grades/')
     var grade = $('#div_input_grade');
@@ -64,7 +65,6 @@ function uploadMain() {
 
     $('#post-form').on('submit', function(e) {
         e.preventDefault()
-        console.log("submitted");
         grade_select.attr("disabled", false)
         subject_select.attr("disabled", false);
         book_select.attr("disabled", false);

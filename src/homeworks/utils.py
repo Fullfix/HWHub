@@ -50,9 +50,7 @@ def time_to_string(date):
 	return s
 
 def upload_location(instance, filename):
-	return 'uploads/%s/%s.%s' % (instance.homework.publisher.id,
-		instance.homework.id,
-		filename.split('.')[-1])
+	return f'uploads/{instance.homework.publisher.id}-{instance.id}.{filename.split(".")[-1]}'
 
 def upload_book(instance, filename):
 	return f'books/{instance.name}.{filename.split(".")[-1]}'

@@ -68,7 +68,7 @@
         		profileData["photo"] = profileImage;
         	}
         	profileData["pk"] = "{{request.user.id}}";
-        	formData = new FormData(document.getElementsByTagName("form")[0])
+        	formData = new FormData(document.getElementById("form_profile"))
         	for (let key in profileData) {
         	 	formData.append(key, profileData[key]);
         	}
@@ -101,7 +101,7 @@
         	}
         	profileData["pk"] = "{{request.user.id}}";
         	usernameData["pk"] = "{{request.user.id}}"
-        	formData = new FormData(document.getElementsByTagName("form")[0])
+        	formData = new FormData(document.getElementById("form_profile"))
         	for (let key in profileData) {
         	 	formData.append(key, profileData[key]);
         	}
@@ -271,7 +271,7 @@
 		<p align="center" style="font-size: 48px; background: rgb(1,0,255); background: linear-gradient(90deg, #92bbff 0%, #97faa7 100%); width: 30%; margin-right: auto; margin-left: auto; font-weight: bold;">Домашние задания</p>
 	</div>
 	<div class="invis">
-		<form class="invis" action="POST" enctype="multipart/form-data">
+		<form class="invis" action="POST" enctype="multipart/form-data" id="form_profile">
 		{% csrf_token %}
 		</form>
 	</div>

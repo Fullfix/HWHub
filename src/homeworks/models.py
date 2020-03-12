@@ -72,21 +72,22 @@ class HomeworkManager(models.Manager):
 	def get_queryset(self):
 		return HomeworkQuerySet(self.model, using=self._db)
 
-	def create_homework(self, grade, subject, book, number, images, user):
+	def create_homework(self, grade, subject, book, number, images, user_id):
+		user = User.objects.all().get(id=user_id)
 		publisher_profile = UserProfile.objects.get(user=user)
-		grade = Grade.objects.all().get(id=params['grade'])
-		subject = grade.subjects.get(id=params['subject'])
-		book = subject.books.get(id=params['book'])
+		grade = Grade.objects.all().get(id=grade)
+		subject = grade.subjects.get(id=subject)
+		book = subject.books.get(id=book)
 		homework = self.create(publisher=user,
 			publisher_profile=publisher_profile,
 			grade=grade,
 			subject=subject,
 			book=book,
-			number=params['number'])
-		for i, name in enumerate(images.keys()):
+			number=number)
+		for i in range(len(images)):
 			hwimage = HomeworkImage.objects.create(
 				homework=homework, 
-				image=images[name],
+				image=images[i],
 				index=i)
 			hwimage.save()
 		homework.save()
