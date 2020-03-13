@@ -3,6 +3,7 @@ function autocomplete(inputId, submitId) {
 	const subjects = loadSubjects();
 	var submitBtn = document.getElementById(submitId);
 	var inp = document.getElementById(inputId);
+
 	var currentFocus;
 	inp.addEventListener("input", (e) => {
 		var a, b, i;
@@ -100,7 +101,6 @@ function autocomplete(inputId, submitId) {
     		}
     	})
     	subjects.forEach(subject => {
-    		console.log(subject[0]+subject[1])
     		if (subject[0]+subject[1] == inp.value) {
     			submitBtn.disabled = false;
     			submitBtn.classList.remove('disabled');

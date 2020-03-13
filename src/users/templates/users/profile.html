@@ -24,6 +24,8 @@
 				document.getElementById("password_frame").style.visibility = "visible";
                 document.getElementById("password_frame").style.position = "fixed";
                 document.getElementById("password_frame").style.display = "block";
+                document.getElementById("password_input").disabled = false;
+                document.getElementById("navbar_search").disabled = true;
 			}
 			else {
 				ProfileChange();
@@ -33,6 +35,8 @@
             document.getElementById("password_frame").style.visibility = "hidden";
             document.getElementById("password_frame").style.position = "absolute";
             document.getElementById("password_frame").style.display = "none";
+            document.getElementById("password_input").disabled = true;
+            document.getElementById("navbar_search").disabled = false;
         }
 
         function APIRequestProfile(data) {
@@ -261,7 +265,7 @@
 	</div>
 	<div class="password_frame" id="password_frame" >
 		<div class="password_window">
-			<input type="password" placeholder="Введите пароль" class="usual" style="width: 400px; height: 50px; margin-top: 25px; margin-bottom: 25px; text-align: center; color: black">
+			<input type="password" placeholder="Введите пароль" class="usual" id="password_input" style="width: 400px; height: 50px; margin-top: 25px; margin-bottom: 25px; text-align: center; color: black" disabled>
 			<button class="usual" onclick="CancelPassword()" style="width: 250px; height: 75px; margin-bottom: 19px; color: black">Отменить</button>
 			<button class="usual" onclick="CompleteChange()" style="width: 250px; height: 75px; margin-bottom: 19px; color: black">Продолжить</button>
 			<div class="profile_errors" id="profile_errors"></div>
