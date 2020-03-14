@@ -7,10 +7,13 @@ ALLOWED_HOSTS = ['breskanun.beget.tech']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hwhub',
-        'USER': 'fullfix',
-        'PASSWORD': 'FiveNights1987%',
-        'HOST': 'hwhub.com',
+        'NAME': 'breskanun_hw',
+        'USER': 'breskanun_hw',
+        'PASSWORD': 'U6iUHOs%',
+        'HOST': 'localhost',
         'PORT': '',
     }
 }
+
+STATIC_URL = '/HWHub/static/'
+MEDIA_URL = '/HWHub/media/'
