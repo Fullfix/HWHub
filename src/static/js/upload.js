@@ -9,7 +9,6 @@ function get_object(url) {
 }
 
 function get_choices(list) {
-    console.log(list)
     return list.map(url => {
         let obj = get_object(url);
         return {"value":obj.url, "fullname":obj.full_name}
@@ -18,7 +17,6 @@ function get_choices(list) {
 
 function create_hw(form, uploadedFiles) {
     formdata = new FormData(form);
-    console.log(document.getElementById("upload_form"))
     data = new FormData(document.getElementById("upload_form"));
     formdata.forEach((value, key) => {
         if (key == "grade") {
@@ -31,18 +29,16 @@ function create_hw(form, uploadedFiles) {
             data.append(key, value)
         }
     })
-    console.log(uploadedFiles)
     uploadedFiles.forEach((value, key) => data.append('file'+key, value))
     fetch('/api/create_homework', { // Your POST endpoint
     method: 'POST',
     body: data // This is your file object
     }).then(
         response => response.json() // if the response is a JSON object
-    ).then(
-        success => console.log(success) // Handle the success response object
-    ).catch(
-        error => console.log(error) // Handle the error response object
-    );
+    ).then(success => {
+        let url = window.location.href.replace(/#upload_frame/g, '');
+        window.location.href = url;
+    })
 }
 function uploadMain() {
     var grades = get_object('/api/grades/')
@@ -87,8 +83,8 @@ function uploadMain() {
         $(this).removeClass('dragover');
         e.dataTransfer = e.originalEvent.dataTransfer;
         Array.from(e.dataTransfer.files).forEach(function(file){
-            if (file.name.split('.').pop() != "png") {
-                alert("Файл должен быть с расширением .png");
+            if (!['png', 'jpg', 'jpeg'].includes(file.name.split('.').pop())) {
+                alert("Файл должен быть с расширением .png/.jpg/.jpeg");
             }
             else {
                 if (uploadedFiles.length == 0) {

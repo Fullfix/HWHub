@@ -7,7 +7,6 @@
 	<script>
 		var profileImage;
 		function ChangeProfile() {
-        	console.log("Changed");
         	if (document.getElementById("info").style.display == "grid") {
                 document.getElementById("info").style.display = "none";
                 document.getElementById("changing").style.display = "grid";
@@ -18,7 +17,6 @@
             }
     	}
     	function AskPassword() {
-            console.log("{{page_user.username}}");
 			if (document.getElementById("username_form").value != "{{page_user.username}}"){
 				document.getElementById("profile_errors").innerHTML = "";
 				document.getElementById("password_frame").style.visibility = "visible";
@@ -119,7 +117,6 @@
         			if (!values[0].pk) {
         				for (let key in values[0]) {
         					node = document.createElement("div");
-        					node.innerHTML = key
         					for (let i in values[0][key]) {
         						node.innerHTML += "<p>" + values[0][key][i] + "</p>"
         					}
@@ -129,7 +126,6 @@
         			if (!values[1].pk) {
         				for (let key in values[1]) {
         					node = document.createElement("div");
-        					node.innerHTML = key
         					for (let i in values[0][key]) {
         						node.innerHTML += "<p>" + values[1][key][i] + "</p>"
         					}

@@ -4,6 +4,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from users.models import User, UserProfile
 from homeworks.models import New
+from django.core.mail import send_mail
 
 
 @method_decorator(login_required, name='dispatch')

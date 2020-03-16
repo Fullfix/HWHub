@@ -15,7 +15,7 @@ function setDropzone() {
         $(this).removeClass('profile_dragover');
         e.dataTransfer = e.originalEvent.dataTransfer;
         Array.from(e.dataTransfer.files).forEach(function(file){
-            if (['png', 'jpg', 'jpeg'].contains(file.name.split('.').pop())) {
+            if (!['png', 'jpg', 'jpeg'].includes(file.name.split('.').pop())) {
                 alert("Файл должен быть с расширением .png/.jpg/.jpeg");
             }
             else {

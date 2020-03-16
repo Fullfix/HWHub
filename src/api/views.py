@@ -5,6 +5,7 @@ from rest_framework import permissions
 from rest_framework import mixins
 from rest_framework import parsers
 from rest_framework import status
+from rest_framework.serializers import ValidationError
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
@@ -58,7 +59,6 @@ class ProfileUpdateAPIView(generics.RetrieveAPIView,
         return obj
 
     def post(self, request, *args, **kwargs):
-        print(request.data)
         return self.update(request, *args, **kwargs)
 
 
@@ -78,7 +78,7 @@ class UserNameUpdateAPIView(generics.RetrieveAPIView,
     def put(self, request, *args, **kwargs):
     	user = User.objects.all().get(pk=kwargs['pk'])
     	if not user.check_password(request.data.get('password')):
-    		return Response({"error":"passwords dont match"})
+    		raise ValidationError({"password":["Пароли не совпадают"]})
     	return self.update(request, *args, **kwargs)
 
 
@@ -90,7 +90,6 @@ class CreateHomeworkAPIView(APIView):
 
 	def post(self, request, *args, **kwargs):
 		data = dict(request.data)
-		print(request.data)
 		data.pop('csrfmiddlewaretoken')
 		files = []
 		for i in range(10):

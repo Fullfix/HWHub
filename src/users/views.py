@@ -42,7 +42,6 @@ class RegisterView(View):
 @login_required
 def profile(request, id_):
 	user = User.objects.all().get(id__exact=id_)
-	print(user.username)
 	profile = user.profile
 	homeworks = Homework.objects.all().publisher(user)
 	context = {'user':request.user, 'page_user':user, 'profile':profile, 'homeworks':homeworks}

@@ -86,7 +86,6 @@ class BookPage(View):
 		homeworks = book.homeworks.all().number(num)
 		if sort == 'pop':
 			homeworks = homeworks.likes()
-			print(homeworks)
 		elif sort == 'new':
 			homeworks = homeworks.date()
 		else:

@@ -1,5 +1,4 @@
 HWMain = function() {
-    console.log("main")
     var hwButtons = document.getElementsByClassName("Homework_buttons");
     var imageGrids = document.getElementsByClassName('Homework_img');
 
