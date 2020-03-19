@@ -4,7 +4,8 @@
         <div class="Homework_profile">
             <img src="{{homework.publisher_profile.photo.url}}" height="50px" width="50px" style="float: left;border-radius: 25px;position: absolute;left: 5px;margin: 5px 0px">
             <p style="float: left; margin-left: 10px; margin: 19.5px 0px; left: 70px; position: absolute; font-size: 18px; line-height: 21px; color: black" class="usual" >{{homework.publisher.username}}</p>
-            <p class="usual" style="right: 3%; float: right; margin: 19.5px 0px; position: absolute; font-size: 18px; line-height: 21px; color: black">{{homework.uploaded}}</p>
+            <p class="usual" style="right: 45px; float: right; margin: 19.5px 0px; position: absolute; font-size: 18px; line-height: 21px; color: black">{{homework.uploaded}}</p>
+            <button onclick="AskConfirmation()" id="HW_delete" style="right: 5px; position: absolute; margin-top: 15px"><i class="fas fa-trash"></i></button>
         </div>
         <div class="Homework_img">
             <p align="center" style="margin: 0px!important;">
@@ -119,5 +120,11 @@
                 }
             }
         })
+    }
+    function AskConfirmation() {
+        document.getElementById("delete_frame").style.visibility = "visible";
+        document.getElementById("delete_frame").style.position = "fixed";
+        document.getElementById("delete_frame").style.display = "block";
+        document.getElementById("navbar_search").disabled = true;
     }
 </script>
