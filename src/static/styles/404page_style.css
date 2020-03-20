@@ -1,0 +1,17 @@
+.usual {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 40px;
+    line-height: 47px;
+    letter-spacing: 0.04em;
+}
+body {
+    overflow-y: hidden;
+}
+.Spooky_Text {
+    position: fixed;
+    font-size: 36px;
+    line-height: 42px;
+    z-index: 1;
+}

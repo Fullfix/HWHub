@@ -13,11 +13,17 @@ class UserIsOwnerOrReadOnlyProfile(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return obj.id == request.user.profile.id
+        return (obj.id == request.user.profile.id)
 
 
 class UserIsOwnerOrReadOnly(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return obj.id == request.user.id
+        return (obj.id == request.user.id)
+
+class UserIsOwnerOrAdminHomework(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return (obj.publisher.id == request.user.id) or request.user.is_staff

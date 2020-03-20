@@ -5,6 +5,7 @@ from django.views import View
 from users.models import User, UserProfile
 from homeworks.models import New
 from django.core.mail import send_mail
+from django.template import RequestContext
 
 
 @method_decorator(login_required, name='dispatch')
@@ -19,3 +20,7 @@ class MainPage(View):
 		context = {'user':request.user, 'profile':profile,
 		'last_users':last_users, 'last_news':last_news, 'classes':list(range(1, 12))}
 		return render(request, 'main.html', context)
+
+
+def handler404(request, *args, **kwargs):
+	return render(request, '404page.html')

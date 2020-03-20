@@ -57,6 +57,12 @@ class HomeworkCreateSerializer(serializers.ModelSerializer):
 		fields = ['grade', 'subject', 'book', 'number', 'images']
 
 
+class HomeworkDeleteSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Homework
+		fields = ['id', 'grade', 'subject', 'book', 'number', 'publisher']
+
+
 class ProfileUpdateSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = UserProfile

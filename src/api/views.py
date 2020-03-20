@@ -18,7 +18,9 @@ from homeworks.models import (
 	Book,
 	Homework,
 	HomeworkImage)
-from .permissions import IsAdminOrReadOnly, UserIsOwnerOrReadOnly, UserIsOwnerOrReadOnlyProfile
+from .permissions import (
+	IsAdminOrReadOnly, UserIsOwnerOrReadOnly, 
+	UserIsOwnerOrReadOnlyProfile, UserIsOwnerOrAdminHomework)
 
 # Create your views here.
 
@@ -104,6 +106,14 @@ class CreateHomeworkAPIView(APIView):
 		Homework.objects.create_homework(**data, user_id=request.user.id)
 		return Response({"success":"created"})
 
+class DeleteHomeworkAPIView(generics.RetrieveDestroyAPIView):
+	permission_classes = (
+		permissions.IsAuthenticated,
+		UserIsOwnerOrAdminHomework,
+		)
+	serializer_class = serializers.HomeworkDeleteSerializer
+	queryset = Homework.objects.all()
+	lookup_field = "pk"
 
 class GetUserId(APIView):
 	renderer_classes = [JSONRenderer]

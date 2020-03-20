@@ -5,7 +5,9 @@
             <img src="{{homework.publisher_profile.photo.url}}" height="50px" width="50px" style="float: left;border-radius: 25px;position: absolute;left: 5px;margin: 5px 0px">
             <p style="float: left; margin-left: 10px; margin: 19.5px 0px; left: 70px; position: absolute; font-size: 18px; line-height: 21px; color: black" class="usual" >{{homework.publisher.username}}</p>
             <p class="usual" style="right: 45px; float: right; margin: 19.5px 0px; position: absolute; font-size: 18px; line-height: 21px; color: black">{{homework.uploaded}}</p>
-            <button onclick="AskConfirmation()" id="HW_delete" style="right: 5px; position: absolute; margin-top: 15px"><i class="fas fa-trash"></i></button>
+            {% if homework.publisher.id == request.user.id or request.user.is_staff %}
+            <button onclick="AskConfirmation(this)" id="HW_delete" data-hwid="{{homework.id}}" style="right: 5px; position: absolute; margin-top: 15px"><i class="fas fa-trash"></i></button>
+            {% endif %}
         </div>
         <div class="Homework_img">
             <p align="center" style="margin: 0px!important;">
@@ -121,7 +123,24 @@
             }
         })
     }
-    function AskConfirmation() {
+    function DeleteHW() {
+        let hwid = document.getElementById("delete_frame").getAttribute("data-hwid")
+        fetch("/api/delete_homework/"+hwid, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json", "X-CSRFToken": "{{csrf_token}}"},
+            credentials: "same-origin"
+        }).then(response => {
+            if (response.status == 204) {
+                document.location.reload(true)
+            }
+            else {
+                console.log(response.json())
+            }
+        })
+    }
+    function AskConfirmation(btn) {
+        let hwid = btn.getAttribute("data-hwid")
+        document.getElementById("delete_frame").setAttribute("data-hwid", hwid)
         document.getElementById("delete_frame").style.visibility = "visible";
         document.getElementById("delete_frame").style.position = "fixed";
         document.getElementById("delete_frame").style.display = "block";

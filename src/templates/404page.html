@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HWHUB 404</title>
+    <link type="text/css" href="{% static 'styles/404page_style.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <a class="usual Spooky_Text" href="./" style="transform: translate(5vw, 1vh) rotate(-30deg);">Вернуться на главную...</a>
+    <a class="usual Spooky_Text" href="./" style="transform: translate(35vw, 1vh) rotate(4deg);">Вернуться на главную...</a>
+    <a class="usual Spooky_Text" href="./" style="transform: translate(70vw, 5vh) rotate(30deg);">Вернуться на главную...</a>
+    <a class="usual Spooky_Text" href="./" style="transform: translate(35vw, 50vh) rotate(-50deg);">Вернуться на главную...</a>
+    <a class="usual Spooky_Text" href="./" style="transform: translate(5vw, 50vh) rotate(15deg);">Вернуться на главную...</a>
+    <a class="usual Spooky_Text" href="./" style="transform: translate(75vw, 43vh) rotate(-94deg);">Вернуться на главную...</a>
+    <p class="usual" align="center" style="font-size: 404px; line-height: 473px; margin: 0; margin-top: calc((100vh - 473px) / 2 - 47px) ">404</p>
+    <p align="center" class="usual">Вы попали туда, куда не следовало бы...</p>
+</body>
+<script>
+    let P = [[5, 1], [35, 1], [70, 5], [35, 50], [5, 50], [75, 43]]
+    let R = [-30, 4, 30, -50, 15, -94]
+    let i, n
+    T = document.getElementsByClassName('Spooky_Text')
+    const setPos = (P, R) => {
+        for (let i in P) {
+            T[i].style.transform = "translate("+ P[i][0]+"vw,"+P[i][1]+"vh)"+"rotate("+R[i]+"deg)"
+        }
+    }
+    setPos(P, R)
+    window.setInterval(() => {
+        for (let i in P) {
+            n = Math.floor(Math.random() * 4)
+            if (n==0 && P[i][0] != 100) {
+                P[i][0] += 0.01
+            }
+            if (n==1 && P[i][1] != 100) {
+                P[i][1] += 0.01
+            }
+            if (n==2 && P[i][0] != 0) {
+                P[i][0] -= 0.01
+            }
+            if (n==3 && P[i][1] != 0) {
+                P[i][1] -= 0.01
+            }
+        }
+        for (let i in R) {
+            R[i] += 0.1
+        }
+        setPos(P, R)
+    }, 50)
+</script>
+</html>

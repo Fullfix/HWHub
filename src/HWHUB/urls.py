@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+# from django.conf.urls import handler404
 from django.contrib.staticfiles.urls import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from .settings import base
@@ -31,3 +32,6 @@ urlpatterns = [
 
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(base.MEDIA_URL, document_root=base.MEDIA_ROOT)
+
+handler404 = views.handler404
+# handler500 = views.handler404
