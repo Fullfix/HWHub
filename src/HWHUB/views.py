@@ -24,3 +24,9 @@ class MainPage(View):
 
 def handler404(request, *args, **kwargs):
 	return render(request, '404page.html')
+
+def handler403(request, *args, **kwargs):
+	return render(request, '403page.html')
+
+def handler500(request, *args, **kwargs):
+	return render(request, '500page.html')

@@ -34,4 +34,5 @@ urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(base.MEDIA_URL, document_root=base.MEDIA_ROOT)
 
 handler404 = views.handler404
-# handler500 = views.handler404
+handler500 = views.handler500
+handler403 = views.handler403
