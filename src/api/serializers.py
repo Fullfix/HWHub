@@ -51,7 +51,7 @@ class ModelListField(serializers.ListField):
 		return [self.child.to_representation(item) if item is not None else None for item in data]
 
 class HomeworkCreateSerializer(serializers.ModelSerializer):
-	images = ModelListField(child=serializers.FileField(max_length=100000, use_url=False))
+	images = ModelListField(child=serializers.ImageField(max_length=100000, use_url=False))
 	class Meta:
 		model = Homework
 		fields = ['grade', 'subject', 'book', 'number', 'images']

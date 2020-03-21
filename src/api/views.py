@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.core import exceptions
 from rest_framework import viewsets
 from rest_framework import generics
 from rest_framework import permissions
@@ -103,7 +104,10 @@ class CreateHomeworkAPIView(APIView):
 		serializer = self.serializer_class(data=data)
 		if serializer.is_valid(raise_exception=True):
 			pass
-		Homework.objects.create_homework(**data, user_id=request.user.id)
+		try:
+			Homework.objects.create_homework(**data, user_id=request.user.id)
+		except exceptions.ValidationError as e:
+			return Response({"error":str(e)})
 		return Response({"success":"created"})
 
 class DeleteHomeworkAPIView(generics.RetrieveDestroyAPIView):

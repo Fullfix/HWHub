@@ -4,6 +4,7 @@ from django.db.models.functions import Length
 from users.models import User, UserProfile
 from django.contrib.staticfiles import finders
 from django.conf import settings
+from .validators import validate_image
 from .utils import (
 	time_to_string,
 	upload_location,
@@ -89,6 +90,11 @@ class HomeworkManager(models.Manager):
 				homework=homework, 
 				image=images[i],
 				index=i)
+			try:
+				hwimage.full_clean()
+			except:
+				homework.delete()
+				raise
 			hwimage.save()
 		homework.save()
 		return homework
@@ -122,7 +128,7 @@ class Homework(models.Model):
 
 class HomeworkImage(models.Model):
 	homework = models.ForeignKey(Homework, related_name='images', on_delete=models.CASCADE)
-	image = models.ImageField(upload_to=upload_location, null=True, blank=True)
+	image = models.ImageField(upload_to=upload_location, validators=[validate_image], null=True, blank=True)
 	index = models.IntegerField(default=0)
 
 	def __str__(self):
