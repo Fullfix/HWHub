@@ -4,9 +4,140 @@
 <html>
 <head>
 	<title>HWHUB</title>
-	<link href="{% static 'styles/style_landing.css' %}?version=1" rel="stylesheet">
+	<link href="{% static 'styles/style_landing.css' %}?version=9" rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Kreon&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
+
 </head>
 <body>
-	<h1>УУУУУ ЛЕНДИНГ</h1>
+	<div class="header">
+		<div class="Header_MP" style="width: 100%; height: 550px; background-color: #46D960;">
+			<div class="empty">
+				<img src="{% static 'images/pen.png' %}" style="position: absolute; margin-left: calc((100px - 75px) / 2); margin-top: 50px">
+			</div>
+			<div class="header_content">
+				<h1 class="usual" style="font-family: Kreon; font-size: 200px; line-height: 250px; color: white;"><span style="color: #606060">HW</span>HUB</h1>
+				<p class="usual" style="color: white;">Сайт №1, посвященный хорошему оформлению домашнего задания и обучению других</p>
+				<div class="header_content_buttons" style="margin-top: 100px">
+					<div class="header_content_button" id="login">
+						<p class="usual" style="position: absolute; font-size: 40px; margin-top: calc((150px - 28px) / 2); margin-left: calc((400px - 122px) / 2); color: white">Логин</p>
+					</div>
+					<div class="button_empty" >
+
+					</div>
+					<div class="header_content_button" id="register" >
+						<p class="usual" style="position: absolute; font-size: 40px; margin-top: calc((150px - 28px) / 2); margin-left: calc((400px - 257px) / 2); color: white">Регистрация</p>
+					</div>
+				</div>
+			</div>
+			<div class="empty">
+				<img src="{% static 'images/pencil.png' %}" style="position: absolute; margin-left: calc((100px - 65px) / 2); margin-top: 50px; width: 65px;">
+			</div>
+		</div>
+		<div class="Ellips"></div>
+	</div>
+	<div class="content" style="margin-top: 200px">
+		<div class="empty"></div>
+		<div class="Main_Content">
+			<h2 class="usual" style="font-family: Pacifico; font-size: 72px; line-height: 80px">
+				О сайте
+			</h2>
+			<p class="usual" style="margin-top: 40px">
+				HWHUB - это первый сайт, в котором реализована система выкладывания и оценивания домашних работ и других учебных материалов.
+			</p>
+			<h2 class="usual" style="font-family: Pacifico; font-size: 72px; line-height: 80px">
+				Наши преимущества
+			</h2>
+			<div class="MP_Achiv" style="margin-top: 50px">
+				<div class="MP_Achiv_Item">
+					<div class="MP_Achiv_Item_Circle" id="magic">
+						<p class="usual item_text_circle">
+							1
+						</p>
+					</div>
+					<div class="MP_Achiv_Item_Block" >
+						<p class="usual item_text_block" >
+							Наличие нескольких вариантов решения
+						</p>
+					</div>
+				</div>
+				<div class="MP_Achiv_Item">
+					<div class="MP_Achiv_Item_Circle">
+						<p class="usual item_text_circle">
+							2
+						</p>
+					</div>
+					<div class="MP_Achiv_Item_Block" >
+						<p class="usual item_text_block" >
+							Возможность оценивания домашних заданий на правильность
+						</p>
+					</div>
+				</div>
+				<div class="MP_Achiv_Item">
+					<div class="MP_Achiv_Item_Circle">
+						<p class="usual item_text_circle">
+							3
+						</p>
+					</div>
+					<div class="MP_Achiv_Item_Block" >
+						<p class="usual item_text_block" >
+							Постоянная динамика сайта - возможность взамодействия между пользователями
+						</p>
+					</div>
+				</div>
+				<div class="MP_Achiv_Item">
+					<div class="MP_Achiv_Item_Circle">
+						<p class="usual item_text_circle">
+							4
+						</p>
+					</div>
+					<div class="MP_Achiv_Item_Block">
+						<p class="usual item_text_block" >
+							Возможность предложить свой вариант путём выкладывания работы
+						</p>
+					</div>
+				</div>
+			</div>
+			<h2 class="usual" style="font-family: Pacifico; font-size: 72px; line-height: 80px; margin-top: 50px">
+				Разработчики
+			</h2>
+			<div class="MP_Developers" id="develop" style="margin-top: 50px;">
+				<div class="MP_Developers_item">
+					<p class="usual">Брескану<br> Никита</p>
+					<img src="{% static 'images/Psycho_avatar.png' %}" width="250px" style="margin-left: 25px">
+				</div>
+				<div class="MP_Developers_item">
+					<p class="usual">Давыдов<br> Даниил</p>
+					<img src="{% static 'images/Psycho_avatar.png' %}" width="250px" style="margin-left: 25px">
+				</div>
+				<div class="MP_Developers_item" id="MagicUser">
+					<p class="usual" >Мартынов<br> Олег</p>
+					<img id="MagicUserAvatar" src="{% static 'images/Psycho_avatar.png' %}" width="250px" style="margin-left: 25px">
+				</div>
+			</div>
+			<div class="MP_Lord">
+				<p align="center" class="usual">Руководитель: Курзин Александр</p>
+				<img src="{% static 'images/Lord.jpg' %}" width="250px" style="margin-left: calc((100% - 250px) / 2)">
+			</div>
+			<p class="usual" style="margin-top: 50px; font-size: 60px" align="center;"><strong>Нас уже: 0</strong></p>
+		</div>
+		<div class="empty"></div>
+	</div>
+	<div class="footer">
+		<div class="last_update">
+			<p class="usual" style="margin-bottom: 0px; color: white; font-size: 24px; line-height: 28px;">Последнее обновление: Февраль 2020</p>
+		</div>
+	</div>
+	<script>
+        document.getElementById("login").setAttribute('onclick', 'location.href = "login"');
+        document.getElementById("register").setAttribute('onclick', 'location.href = "register"');
+        document.getElementById("magic").addEventListener('click', ()=>{
+            document.getElementById("MagicUser").remove();
+            document.getElementById("develop").style.gridTemplateColumns = "300px 300px";
+            document.getElementById("develop").style.gridGap = "calc(100% - 600px)";
+		})
+	</script>
 </body>
 </html>
