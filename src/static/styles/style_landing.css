@@ -92,3 +92,15 @@ body {
     border-radius: 50%;
     z-index: -1;
 }
+
+#lord.rotate90 {
+    transform: rotate(90deg);
+}
+
+#lord.rotate180 {
+    transform: rotate(180deg);
+}
+
+#lord.rotate270 {
+    transform: rotate(270deg);
+}

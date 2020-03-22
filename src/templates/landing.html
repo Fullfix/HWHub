@@ -119,9 +119,9 @@
 			</div>
 			<div class="MP_Lord">
 				<p align="center" class="usual">Руководитель: Курзин Александр</p>
-				<img src="{% static 'images/Lord.jpg' %}" width="250px" style="margin-left: calc((100% - 250px) / 2)">
+				<img id="lord" src="{% static 'images/Lord.jpg' %}" width="250px" style="margin-left: calc((100% - 250px) / 2)">
 			</div>
-			<p class="usual" style="margin-top: 50px; font-size: 60px" align="center;"><strong>Нас уже: 0</strong></p>
+			<p class="usual" style="margin-top: 50px; font-size: 60px" align="center;"><strong>Нас уже: {{ users }}</strong></p>
 		</div>
 		<div class="empty"></div>
 	</div>
@@ -131,12 +131,22 @@
 		</div>
 	</div>
 	<script>
+		let rotation = 0;
         document.getElementById("login").setAttribute('onclick', 'location.href = "login"');
         document.getElementById("register").setAttribute('onclick', 'location.href = "register"');
         document.getElementById("magic").addEventListener('click', ()=>{
             document.getElementById("MagicUser").remove();
             document.getElementById("develop").style.gridTemplateColumns = "300px 300px";
             document.getElementById("develop").style.gridGap = "calc(100% - 600px)";
+		})
+		document.getElementById("lord").addEventListener('click', () => {
+			if (rotation != 270) {
+				rotation += 90
+			}
+			else {
+				rotation = 0
+			}
+			document.getElementById("lord").className = 'rotate' + rotation
 		})
 	</script>
 </body>

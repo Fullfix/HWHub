@@ -24,7 +24,9 @@ class MainPage(View):
 
 class LandingPage(View):
 	def get(self, request):
-		return render(request, 'landing.html')
+		users_num = User.objects.all().count()
+		context = {'users':users_num}
+		return render(request, 'landing.html', context)
 
 
 def handler404(request, *args, **kwargs):
