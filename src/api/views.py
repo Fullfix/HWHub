@@ -106,7 +106,7 @@ class CreateHomeworkAPIView(APIView):
 			pass
 		try:
 			Homework.objects.create_homework(**data, user_id=request.user.id)
-		except exceptions.ValidationError as e:
+		except BaseException as e:
 			return Response({"error":str(e)})
 		return Response({"success":"created"})
 
