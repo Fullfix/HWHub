@@ -26,6 +26,10 @@ class LandingPage(View):
 	def get(self, request):
 		users_num = User.objects.all().count()
 		context = {'users':users_num}
+		if request.user.is_authenticated:
+			context['is_logged'] = "true"
+		else:
+			context['is_logged'] = ""
 		return render(request, 'landing.html', context)
 
 
