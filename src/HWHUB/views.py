@@ -22,6 +22,11 @@ class MainPage(View):
 		return render(request, 'main.html', context)
 
 
+class LandingPage(View):
+	def get(self, request):
+		return render(request, 'landing.html')
+
+
 def handler404(request, *args, **kwargs):
 	return render(request, '404page.html')
 

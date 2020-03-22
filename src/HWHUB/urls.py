@@ -28,6 +28,7 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('homework/', include('homeworks.urls')),
     path('', include('django.contrib.auth.urls')),
+    path('index', views.LandingPage.as_view()),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
