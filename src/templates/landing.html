@@ -132,7 +132,16 @@
 	</div>
 	<script>
 		let rotation = 0;
-        document.getElementById("login").setAttribute('onclick', 'location.href = "login"');
+		document.getElementById("login").addEventListener('click', () => {
+			console.log("{{is_logged}}")
+			if ("{{is_logged}}" == "true") {
+				window.location.href="/"
+			}
+			else {
+				window.location.href = "/login"
+			}
+		})
+        // document.getElementById("login").setAttribute('onclick', 'location.href = "login"');
         document.getElementById("register").setAttribute('onclick', 'location.href = "register"');
         document.getElementById("magic").addEventListener('click', ()=>{
             document.getElementById("MagicUser").remove();
