@@ -4,7 +4,7 @@
 <html>
 <head>
 	<title>HWHUB</title>
-	<link href="{% static 'styles/style_landing.css' %}?version=9" rel="stylesheet">
+	<link href="{% static 'styles/style_landing.css' %}?version=13" rel="stylesheet">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Kreon&display=swap" rel="stylesheet">
@@ -117,9 +117,16 @@
 					<img id="MagicUserAvatar" src="{% static 'images/Psycho_avatar.png' %}" width="250px" style="margin-left: 25px">
 				</div>
 			</div>
-			<div class="MP_Lord">
-				<p align="center" class="usual">Руководитель: Курзин Александр</p>
-				<img id="lord" src="{% static 'images/Lord.jpg' %}" width="250px" style="margin-left: calc((100% - 250px) / 2)">
+			<div class="Epic_Guys">
+				<div class="Shit"></div>
+				<div class="MP_Lord">
+					<p align="center" class="usual">Руководитель: Курзин Александр</p>
+					<img id="lord" src="{% static 'images/Lord.jpg' %}" width="250px" style="margin-left: calc((100% - 250px) / 2)">
+				</div>
+				<div id="romadiv" class="Roma" style="margin-top:100px;">
+					<p class="usual" align="center"></p>
+					<img id="roma" src="{% static 'images/roma.jpg' %}" width="250px" style="margin-left:25px; visibility:hidden;">
+				</div>
 			</div>
 			<p class="usual" style="margin-top: 50px; font-size: 60px" align="center;"><strong>Нас уже: {{ users }}</strong></p>
 		</div>
@@ -132,6 +139,18 @@
 	</div>
 	<script>
 		let rotation = 0;
+
+		romadiv = document.getElementById("romadiv")
+		romadiv.onmouseenter = () => {
+			document.getElementById("roma").style.visibility = "visible"
+			romadiv.getElementsByTagName("p")[0].innerHTML = "Роман"
+		}
+		romadiv.onmouseleave = () => {
+			document.getElementById("roma").style.visibility = "hidden"
+			romadiv.getElementsByTagName("p")[0].innerHTML = ""
+		}
+
+
 		document.getElementById("login").addEventListener('click', () => {
 			console.log("{{is_logged}}")
 			if ("{{is_logged}}" == "true") {

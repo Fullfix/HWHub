@@ -71,6 +71,11 @@ body {
     grid-gap: calc((100% - 900px) / 2);
     height: 400px;
 }
+.Epic_Guys {
+    grid-template-columns: 300px 300px 300px;
+    display: grid;
+    grid-gap: calc((100% - 900px) / 2);
+}
 .last_update {
     right: 50px;
     position: absolute;
