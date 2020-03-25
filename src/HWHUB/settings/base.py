@@ -122,6 +122,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+SECURE_SSL_REDIRECT = False
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
@@ -163,5 +166,9 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
         'rest_framework.parsers.FormParser',
         'rest_framework.parsers.MultiPartParser',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ]
 }

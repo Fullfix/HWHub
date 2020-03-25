@@ -74,7 +74,9 @@
         	for (let key in profileData) {
         	 	formData.append(key, profileData[key]);
         	}
-        	APIRequestProfile(formData).then(values => document.location.reload(true));
+        	APIRequestProfile(formData).then(values => {
+        		document.location.reload(true)
+        	});
         }
 
         function CompleteChange() {

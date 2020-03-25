@@ -58,10 +58,13 @@ class ProfileUpdateAPIView(generics.RetrieveAPIView,
     serializer_class = serializers.ProfileUpdateSerializer
 
     def get_object(self):
+        print(f'pk {self.kwargs["pk"]}')
         obj = get_object_or_404(User, pk=self.kwargs['pk']).profile
         return obj
 
     def post(self, request, *args, **kwargs):
+        obj = self.get_object()
+        self.check_object_permissions(request, obj)
         return self.update(request, *args, **kwargs)
 
 
@@ -79,6 +82,8 @@ class UserNameUpdateAPIView(generics.RetrieveAPIView,
         return obj
 
     def put(self, request, *args, **kwargs):
+    	obj = self.get_object()
+    	self.check_object_permissions(request, obj)
     	user = User.objects.all().get(pk=kwargs['pk'])
     	if not user.check_password(request.data.get('password')):
     		raise ValidationError({"password":["Пароли не совпадают"]})
