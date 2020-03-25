@@ -129,7 +129,14 @@ SECURE_SSL_REDIRECT = False
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
+from django.utils.translation import ugettext_lazy as _
+
 LANGUAGE_CODE = 'en-us'
+
+LANGUAGES = (
+    ('en', _('English')),
+    ('ru', _('Russian')),
+) 
 
 TIME_ZONE = 'Europe/Moscow'
 

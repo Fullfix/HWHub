@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -41,7 +41,7 @@ class RegisterView(View):
 
 @login_required
 def profile(request, id_):
-	user = User.objects.all().get(id__exact=id_)
+	user = get_object_or_404(User, id=id_)
 	profile = user.profile
 	homeworks = Homework.objects.all().publisher(user)
 	context = {'user':request.user, 'page_user':user, 'profile':profile, 'homeworks':homeworks}
