@@ -25,8 +25,8 @@ class MainPage(View):
 
 
 class LandingPage(View):
-	self.login_form = AuthenticationForm
-	self.register_form = UserRegisterForm
+	login_form = AuthenticationForm
+	register_form = UserRegisterForm
 
 	def get(self, request):
 		users_num = User.objects.all().count()
