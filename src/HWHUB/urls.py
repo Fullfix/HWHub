@@ -23,12 +23,12 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.MainPage.as_view(), name='main'),
+    path('home/', views.MainPage.as_view(), name='main'),
     path('', include('users.urls')),
     path('api/', include('api.urls')),
     path('homework/', include('homeworks.urls')),
     path('', include('django.contrib.auth.urls')),
-    path('index', views.LandingPage.as_view()),
+    path('', views.LandingPage.as_view()),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
