@@ -6,6 +6,8 @@ from users.models import User, UserProfile
 from homeworks.models import New
 from django.core.mail import send_mail
 from django.template import RequestContext
+from django.contrib.auth.forms import AuthenticationForm
+from users.forms import UserRegisterForm
 
 
 @method_decorator(login_required, name='dispatch')
@@ -23,9 +25,13 @@ class MainPage(View):
 
 
 class LandingPage(View):
+	self.login_form = AuthenticationForm
+	self.register_form = UserRegisterForm
+
 	def get(self, request):
 		users_num = User.objects.all().count()
-		context = {'users':users_num}
+		context = {'users':users_num, 'login_form':self.login_form(),
+		 'register_form':self.register_form()}
 		if request.user.is_authenticated:
 			context['is_logged'] = "true"
 		else:
