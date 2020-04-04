@@ -5,6 +5,6 @@ def validate_input(value):
 	for i in "#!*'();:@&=+$,/?%[]":
 	    if i in value:
 	        raise ValidationError(
-	            _(f'Поле содержит недопустимые символы'),
+	            _(f'Field contains inappropriate symbols'),
 	            params={'value': value},
 	        )

@@ -4,6 +4,8 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.utils.decorators import method_decorator
+from django.utils import translation
+from django.utils.translation import gettext_lazy as _
 from django.views import View
 from users.models import User, UserProfile
 from homeworks.models import New
@@ -60,9 +62,9 @@ class LoginUser(View):
                     data = {'success': False, 'error': 'User is not active'}
             else:
                 if User.objects.filter(username=username).exists():
-                    error = "You entered incorrect password"
+                    error = _("You entered incorrect password")
                 else:
-                	error = "You entered unexisting username"
+                	error = _("You entered unexisting username")
                 data = {'success': False, 'error': error}
 
             return JsonResponse(data)

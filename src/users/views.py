@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views import View
 from django.utils.translation import get_language
+from django.utils.translation import gettext_lazy as _
 from .forms import UserRegisterForm
 from .models import UserProfile, User
 from homeworks.models import Homework
@@ -35,7 +36,7 @@ class RegisterView(View):
 		else:
 			errors = dict(form.errors.items())
 			for key in errors.keys():
-				errors[key] = (errors[key][0])
+				errors[key] = _(errors[key][0])
 			data = {'success': False, 'error':errors}
 			return JsonResponse(data)
 

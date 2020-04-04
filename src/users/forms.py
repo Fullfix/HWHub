@@ -2,6 +2,7 @@ from django import forms
 from .models import User, UserProfile
 # from .validators import validate_username
 from django.contrib.auth.forms import UserCreationForm
+from django.utils.translation import gettext_lazy as _
 
 def create_grades():
 	C = []
@@ -38,5 +39,5 @@ class UserRegisterForm(UserCreationForm):
 		password1 = self.cleaned_data.get('password1')
 		password2 = self.cleaned_data.get('password2')
 		if password1 and password2 and password1 != password2:
-			raise forms.ValidationError("Passwords don't match")
+			raise forms.ValidationError(_("Passwords don't match"))
 		return password2
