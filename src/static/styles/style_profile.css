@@ -101,3 +101,56 @@ body {
     background: white;
     overflow-y: auto;
 }
+.Homework_show {
+    position: relative;
+    left: calc((100% - 500px) / 2);
+    width: 500px;
+    margin-bottom: 15px;
+    font-family: sans-serif;
+    border-radius: 10px;
+    border: 1px solid #000000;
+    box-sizing: border-box;
+}
+.Homework_profile{
+    height: 60px;
+    border-bottom: 1px solid #000000;
+}
+
+.Homework_buttons {
+    height: 70px;
+    border-top: 1px solid #000000;
+    padding: 0px;
+    font-size: 20px;
+    align-items: center;
+}
+.Homework_buttons img{
+    margin: 5px 0px;
+}
+.Homework_buttons p{
+    margin: 24.5px 0px;
+}
+.Homework_dislike {
+    float: left;
+    display: flex;
+    align-items: center;
+    width: 155px;
+}
+.Homework_like {
+    float: left;
+    display: flex;
+    align-items: center;
+    width: 155px;
+}
+.Homework_comment {
+    float: right;
+    display: flex;
+    align-items: center;
+}
+button:focus {
+    outline: none !important
+}
+
+.Homework_img{
+    align-items: center;
+    margin:0px;
+}

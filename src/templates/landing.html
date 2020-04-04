@@ -4,7 +4,7 @@
 <html>
 <head>
 	<title>HWHUB</title>
-	<link href="{% static 'styles/style_landing.css' %}?version=13" rel="stylesheet">
+	<link href="{% static 'styles/style_landing.css' %}?version=14" rel="stylesheet">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Kreon&display=swap" rel="stylesheet">
@@ -12,6 +12,42 @@
 
 </head>
 <body>
+	<div class="login_frame" id="login_frame">
+		<div class="login_window">
+			<p class="usual" style="margin-top: 100px">Логин</p>
+			<form method="post" action="{% url 'login' %}">
+				{% csrf_token %}
+				{{ login_form }}
+				<div style="display: grid; grid-template-columns: 1fr 1px 1fr; margin-top: 274px;">
+					<div>
+						<button type="submit" class ="login-button" style="width: 100%">Войти</button>
+					</div>
+					<div style="background: black"></div>
+					<div>
+						<button type="button" class="cancel-button" id="cancel_login" style="width: 100%">Отмена</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="register_frame" id="register_frame">
+		<div class="register_window">
+			<p class="usual" style="margin-top: 20px">Регистрация</p>
+			<form method="post" action="{% url 'register' %}">
+				{% csrf_token %}
+				{{ register_form }}
+				<div style="display: grid; grid-template-columns: 1fr 1px 1fr; margin-top: 57px;">
+					<div>
+						<button type="submit" class ="register-button" style="width: 100%">Зарегистрироваться</button>
+					</div>
+					<div style="background: black"></div>
+					<div>
+						<button type="button" class="cancel-button" id="cancel_register" style="width: 100%">Отмена</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 	<div class="header">
 		<div class="Header_MP" style="width: 100%; height: 550px; background-color: #46D960;">
 			<div class="empty">
@@ -140,6 +176,9 @@
 	<script>
 		let rotation = 0;
 
+		document.getElementById("id_username").placeholder = "Введите логин";
+        document.getElementById("id_password").placeholder = "Введите пароль";
+
 		romadiv = document.getElementById("romadiv")
 		romadiv.onmouseenter = () => {
 			document.getElementById("roma").style.visibility = "visible"
@@ -157,11 +196,29 @@
 				window.location.href="/home"
 			}
 			else {
-				window.location.href = "/login"
+				document.getElementById("login_frame").style.visibility = "visible";
+                document.getElementById("login_frame").style.display = "block";
 			}
 		})
+        document.getElementById("register").addEventListener('click', () => {
+            console.log("{{is_logged}}")
+            if ("{{is_logged}}" == "true") {
+                window.location.href="/home"
+            }
+            else {
+                document.getElementById("register_frame").style.visibility = "visible";
+                document.getElementById("register_frame").style.display = "block";
+            }
+        })
+        document.getElementById("cancel_login").addEventListener('click', () => {
+                document.getElementById("login_frame").style.visibility = "hidden";
+                document.getElementById("login_frame").style.display = "none";
+        })
+        document.getElementById("cancel_register").addEventListener('click', () => {
+            document.getElementById("register_frame").style.visibility = "hidden";
+            document.getElementById("register_frame").style.display = "none";
+        })
         // document.getElementById("login").setAttribute('onclick', 'location.href = "login"');
-        document.getElementById("register").setAttribute('onclick', 'location.href = "register"');
         document.getElementById("magic").addEventListener('click', ()=>{
             document.getElementById("MagicUser").remove();
             document.getElementById("develop").style.gridTemplateColumns = "300px 300px";

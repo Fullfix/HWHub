@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<title>{% block title %} header {% endblock %}</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link href="{% static 'styles/style_nav.css' %}?version=15" rel="stylesheet">
+	<link href="{% static 'styles/style_nav.css' %}?version=16" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{% static 'styles/style_upload.css' %}?version=2">
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
@@ -30,7 +30,8 @@
 
 			</div>
 			<div class="navbar_grid_Profile">
-
+				<img src="{{profile.photo.url}}" width="40px" height="40px" style="border-radius: 20px; margin-top: 5px; right: 80px; position: absolute">
+				<a href="/logout"><p class="usual logout" style= "margin-top: 11px; right: 20px; position: absolute; font-size: 14px">Выйти</p></a>
 			</div>
 		</div>
 	</div>

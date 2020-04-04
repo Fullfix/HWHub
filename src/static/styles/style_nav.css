@@ -96,5 +96,11 @@
 	grid-gap: 10px;
 	grid-auto-rows: auto;
 }
+.logout:hover {
+	color: #9099A4!important;
+}
+.logout {
+	color: black!important;
+}
 #upload_frame:target {visibility: visible; position: fixed; display: block}
 
