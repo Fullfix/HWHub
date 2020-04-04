@@ -32,9 +32,11 @@
         </div>
     </div>
 {% empty %}
+    {% if not page_user %}
     <div>
         {% include 'emptyhw.html' %}
     </div>
+    {% endif %}
 {% endfor %}
 
 <script>

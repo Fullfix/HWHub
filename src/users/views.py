@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.views import View
+from django.utils.translation import get_language
 from .forms import UserRegisterForm
 from .models import UserProfile, User
 from homeworks.models import Homework
@@ -10,14 +12,9 @@ from homeworks.models import Homework
 
 class RegisterView(View):
 	form_class = UserRegisterForm
-	template_name = 'registration/register.html'
-
-	def get(self, request):
-		form = self.form_class()
-		context = {'form': form}
-		return render(request, self.template_name, context)
 
 	def post(self, request):
+		print(get_language())
 		form = self.form_class(request.POST)
 		if form.is_valid():
 			username = form.cleaned_data['username']
@@ -33,10 +30,14 @@ class RegisterView(View):
 			profile = UserProfile(user=user, name=name, surname=surname, grade=grade)
 			profile.save()
 			login(request, user)
-			return redirect('main')
+			data = {'success': True, 'error':""}
+			return JsonResponse(data)
 		else:
-			context = {'form': form}
-			return render(request, self.template_name, context)
+			errors = dict(form.errors.items())
+			for key in errors.keys():
+				errors[key] = (errors[key][0])
+			data = {'success': False, 'error':errors}
+			return JsonResponse(data)
 
 
 @login_required

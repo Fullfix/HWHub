@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views import View
 from users.models import User, UserProfile
@@ -37,6 +40,33 @@ class LandingPage(View):
 		else:
 			context['is_logged'] = ""
 		return render(request, 'landing.html', context)
+
+
+class LoginUser(View):
+    def post(self, request):
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '').strip()
+        if username and password:
+            # Test username/password combination
+            user = authenticate(username=username, password=password)
+            # Found a match
+            if user is not None:
+                # User is active
+                if user.is_active:
+                    # Officially log the user in
+                    login(self.request, user)
+                    data = {'success': True}
+                else:
+                    data = {'success': False, 'error': 'User is not active'}
+            else:
+                if User.objects.filter(username=username).exists():
+                    error = "You entered incorrect password"
+                else:
+                	error = "You entered unexisting username"
+                data = {'success': False, 'error': error}
+
+            return JsonResponse(data)
+        return HttpResponseBadRequest()    
 
 
 def handler404(request, *args, **kwargs):

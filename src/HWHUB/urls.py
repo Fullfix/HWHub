@@ -18,6 +18,8 @@ from django.urls import path, include
 # from django.conf.urls import handler404
 from django.contrib.staticfiles.urls import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.contrib.auth.views import LogoutView
+from django.views.i18n import JavaScriptCatalog
 from .settings import base
 from . import views
 
@@ -27,8 +29,10 @@ urlpatterns = [
     path('', include('users.urls')),
     path('api/', include('api.urls')),
     path('homework/', include('homeworks.urls')),
-    path('', include('django.contrib.auth.urls')),
-    path('', views.LandingPage.as_view()),
+    path('', views.LandingPage.as_view(), name='landing'),
+    path('login/', views.LoginUser.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
