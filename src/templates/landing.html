@@ -19,8 +19,8 @@
 			<form method="post" action="{% url 'login' %}" id="loginform">
 				{% csrf_token %}
 				{{ login_form }}
-				<p id="loginerrors"></p>
-				<div style="display: grid; grid-template-columns: 1fr 1px 1fr; margin-top: 274px;">
+				<p id="loginerrors"style="color: red"></p>
+				<div style="display: grid; grid-template-columns: 1fr 1px 1fr; position: absolute; bottom: 0px; width: 100%">
 					<div>
 						<button type="submit" class ="login-button" style="width: 100%">Войти</button>
 					</div>
@@ -38,7 +38,8 @@
 			<form method="post" action="{% url 'register' %}" id="registerform">
 				{% csrf_token %}
 				{{ register_form }}
-				<div style="display: grid; grid-template-columns: 1fr 1px 1fr; margin-top: 57px;">
+				<p id="registererrors" style="color: red"></p>
+				<div style="display: grid; grid-template-columns: 1fr 1px 1fr; position: absolute; bottom: 0px; width: 100%">
 					<div>
 						<button type="submit" class ="register-button" style="width: 100%">Зарегистрироваться</button>
 					</div>
@@ -47,7 +48,7 @@
 						<button type="button" class="cancel-button" id="cancel_register" style="width: 100%">Отмена</button>
 					</div>
 				</div>
-				<p id="registererrors"></p>
+
 			</form>
 		</div>
 	</div>
