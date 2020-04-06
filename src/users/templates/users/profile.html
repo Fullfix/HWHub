@@ -4,6 +4,7 @@
 {% block title %} Личный кабинет {% endblock %}
 {% block link %}
 	<link rel="stylesheet" href="{% static 'styles/style_profile.css' %}?version=8">
+	<link href="{% static 'styles/style_hw.css' %}?version=83" rel="stylesheet">
 	<script>
 		var profileImage;
 		function ChangeProfile() {
@@ -284,4 +285,5 @@
 
 {% block onload %}
 setDropzone()
+HWMain()
 {% endblock %}
