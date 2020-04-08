@@ -16,7 +16,6 @@ function get_choices(list) {
 }
 
 function create_hw(form, uploadedFiles) {
-    document.getElementById("uploaderror").innerHTML = ""
     formdata = new FormData(form);
     data = new FormData(document.getElementById("upload_form"));
     formdata.forEach((value, key) => {
@@ -43,7 +42,7 @@ function create_hw(form, uploadedFiles) {
             window.location.href = url;
         }
         else {
-            document.getElementById("uploaderror").innerHTML = "Выберите все поля и добавьте файл вашего домашнего задания"
+            alert("Выберите все поля и добавьте файл вашего домашнего задания");
         }
     })
 }

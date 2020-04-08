@@ -31,7 +31,7 @@
             <div class="div_input invis" id="file_input">
                 <div id="uploads"></div>
                 <div class="dropzone" id="dropzone" style="margin-left: 5px;">
-                    <button type="button" onclick="document.getElementById('filechoose').click()">Выберите</button>
+                    <button class="drop_button" type="button" onclick="document.getElementById('filechoose').click()">Выберите</button>
                     <input type="file" multiple id="filechoose" name="fileinput" style="display: none;">
                     <p>или перетащите файлы</p>
                 </div>
@@ -39,7 +39,6 @@
             <div class="upload_btn invis" id="upload_btn">
                 <button type="submit" value="upload_hw" class="upload-button usual">Выложить</button>
             </div>
-            <div id="uploaderror"></div>
         </form>
         <form class="invis" id="upload_form">
             {% csrf_token %}
