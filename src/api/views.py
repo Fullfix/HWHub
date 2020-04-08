@@ -98,12 +98,16 @@ class CreateHomeworkAPIView(APIView):
 	def post(self, request, *args, **kwargs):
 		data = dict(request.data)
 		data.pop('csrfmiddlewaretoken')
+		data.pop('fileinput')
 		files = []
 		for i in range(10):
 			if f'file{i}' in data.keys():
 				files.append(data.pop(f'file{i}')[0])
 		for i in data.keys():
 			data[i] = data[i][0]
+		if not files:
+			return Response({"success":False, 
+				"error":"please choose images of your homework"})
 		data['images']=files
 		serializer = self.serializer_class(data=data)
 		if serializer.is_valid(raise_exception=True):
@@ -111,8 +115,8 @@ class CreateHomeworkAPIView(APIView):
 		try:
 			Homework.objects.create_homework(**data, user_id=request.user.id)
 		except BaseException as e:
-			return Response({"error":str(e)})
-		return Response({"success":"created"})
+			return Response({"success":False, "error":str(e)})
+		return Response({"success":True})
 
 class DeleteHomeworkAPIView(generics.RetrieveDestroyAPIView):
 	permission_classes = (

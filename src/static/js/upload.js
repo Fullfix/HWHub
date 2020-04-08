@@ -16,6 +16,7 @@ function get_choices(list) {
 }
 
 function create_hw(form, uploadedFiles) {
+    document.getElementById("uploaderror").innerHTML = ""
     formdata = new FormData(form);
     data = new FormData(document.getElementById("upload_form"));
     formdata.forEach((value, key) => {
@@ -35,9 +36,15 @@ function create_hw(form, uploadedFiles) {
     body: data // This is your file object
     }).then(
         response => response.json() // if the response is a JSON object
-    ).then(success => {
-        let url = window.location.href.replace(/#upload_frame/g, '');
-        window.location.href = url;
+    ).then(response => {
+        console.log(response)
+        if (response.success) {
+            let url = window.location.href.replace(/#upload_frame/g, '');
+            window.location.href = url;
+        }
+        else {
+            document.getElementById("uploaderror").innerHTML = "Выберите все поля и добавьте файл вашего домашнего задания"
+        }
     })
 }
 function uploadMain() {
@@ -59,7 +66,35 @@ function uploadMain() {
     var jsonBooks = null;
     var jsonNumbers = null;
 
+    document.getElementById("filechoose").onchange = function(e) {
+        Array.from(this.files).forEach(function(file){
+            if (!['png', 'jpg', 'jpeg'].includes(file.name.split('.').pop())) {
+                alert("Файл должен быть с расширением .png/.jpg/.jpeg");
+            }
+            else {
+                if (uploadedFiles.length == 0) {
+                    btn.removeClass('invis');
+                }
+                uploadedFiles.push(file);
+                $('#uploads').append('<h5 class="names">'+file.name+'</h5>');
+                $('#uploads h5:last').on("click", function() {
+                    for (let i = 0; i < uploadedFiles.length; i++) {
+                        if (uploadedFiles[i].name == $(this).text()) {
+                            uploadedFiles.splice(i, 1);
+                            break;
+                        }
+                    }
+                    $(this).remove();
+                    if (uploadedFiles.length == 0) {
+                        btn.addClass('invis');
+                    }
+                })
+            }
+        })
+    }
+
     $('#post-form').on('submit', function(e) {
+        console.log("submit")
         e.preventDefault()
         grade_select.attr("disabled", false)
         subject_select.attr("disabled", false);
