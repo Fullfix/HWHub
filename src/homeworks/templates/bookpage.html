@@ -50,6 +50,15 @@
 			<div class="HW_BookProfile">
 				<img src="{{book.image.url}}" class="HW_BookProfile_Preview" height="300px" width="200px">
 			</div>
+			<div class="HW_ChoosingTask" style="text-align: center; margin-bottom: 20px; ">
+				<p class="usual" style="color: black">Тип заданий</p>
+				<select size="1" style="width: 200px">
+					<option>Упражнения</option>
+					<option>Вопросы после параграфа</option>
+					<option>Повторение</option>
+					<option>Усложненный уровень</option>
+				</select>
+			</div>
 			<div class="HW_BookTasks">
 				{% for number in book.numbers %}
 				{% if cur_num and number == cur_num %}
