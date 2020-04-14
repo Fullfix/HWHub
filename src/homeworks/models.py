@@ -36,13 +36,37 @@ class Book(models.Model):
 	subject = models.ForeignKey(Subject, related_name='books', on_delete=models.CASCADE)
 	image = models.ImageField(upload_to=upload_book, null=True, blank=True)
 	number_list = models.CharField(max_length=10000, default='')
+	type_list = models.CharField(max_length=1000, default='')
 
 	@property
 	def numbers(self):
 		return json.loads(self.number_list)
 
+	@property
+	def types(self):
+		if self.type_list:
+			return json.loads(self.type_list)
+		else:
+			return None
+
+	@property
+	def number_dict(self):
+		N = self.numbers
+		T = self.types
+		D = {}
+		if not T:
+			return {}
+		for val, _ in T:
+			A = list(filter(lambda x: val in x, N))
+			typenumbers = map(lambda z: z[len(val):],filter(lambda x: val in x, N))
+			D[val] = list(typenumbers)
+		return D
+
 	def set_numbers(self, N):
 		self.number_list = json.dumps(N)
+
+	def set_types(self, T):
+		self.type_list = json.dumps(T)
 
 	def __str__(self):
 		return self.name

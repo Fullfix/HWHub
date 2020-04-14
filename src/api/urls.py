@@ -15,6 +15,7 @@ router.register('profiles', views.UserProfilesView)
 urlpatterns = [
 	path('', include(router.urls)),
 	path('get_user_id/', views.GetUserId.as_view()),
+	path('get_book_number_dict/<int:pk>', views.GetBookNumberDict.as_view()),
 	path('update_profile/<int:pk>', views.ProfileUpdateAPIView.as_view()),
 	path('update_username/<int:pk>', views.UserNameUpdateAPIView.as_view()),
 	path('create_homework', views.CreateHomeworkAPIView.as_view()),

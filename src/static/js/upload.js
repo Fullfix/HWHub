@@ -46,6 +46,22 @@ function create_hw(form, uploadedFiles) {
         }
     })
 }
+
+function getNumberType(number, numberDict, types) {
+    for (let k in numberDict) {
+        for (let i in numberDict[k]) {
+            if (k + numberDict[k][i] == number) {
+                for (let j in types) {
+                    if (types[j][0] == k) {
+                        name = types[j][1];
+                    }
+                }
+                return [name, numberDict[k][i]];
+            }
+        }
+    }
+}
+
 function uploadMain() {
     var grades = get_object('/api/grades/')
     var grade = $('#div_input_grade');
@@ -200,10 +216,23 @@ function uploadMain() {
         subject_select.attr("disabled", true);
     })
 
-    book_select.on('change', function() {
-        currentChoices = JSON.parse(get_object(this.value).number_list)
+    book_select.on('change', async function() {
+        let numberDict;
+        let Arr;
+        let name;
+        let num;
+        let obj = get_object(this.value);
+        let types = JSON.parse(obj.type_list);
+        currentChoices = JSON.parse(obj.number_list);
+        await fetch('/api/get_book_number_dict/' + obj.id, {
+            method: "GET",
+        }).then(response => response.json())
+        .then(response => numberDict = response);
         currentChoices.forEach(number => {
-            number_select.append('<option value="'+number+'">'+number+'</option');
+            Arr = getNumberType(number, numberDict, types);
+            name = Arr[0];
+            num = Arr[1];
+            number_select.append('<option value="'+number+'">'+ name + " "+ num + '</option');
         })
         number.removeClass("invis");
         book_select.attr("disabled", true);

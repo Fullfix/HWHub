@@ -27,7 +27,8 @@ class SubjectSerializer(serializers.HyperlinkedModelSerializer):
 class BookSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Book
-		fields = ['id', 'url', 'name', 'slug', 'full_name', 'image', 'subject', 'number_list']
+		fields = ['id', 'url', 'name', 'slug', 'full_name', 'image', 'subject',
+		 'number_list', 'type_list']
 
 class GradeSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:

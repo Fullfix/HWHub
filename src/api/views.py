@@ -127,8 +127,17 @@ class DeleteHomeworkAPIView(generics.RetrieveDestroyAPIView):
 	queryset = Homework.objects.all()
 	lookup_field = "pk"
 
+
 class GetUserId(APIView):
 	renderer_classes = [JSONRenderer]
 
 	def get(self, request):
 		return Response(request.user.id)
+
+
+class GetBookNumberDict(APIView):
+	renderer_classes = [JSONRenderer]
+
+	def get(self, request, pk):
+		book = Book.objects.all().get(pk=pk)
+		return Response(book.number_dict)

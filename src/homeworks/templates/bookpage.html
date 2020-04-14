@@ -8,12 +8,57 @@
     <link href="{% static 'styles/style_hw.css' %}?version=83" rel="stylesheet">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<script>
-		function CancelPassword() {
-			document.getElementById("delete_frame").removeAttribute("data-hwid")
-			document.getElementById("delete_frame").style.visibility = "hidden";
-			document.getElementById("delete_frame").style.position = "absolute";
-			document.getElementById("delete_frame").style.display = "none";
-			document.getElementById("navbar_search").disabled = false;
+		const mainFunc = async function() {
+			let sel = document.getElementById("sel");
+			let numDict;
+			let cur = "{{cur_num}}";
+			if (!cur) {
+				changeType(sel);
+				return NaN;
+			}
+			await fetch('/api/get_book_number_dict/{{book.id}}', {
+				method: "GET",
+			}).then(response => response.json())
+			.then(response => numDict = response);
+			for (let k in numDict) {
+				for (let i in numDict[k]) {
+					if (k + numDict[k][i] == cur) {
+						sel.value = k;
+						await changeType(sel);
+						curDiv = document.getElementsByClassName("Current")[0];
+						curDiv.scrollIntoView();
+						return NaN;
+					}
+				}
+			}
+		}
+		async function changeType(sel) {
+			let maindiv = document.getElementsByClassName('HW_BookTasks')[0];
+			let type = sel.value;
+			let cur = "{{cur_num}}"
+			let numbers;
+			maindiv.innerHTML = ""
+			await fetch('/api/get_book_number_dict/{{book.id}}', {
+				method: "GET",
+			}).then(response => response.json())
+			.then(response => numbers = response[type])
+			numbers.forEach(number => {
+				valnumber = type + number
+				div = document.createElement('DIV');
+				if (type + number == cur) {
+					div.className = 'Current HW_BookTasks_Number';
+				}
+				else {
+					div.className = 'HW_BookTasks_Number';
+				}
+				a = document.createElement('A');
+				a.className = 'usual';
+				a.href = "/homework/redirect_hw/" + valnumber + "/{{request.path}}";
+				a.innerHTML = number;
+				a.style.color = "black";
+				div.appendChild(a);;
+				maindiv.appendChild(div);
+			})
 		}
 	</script>
 {% endblock %}
@@ -52,25 +97,13 @@
 			</div>
 			<div class="HW_ChoosingTask" style="text-align: center; margin-bottom: 20px; ">
 				<p class="usual" style="color: black">Тип заданий</p>
-				<select size="1" style="width: 200px">
-					<option>Упражнения</option>
-					<option>Вопросы после параграфа</option>
-					<option>Повторение</option>
-					<option>Усложненный уровень</option>
+				<select size="1" id="sel" style="width: 200px" onchange="changeType(this)">
+					{% for val, op in book.types %}
+					<option value="{{val}}">{{op}}</option>
+					{% endfor %}
 				</select>
 			</div>
 			<div class="HW_BookTasks">
-				{% for number in book.numbers %}
-				{% if cur_num and number == cur_num %}
-					<div class="Current HW_BookTasks_Number">
-						<a href="/homework/redirect_hw/{{number}}/{{request.path}}" class="usual" style="color: black">{{number}}</a>
-					</div>
-				{% else %}
-					<div class="HW_BookTasks_Number">
-						<a href="/homework/redirect_hw/{{number}}/{{request.path}}" class="usual" style="color: black">{{number}}</a>
-					</div>
-				{% endif %}
-				{% endfor %}
 			</div>
 	</div>
 </div>
@@ -82,4 +115,5 @@
 
 {% block onload %}
 HWMain();
+mainFunc();
 {% endblock %}
