@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Homework, HomeworkImage, Grade, Subject, Book, New
+from .forms import BookUploadForm
 
 # Register your models here.
 
@@ -34,6 +35,7 @@ class BookAdmin(admin.ModelAdmin):
 	list_display = ('name', 'full_name',
 		'slug', 'subject', 'grade', 'image', 'types')
 	list_display_links = ('name', 'full_name', 'slug')
+	form = BookUploadForm
 
 	def grade(self, obj):
 		return str(obj.subject.grade.grade)

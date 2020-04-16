@@ -29,6 +29,25 @@ class Subject(models.Model):
 		return self.name
 
 
+class BookManager(models.Manager):
+	# numbers ==> type: number range
+	def create_by_number_range(self, commit=True, *args, **kwargs):
+		number_list = []
+		numbers = kwargs.pop("numbers_json")
+		types = kwargs.pop("types_json")
+		for typ, maxnum in numbers.items():
+			for num in range(1, maxnum+1):
+				number_list.append(typ+str(num))
+		book = self.create(*args, **kwargs)
+		book.set_types(types)
+		book.set_numbers(number_list)
+		if commit:
+			book.save()
+		return book
+
+
+
+
 class Book(models.Model):
 	name = models.CharField(max_length=20)
 	full_name = models.CharField(max_length=35)
@@ -70,6 +89,8 @@ class Book(models.Model):
 
 	def __str__(self):
 		return self.name
+
+	objects = BookManager()
 
 
 class HomeworkQuerySet(models.query.QuerySet):
